@@ -22,7 +22,7 @@ concrete CatLat of Cat = CommonX ** open ResLat, ParamX, Prelude in {
 --
 ---- Question
 --
-    QCl = {s : ResLat.Tense => Anteriority => Polarity => QForm => Str} ;
+    QCl = {s : ResLat.Tense => Anteriority => Polarity => QForm => Str } ;
     IP = {s : Case => Str ; n : Number} ;
     IComp = {s : Str} ;    
     IDet = Determiner ; --{s : Str ; n : Number} ;

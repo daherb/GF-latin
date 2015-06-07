@@ -1,8 +1,8 @@
---concrete QuestionLat of Question = CatLat ** open ResLat, Prelude in {
---
+concrete QuestionLat of Question = CatLat ** open ResLat, IrregLat, Prelude in {
+
 --  flags optimize=all_subs ;
---
---  lin
+  --
+  lin
 --
 --    QuestCl cl = {
 --      s = \\t,a,p => 
@@ -23,8 +23,8 @@
 --
 --    QuestIAdv iadv cl = mkQuestion iadv cl ;
 --
---    QuestIComp icomp np = 
---      mkQuestion icomp (mkClause (np.s ! Nom) np.a (predAux auxBe)) ;
+    QuestIComp icomp np = 
+      mkQuestion icomp (mkClause np (predV be_V)) ;
 --
 --
 --    PrepIP p ip = {s = p.s ++ ip.s ! Acc} ;
@@ -49,7 +49,7 @@
 --      n = num.n
 --      } ;
 --
---    CompIAdv a = a ;
+    CompIAdv a = a ;
 --    CompIP p = ss (p.s ! Nom) ;
 --
---}
+}

@@ -873,6 +873,14 @@ oper
     adj = vp.adj
   } ;
 
+   insertObjc: Str -> VPSlash -> VPSlash = \obj,vp -> {
+    fin = vp.fin ;
+    inf = vp.inf ;
+    obj = obj ++ vp.obj ;
+    adj = vp.adj ;
+    c2 = vp.c2
+    } ;
+    
   insertAdj : (Agr => Str) -> VerbPhrase -> VerbPhrase = \adj,vp -> {
     fin = vp.fin ;
     inf = vp.inf ;
@@ -880,13 +888,30 @@ oper
     adj = \\a => adj ! a ++ vp.adj ! a
   } ;
 
---  Clause = {s : VAnter => VTense => Polarity => Str} ;
+  -- clauses
+  Clause = {s : Tense => Anteriority => Polarity => Order => Str} ;
+  QClause = {s : Tense => Anteriority => Polarity => QForm => Str} ;
 
-  -- mkClause : Pronoun -> VP -> Clause = \np,vp -> {
-  --   s = \\a,t,p => np.s ! Nom ++ vp.obj ++ vp.adj ! np.g ! np.n ++ negation p ++ 
-  --     vp.fin ! VAct a t np.n np.p
-  --   } ;
-    
+  mkClause : NounPhrase -> VerbPhrase -> Clause = \np,vp -> {
+    s = \\tense,anter,pol,order => case order of {
+      SVO => np.s ! Nom ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ++ vp.obj ;
+      VSO => negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ++ np.s ! Nom ++ vp.obj ;
+      VOS => negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ++ vp.obj ++ np.s ! Nom ;
+      OSV => vp.obj ++ np.s ! Nom ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ;
+      OVS => vp.obj ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ++ np.s ! Nom ;
+      SOV => np.s ! Nom ++ vp.obj ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p 
+      } 
+      -- np.s ! Nom ++ vp.obj ++ vp.adj ! np.g ! np.n ++ negation p ++ vp.fin ! VAct a t np.n np.p
+    } ;
+
+  -- questions
+  mkQuestion : SS -> Clause -> QClause = \ss,cl -> {
+    s = \\tense,anter,pol,form => case form of {
+      QDir => ss.s ++ cl.s ! tense ! anter ! pol ! OVS;
+      QIndir => ss.s ++ cl.s ! tense ! anter ! pol ! OSV
+      }
+    } ;
+  
   negation : Polarity -> Str = \p -> case p of {
     Pos => [] ;   
     Neg => "non"
