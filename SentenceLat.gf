@@ -46,9 +46,9 @@ concrete SentenceLat of Sentence = CatLat,TenseX ** open Prelude, ResLat in {
       {
 	s = t.s ++ p.s ++ cl.s ! t.t ! t.a ! p.p ! SOV 
     } ;
---    UseQCl t p cl = {
---      s = \\q => t.s ++ p.s ++ cl.s ! t.t ! t.a ! ctr p.p ! q
---    } ;
+    UseQCl t p cl = {
+      s = \\q => t.s ++ p.s ++ cl.s ! t.t ! t.a ! p.p ! q
+    } ;
 --    UseRCl t p cl = {
 --      s = \\r => t.s ++ p.s ++ cl.s ! t.t ! t.a ! ctr p.p ! r ;
 --      c = cl.c

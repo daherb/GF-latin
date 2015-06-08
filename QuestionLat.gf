@@ -21,7 +21,7 @@ concrete QuestionLat of Question = CatLat ** open ResLat, IrregLat, Prelude in {
 --      mkQuestion (ss (slash.c2 ++ ip.s ! Acc)) slash ;
 --      --- stranding in ExratLat 
 --
---    QuestIAdv iadv cl = mkQuestion iadv cl ;
+    QuestIAdv iadv cl = mkQuestion iadv cl ;
 --
     QuestIComp icomp np = 
       mkQuestion icomp (mkClause np (predV be_V)) ;
