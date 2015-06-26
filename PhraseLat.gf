@@ -3,8 +3,8 @@ concrete PhraseLat of Phrase = CatLat ** open Prelude, ResLat in {
   lin
     PhrUtt pconj utt voc = {s = pconj.s ++ utt.s ++ voc.s} ;
     --
-    UttS s = lin Utt s ; -- S -> Utt
-    UttQS qs = {s = qs.s ! QDir} ;
+    UttS s = lin Utt { s = s.s ++ "&+ ." }; -- S -> Utt
+    UttQS qs = {s = qs.s ! QDir ++ "&+ ?" } ;
 --    UttImpSg pol imp = {s = pol.s ++ imp.s ! contrNeg True pol.p ! ImpF Sg False} ;
 --    UttImpPl pol imp = {s = pol.s ++ imp.s ! contrNeg True pol.p ! ImpF Pl False} ;
 --    UttImpPol pol imp = {s = pol.s ++ imp.s ! contrNeg True pol.p ! ImpF Sg True} ;
