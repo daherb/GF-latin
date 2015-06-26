@@ -18,7 +18,7 @@ concrete VerbLat of Verb = CatLat ** open ResLat,IrregLat in {
 --
 --    SlashV2V v vp = insertObjc (\\a => infVP v.isAux vp a) (predVc v) ;
 --    SlashV2S v s  = insertObjc (\\_ => conjThat ++ s.s) (predVc v) ;
-    SlashV2Q v q  = insertObjc (q.s ! QIndir) (predV2 v) ;
+    SlashV2Q v q  = lin VP (insertObjc (q.s ! QIndir) (predV2 v) ) ;
 --    SlashV2A v ap = insertObjc (\\a => ap.s ! a) (predVc v) ; ----
 --
     ComplSlash vp np = -- VPSlash -> NP -> VP
