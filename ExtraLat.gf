@@ -1,4 +1,6 @@
-concrete ExtraLat of ExtraLatAbs = CatLat ** 
+concrete ExtraLat of ExtraLatAbs =
+	 CatLat,
+	 ExtraLexiconLat ** 
   open ResLat, Coordination, Prelude in {
   lin
     UsePronNonDrop p = -- Pron -> NP
