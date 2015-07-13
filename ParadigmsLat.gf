@@ -11,12 +11,11 @@
 -- Closed categories (determiners, pronouns, conjunctions) are
 -- accessed through the resource syntax API, $Structural.gf$. 
 
-resource ParadigmsLat = open 
+resource ParadigmsLat = ResLat ** open 
   (Predef=Predef), 
-  Prelude, 
-  ResLat,
-  MorphoLat,
-  CatLat
+  Prelude,
+  CatLat,
+  MorphoLat
   in {
 
 --2 Parameters 
