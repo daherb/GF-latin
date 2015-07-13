@@ -122,7 +122,7 @@ lin
   king_N = mkN "rex" "regis" masculine; -- regis m. (Langenscheidts)
   know_V2 = mkV2 (mkV "scire") ; -- scio, scivi/scii, scitum 4 (Langenscheidts)
   know_VQ = mkV "scire" ;
-  know_VS = mkV "scire" ;
+  know_VS = mkVS ( mkV "scire" );
   lake_N = mkN "lacus" "lacus" masculine; -- -us m. (Langenscheidts)
   lamp_N = mkN "lucerna" ; -- -ae f. (Langenscheidts)
   learn_V2 = mkV2 (mkV "discere" "disco" "didici") ; -- disco, didici, - 3 (-isc-?) (Langenscheidts)
