@@ -11,11 +11,12 @@
 -- Closed categories (determiners, pronouns, conjunctions) are
 -- accessed through the resource syntax API, $Structural.gf$. 
 
-resource ParadigmsLat = ResLat ** open 
+resource ParadigmsLat = open 
   (Predef=Predef), 
   Prelude,
   CatLat,
-  MorphoLat
+  MorphoLat,
+  ResLat
   in {
 
 --2 Parameters 
@@ -85,7 +86,7 @@ oper
   mkV2S : V -> Prep -> V2S = \v,p -> lin V2S ( v ** { c = p } ) ;
   mkV2Q : V -> Prep -> V2Q = \v,p -> lin V2Q ( v ** { c = p } ) ;
   mkV2V : V -> Str -> Bool -> V2V = \v,s,b -> lin V2V ( v ** { c2 = s ; isAux = b } ) ;
-  mkVV : V -> Bool -> VV = \v,b -> lin VV ( v ** { isAux = b } ) ;
+  mkVV : V -> Bool -> CatLat.VV = \v,b -> lin VV ( v ** { isAux = b } ) ;
   mkVA : V -> VA = \v -> lin VA v ;
   mkV3 : V -> Prep -> Prep -> V3 = \v,p1,p2 -> lin V3 ( v ** { c2 = p1; c3 = p2 } ) ;
   mkVQ : V -> VQ = \v -> lin VQ v ;
