@@ -130,7 +130,7 @@ lin
   leave_V2 = mkV2 (mkV "relinquere" "relinquo" "relinqui" "relictum") ; -- relinquo, relinqui, relictum 3 (Langenscheidts)
   like_V2 = mkV2 ( IrregLat.want_V ) ; -- vello, velli (volsi, vulsi), vulsum 3 (Langenscheidts)
   listen_V2 = mkV2 (mkV "auscultare") ; -- ausculto 1 (Langenscheidts)
-  live_V = mkV "vivere" ; -- vivo, vixi, victurus 3 (Langenscheidts)
+  live_V = mkV "vivere" "vivo" "vixi" "victurus" ; -- vivo, vixi, victurus 3 (Langenscheidts)
   long_A = mkA "longus" ; -- 3 (Langenscheidts)
   lose_V2 = mkV2 (mkV "amittere") ; -- amitto, amissi, amissum 3 (Langenscheidts)
   love_N = mkN "amor" "amoris" masculine ; -- Ranta; -oris m. (Langenscheidts)
