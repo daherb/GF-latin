@@ -7,7 +7,14 @@ concrete VerbLat of Verb = CatLat ** open ResLat,IrregLat in {
 --2 Complementization rules
     UseV = predV ; -- dormire
 
---    ComplVV v vp = insertObj (\\a => infVP v.isAux vp a) (predVV v) ;
+    ComplVV v vp =
+      {
+	fin = vp.fin ;
+	inf = v.inf ;
+	obj = vp.obj ;
+	adj = vp.adj
+      };
+    -- insertObj (\\a => infVP v.isAux vp a) (predV v) ; -- want to run
 
 --    ComplVS v s  = insertObj (\\_ => conjThat ++ s.s) (predV v) ;
 
