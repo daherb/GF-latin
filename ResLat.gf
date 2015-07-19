@@ -2,7 +2,7 @@
 
 --1 Latin auxiliary operations.
 
-resource ResLat = ParamX ** open Prelude,TenseX in {
+resource ResLat = ParamX ** open Prelude,Maybe,TenseX in {
 
 param
   Case = Nom | Acc | Gen | Dat | Abl | Voc ;
@@ -146,7 +146,7 @@ param
   oper
   VerbPhrase : Type = {
     fin : VActForm => Str ;
-    inf : VInfForm => Str ;
+    inf : Maybe (VInfForm => Str) ;
     obj : Str ;
     adj : Agr => Str
   } ;
