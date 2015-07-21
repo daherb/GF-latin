@@ -222,7 +222,7 @@ lin
   university_N = mkN "universitas" "universitatis" feminine ; -- -atis f. (http://la.wikipedia.org/wiki/Universitas) and (Langenscheidts)
   village_N = mkN "vicus" ; -- -i m. (Langenscheidts)
   wait_V2 = mkV2 (mkV "exspectare") ; -- 1 (Langenscheidts)
-  walk_V = mkV "vadere" ; -- 3 (Langenscheidts)
+  walk_V = mkV "vadere" "vadio" "vasi"; -- 3 (Langenscheidts)
   warm_A = mkA "calidus" ; -- 3 (Langenscheidts)
   war_N = mkN "bellum" ; -- -i m. (Langenscheidts)
   watch_V2 = mkV2 (mkV "spectare") ; -- 1 (Langenscheidts)
