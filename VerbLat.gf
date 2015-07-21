@@ -25,10 +25,11 @@ concrete VerbLat of Verb = CatLat ** open ResLat,IrregLat in {
     SlashV2a v = lin VP (predV2 v) ;
 
 --    Slash2V3 v np = 
---      insertObjc (\\_ => v.c2 ++ np.s ! Acc) (predV v ** {c2 = v.c3}) ;
-
---    Slash3V3 v np = 
---      insertObjc (\\_ => v.c3 ++ np.s ! Acc) (predVc v) ; ----
+    --      insertObjc (\\_ => v.c2 ++ np.s ! Acc) (predV v ** {c2 = v.c3}) ;
+    
+--  Slash3V3 : V3  -> NP -> VPSlash ;  -- give (it) to her
+    Slash3V3 v np = 
+      lin VP ( insertObjc ( v.c3.s ++ np.s ! v.c3.c ) ( predV3 v ) ) ;
 
 --    SlashV2V v vp = insertObjc (\\a => infVP v.isAux vp a) (predVc v) ;
 

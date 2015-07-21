@@ -863,6 +863,7 @@ oper
   } ;
 
   predV2 : (Verb ** {c : Preposition}) -> VPSlash = \v -> predV v ** {c2 = v.c} ;
+  predV3 : (Verb ** { c2 : Preposition; c3: Preposition } ) -> VPSlash = \v -> predV v ** {c2 = v.c2; c3 = v.c3 } ;
 
   appPrep : Preposition -> (Case => Str) -> Str = \c,s -> c.s ++ s ! c.c ;
 
