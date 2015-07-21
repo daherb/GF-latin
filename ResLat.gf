@@ -89,6 +89,8 @@ param
       n = n ;
       p = P3 
     } ;
+
+  emptyNP : NounPhrase = { s = \\_ => ""; g = Masc; n = Sg; p = P1 }; 
 -- also used for adjectives and so on
 
 -- adjectives
