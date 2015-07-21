@@ -69,7 +69,8 @@ concrete VerbLat of Verb = CatLat ** open ResLat,IrregLat in {
 
 --    PassV2 v = insertObj (\\_ => v.s ! VPPart) (predAux auxBe) ;
 
---    AdvVP vp adv = insertObj adv.s vp ;
+--  AdvVP    : VP -> Adv -> VP ;        -- sleep here
+    AdvVP vp adv = insertObj adv.s vp ;
 
 --    ExtAdvVP vp adv = vp
 
