@@ -1,28 +1,27 @@
 concrete QuestionLat of Question = CatLat ** open ResLat, IrregLat, Prelude in {
 
 --  flags optimize=all_subs ;
-  --
+  --`
   lin
---
---    QuestCl cl = {
---      s = \\t,a,p => 
---            let cls = cl.s ! t ! a ! p 
---            in table {
---              QDir   => cls ! OQuest ;
---              QIndir => "if" ++ cls ! ODir
---              } ---- "whether" in ExtLat
---      } ;
-    --
+--   QuestCl : Cl -> QCl ;            -- does John walk
+    -- QuestCl cl = {
+    --   s = \\t,a,p => 
+    --         let cls = cl.s ! t ! a ! p 
+    --         in table {
+    --           QDir   => "" ; -- cls ! OQuest ;
+    --           QIndir => "" -- "if" ++ cls ! ODir
+    --           }
+    --   } ;
     
 --  QuestVP     : IP -> VP -> QCl ;      -- who walks
     QuestVP ip vp = 
-      let qcl = mkQuestion { s = ip.s ! Nom } ( mkClause emptyNP vp )--(qp.s ! Nom) (agrP3 qp.n) vp
+      let qcl = mkQuestion { s = ip.s ! Nom } ( mkClause emptyNP vp )
       in {s = \\t,a,b,qd => qcl.s ! t ! a ! b ! qd} ;
---
---    QuestSlash ip slash = 
---      mkQuestion (ss (slash.c2 ++ ip.s ! Acc)) slash ;
---      --- stranding in ExratLat 
---
+
+--  QuestSlash  : IP -> ClSlash -> QCl ; -- whom does John love    
+    QuestSlash ip slash =
+      mkQuestion (ss ( ip.s ! Acc) ) slash ;
+
     QuestIAdv iadv cl = mkQuestion iadv cl ;
 --
     QuestIComp icomp np = 
