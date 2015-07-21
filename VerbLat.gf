@@ -17,7 +17,6 @@ concrete VerbLat of Verb = CatLat ** open ResLat,IrregLat in {
 	obj = vp.obj ;
 	adj = vp.adj
       };
-    -- insertObj (\\a => infVP v.isAux vp a) (predV v) ; -- want to run
 
 --    ComplVS v s  = insertObj (\\_ => conjThat ++ s.s) (predV v) ;
 
