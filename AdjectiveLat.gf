@@ -37,6 +37,7 @@ concrete AdjectiveLat of Adjective = CatLat ** open ResLat, Prelude in {
       s = \\agr => ada.s ++ ap.s ! agr ;
       } ;
 
+--  UseA2 : A2 -> AP
     UseA2 a = -- A2 -> AP
       { 
 	s = table { Ag g n c  => a.s ! Posit ! Ag g n c } ;
