@@ -1,4 +1,4 @@
-concrete SentenceLat of Sentence = CatLat,TenseX ** open Prelude, ResLat in {
+concrete SentenceLat of Sentence = CatLat ** open Prelude, ResLat in {
 
   flags optimize=all_subs ;
 
