@@ -1,5 +1,5 @@
 --1 Construction rules for latin verb phrases
-concrete VerbLat of Verb = CatLat ** open ResLat,IrregLat in {
+concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat in {
 
   flags optimize=all_subs ;
 
@@ -18,7 +18,8 @@ concrete VerbLat of Verb = CatLat ** open ResLat,IrregLat in {
 	adj = vp.adj
       };
 
---    ComplVS v s  = insertObj (\\_ => conjThat ++ s.s) (predV v) ;
+--  ComplVS : VS -> S -> VP ;  -- say that she runs
+    ComplVS v s  = insertObj (S.that_Subj.s ++ s.s) (predV v) ;
 
 --  ComplVQ : VQ -> QS -> VP ;  -- wonder who runs
     ComplVQ v q  = insertObj ( q.s ! QIndir) (predV v) ;
