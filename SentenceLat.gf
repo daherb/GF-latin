@@ -30,8 +30,9 @@ concrete SentenceLat of Sentence = CatLat ** open Prelude, ResLat in {
 --      s  = \\t,a,b,o => slash.s ! t ! a ! b ! o ++ adv.s ;
 --      c2 = slash.c2
 --    } ;
---
---    SlashPrep cl prep = cl ** {c2 = prep.s} ;
+
+--  SlashPrep : Cl -> Prep -> ClSlash ;         -- (with whom) he walks 
+    SlashPrep cl prep = cl ** {c2 = prep.s} ;
 --
 --    SlashVS np vs slash = 
 --      mkClause (np.s ! Nom) np.a 
