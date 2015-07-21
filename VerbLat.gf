@@ -5,8 +5,11 @@ concrete VerbLat of Verb = CatLat ** open ResLat,IrregLat in {
 
   lin
 --2 Complementization rules
+
+--  UseV : V -> VP
     UseV = predV ; -- dormire
 
+--  ComplVV : VV -> VP -> VP ;  -- want to run        
     ComplVV v vp =
       {
 	fin = vp.fin ;
@@ -18,13 +21,13 @@ concrete VerbLat of Verb = CatLat ** open ResLat,IrregLat in {
 
 --    ComplVS v s  = insertObj (\\_ => conjThat ++ s.s) (predV v) ;
 
+--  ComplVQ : VQ -> QS -> VP ;  -- wonder who runs
     ComplVQ v q  = insertObj ( q.s ! QIndir) (predV v) ;
     
 --  ComplVA : VA -> AP -> VP ;  -- they become red
     ComplVA v ap = (predV v) ** { adj = ap.s } ;
 
---    ComplVA v ap = insertObj (ap.s) (predV v) ;
-
+--  SlashV2a : V2 -> VPSlash ;  -- love (it)
     SlashV2a v = lin VP (predV2 v) ;
 
 --    Slash2V3 v np = 
@@ -38,11 +41,13 @@ concrete VerbLat of Verb = CatLat ** open ResLat,IrregLat in {
 
 --    SlashV2S v s  = insertObjc (\\_ => conjThat ++ s.s) (predVc v) ;
 
+--  SlashV2Q : V2Q -> QS -> VPSlash ;  -- ask (him) who came
     SlashV2Q v q  = lin VP (insertObjc (q.s ! QIndir) (predV2 v) ) ;
 
 --  SlashV2A : V2A -> AP -> VPSlash ;  -- paint (it) red
     SlashV2A v ap = lin VP ( (predV2 v) ** { adj = ap.s } ) ; 
 
+--  ComplSlash : VPSlash -> NP -> VP ; -- love it
     ComplSlash vp np = -- VPSlash -> NP -> VP
       insertObj (appPrep vp.c2 np.s) vp ;
 
@@ -59,7 +64,8 @@ concrete VerbLat of Verb = CatLat ** open ResLat,IrregLat in {
     
 --    ReflVP v = insertObjPre (\\a => v.c2 ++ reflPron ! a) v ;    
 
-    UseComp comp = -- Comp -> VP
+--  UseComp : Comp -> VP
+    UseComp comp = 
       insertAdj comp.s (predV be_V) ;
 
 --    PassV2 v = insertObj (\\_ => v.s ! VPPart) (predAux auxBe) ;
@@ -77,7 +83,8 @@ concrete VerbLat of Verb = CatLat ** open ResLat,IrregLat in {
 --    VPSlashPrep : VP -> Prep -> VPSlash ;  -- live in (it)
 
     --2 Complements to copula
-    
+
+--  CompAP : AP -> Comp
     CompAP ap = ap ;
 
 --    CompNP np = {s = \\_ => np.s ! Acc} ;
