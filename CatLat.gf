@@ -14,10 +14,7 @@ concrete CatLat of Cat = CommonX ** open ResLat, ParamX, Prelude in {
 ---- Sentence
 --
     Cl = { s : ParamX.Tense => Anteriority => Polarity => Order => Str } ;
---    ClSlash = {
---      s : ResLat.Tense => Anteriority => Polarity => Order => Str ;
---      c2 : Str
---      } ;
+    ClSlash = { s : ResLat.Tense => Anteriority => Polarity => Order => Str } ;
     Imp = {s : Polarity => ImpForm => Str} ;
 --
 ---- Question
