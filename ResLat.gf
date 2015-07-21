@@ -164,6 +164,9 @@ param
     part  : VPartForm =>Agr => Str ;
     } ;
 
+  Verb2 : Type = Verb ** { c : Preposition };
+  Verb3 : Type = Verb ** { c2 : Preposition ; c3 : Preposition };
+  
   VV : Type = Verb ** { isAux : Bool } ;
 
   tenseToVTense : Tense -> VTense = 
@@ -864,8 +867,11 @@ oper
     adj = \\a => []
   } ;
 
-  predV2 : (Verb ** {c : Preposition}) -> VPSlash = \v -> predV v ** {c2 = v.c} ;
-  predV3 : (Verb ** { c2 : Preposition; c3: Preposition } ) -> VPSlash = \v -> predV v ** {c2 = v.c2; c3 = v.c3 } ;
+  predV2 : Verb2 -> VPSlash = \v ->
+    predV v ** {c2 = v.c} ;
+
+  predV3 : Verb3 -> VPSlash = \v
+    -> predV v ** {c2 = v.c2; c3 = v.c3 } ;
 
   appPrep : Preposition -> (Case => Str) -> Str = \c,s -> c.s ++ s ! c.c ;
 
