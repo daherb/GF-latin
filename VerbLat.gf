@@ -40,7 +40,8 @@ concrete VerbLat of Verb = CatLat ** open ResLat,IrregLat in {
 
     SlashV2Q v q  = lin VP (insertObjc (q.s ! QIndir) (predV2 v) ) ;
 
---    SlashV2A v ap = insertObjc (\\a => ap.s ! a) (predVc v) ; ----
+--  SlashV2A : V2A -> AP -> VPSlash ;  -- paint (it) red
+    SlashV2A v ap = lin VP ( (predV2 v) ** { adj = ap.s } ) ; 
 
     ComplSlash vp np = -- VPSlash -> NP -> VP
       insertObj (appPrep vp.c2 np.s) vp ;
