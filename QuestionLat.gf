@@ -12,10 +12,12 @@ concrete QuestionLat of Question = CatLat ** open ResLat, IrregLat, Prelude in {
 --              QIndir => "if" ++ cls ! ODir
 --              } ---- "whether" in ExtLat
 --      } ;
---
---    QuestVP qp vp = 
---      let cl = mkClause (qp.s ! Nom) (agrP3 qp.n) vp
---      in {s = \\t,a,b,_ => cl.s ! t ! a ! b ! ODir} ;
+    --
+    
+--  QuestVP     : IP -> VP -> QCl ;      -- who walks
+    QuestVP ip vp = 
+      let qcl = mkQuestion { s = ip.s ! Nom } ( mkClause emptyNP vp )--(qp.s ! Nom) (agrP3 qp.n) vp
+      in {s = \\t,a,b,qd => qcl.s ! t ! a ! b ! qd} ;
 --
 --    QuestSlash ip slash = 
 --      mkQuestion (ss (slash.c2 ++ ip.s ! Acc)) slash ;
