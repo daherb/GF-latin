@@ -19,6 +19,9 @@ concrete VerbLat of Verb = CatLat ** open ResLat,IrregLat in {
 --    ComplVS v s  = insertObj (\\_ => conjThat ++ s.s) (predV v) ;
 
     ComplVQ v q  = insertObj ( q.s ! QIndir) (predV v) ;
+    
+--  ComplVA : VA -> AP -> VP ;  -- they become red
+    ComplVA v ap = (predV v) ** { adj = ap.s } ;
 
 --    ComplVA v ap = insertObj (ap.s) (predV v) ;
 
