@@ -22,9 +22,10 @@ concrete SentenceLat of Sentence = CatLat ** open Prelude, ResLat in {
 --        in
 --        dont ++ verb
 --    } ;
---
---    SlashVP np vp = 
---      mkClause (np.s ! Nom) np.a vp ** {c2 = vp.c2} ;
+   
+--  SlashVP  : NP -> VPSlash -> ClSlash ;      -- (whom) he sees
+    SlashVP np vp = 
+      mkClause np vp ** {c2 = vp.c2} ;
 --
 --    AdvSlash slash adv = {
 --      s  = \\t,a,b,o => slash.s ! t ! a ! b ! o ++ adv.s ;
