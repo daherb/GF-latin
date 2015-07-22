@@ -14,8 +14,12 @@ concrete AdverbLat of Adverb = CatLat ** open ResLat, Prelude in
     PrepNP prep np = {s = prep.s ++ np.s ! prep.c } ;
 
 --    AdAdv = cc2 ;
---
---    SubjS = cc2 ;
+
+-- Subordinate clauses can function as adverbs.
+
+--  SubjS  : Subj -> S -> Adv ;              -- when she sleeps
+    SubjS = cc2 ;
+    
 -----b    AdvSC s = s ; --- this rule give stack overflow in ordinary parsing
 --
 --    AdnCAdv cadv = {s = cadv.s ++ "than"} ;
