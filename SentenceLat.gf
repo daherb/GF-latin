@@ -5,7 +5,7 @@ concrete SentenceLat of Sentence = CatLat ** open Prelude, ResLat in {
   lin
 
     PredVP np vp = -- NP -> VP -> Cl
-      mkClause np vp;
+      mkClause np vp ;
 --
 --    PredSCVP sc vp = mkClause sc.s (agrP3 Sg) vp ;
 --
@@ -25,7 +25,7 @@ concrete SentenceLat of Sentence = CatLat ** open Prelude, ResLat in {
    
 --  SlashVP  : NP -> VPSlash -> ClSlash ;      -- (whom) he sees
     SlashVP np vp = 
-      mkClause np vp ** {c2 = vp.c2} ;
+      mkClause np ( vp ** {c2 = vp.c2} ) ;
 --
 --    AdvSlash slash adv = {
 --      s  = \\t,a,b,o => slash.s ! t ! a ! b ! o ++ adv.s ;
@@ -46,7 +46,7 @@ concrete SentenceLat of Sentence = CatLat ** open Prelude, ResLat in {
 --
     UseCl  t p cl = -- Temp -> Pol-> Cl -> S
       {
-	s = t.s ++ p.s ++ cl.s ! t.t ! t.a ! p.p ! SOV 
+	s = t.s ++ p.s ++ cl.s ! t.t ! t.a ! p.p ! VQFalse ! SOV
     } ;
     UseQCl t p cl = {
       s = \\q => t.s ++ p.s ++ cl.s ! t.t ! t.a ! p.p ! q

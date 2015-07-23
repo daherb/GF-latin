@@ -4,14 +4,14 @@ concrete QuestionLat of Question = CatLat ** open ResLat, IrregLat, Prelude in {
   --`
   lin
 --   QuestCl : Cl -> QCl ;            -- does John walk
-    -- QuestCl cl = {
-    --   s = \\t,a,p => 
-    --         let cls = cl.s ! t ! a ! p 
-    --         in table {
-    --           QDir   => "" ; -- cls ! OQuest ;
-    --           QIndir => "" -- "if" ++ cls ! ODir
-    --           }
-    --   } ;
+     QuestCl cl = {
+       s = \\t,a,p => 
+         let cls = cl.s ! t ! a ! p 
+         in table {
+           QDir   => cls ! VQTrue ! VSO ; -- cls ! OQuest ;
+           QIndir => "" -- "if" ++ cls ! ODir
+         }
+       } ;
     
 --  QuestVP     : IP -> VP -> QCl ;      -- who walks
     QuestVP ip vp = 
@@ -25,7 +25,7 @@ concrete QuestionLat of Question = CatLat ** open ResLat, IrregLat, Prelude in {
     QuestIAdv iadv cl = mkQuestion iadv cl ;
 --
     QuestIComp icomp np = 
-      mkQuestion icomp (mkClause np (predV be_V)) ;
+      mkQuestion icomp (mkClause np (predV be_V) ) ;
 --
 --
 --    PrepIP p ip = {s = p.s ++ ip.s ! Acc} ;

@@ -145,9 +145,11 @@ param
   VTense = VPres VMood | VImpf VMood | VFut ; 
   VMood  = VInd | VConj ;
 
+  VQForm = VQTrue | VQFalse ;
+  
   oper
   VerbPhrase : Type = {
-    fin : VActForm => Str ;
+    fin : VActForm => VQForm => Str ;
     inf : VInfForm => Str ;
     obj : Str ;
     adj : Agr => Str
@@ -201,7 +203,7 @@ param
 
   useVPasV : VerbPhrase -> Verb = \vp ->
     {
-      act = \\a => vp.obj ++ vp.fin ! a ;
+      act = \\a => vp.obj ++ vp.fin ! a ! VQFalse;
       pass = \\_ => "???" ;
       inf = \\a => vp.obj ++ vp.inf ! a ;
       imp = \\_ => "???" ;
@@ -861,7 +863,7 @@ oper
   VPSlash = VerbPhrase ** {c2 : Preposition} ;
 
   predV : Verb -> VerbPhrase = \v -> {
-    fin = v.act ;
+    fin = \\a,q => v.act ! a ++ case q of { VQTrue => Prelude.BIND ++ "ne"; VQFalse => "" };
     inf = v.inf ;
     obj = [] ;
     adj = \\a => []
@@ -898,17 +900,18 @@ oper
   } ;
 
   -- clauses
-  Clause = {s : Tense => Anteriority => Polarity => Order => Str} ;
+  Clause = {s : Tense => Anteriority => Polarity => VQForm => Order => Str} ;
   QClause = {s : Tense => Anteriority => Polarity => QForm => Str} ;
 
+  -- The VQForm parameter defines if the ordinary verbform or the quistion form with suffix "-ne" will be used
   mkClause : NounPhrase -> VerbPhrase -> Clause = \np,vp -> {
-    s = \\tense,anter,pol,order => case order of {
-      SVO => np.s ! Nom ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.inf ! VInfActPres ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ++ vp.obj ;
-      VSO => negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ++ np.s ! Nom ++ vp.obj ;
-      VOS => negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ++ vp.obj ++ np.s ! Nom ;
-      OSV => vp.obj ++ np.s ! Nom ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ;
-      OVS => vp.obj ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ++ np.s ! Nom ;
-      SOV => np.s ! Nom ++ vp.obj ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p 
+    s = \\tense,anter,pol,vqf,order => case order of {
+      SVO => np.s ! Nom ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.inf ! VInfActPres ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ vp.obj ;
+      VSO => negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ np.s ! Nom ++ vp.obj ;
+      VOS => negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ vp.obj ++ np.s ! Nom ;
+      OSV => vp.obj ++ np.s ! Nom ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ;
+      OVS => vp.obj ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ np.s ! Nom ;
+      SOV => np.s ! Nom ++ vp.obj ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf 
       } 
       -- np.s ! Nom ++ vp.obj ++ vp.adj ! np.g ! np.n ++ negation p ++ vp.fin ! VAct a t np.n np.p
     } ;
@@ -916,8 +919,8 @@ oper
   -- questions
   mkQuestion : SS -> Clause -> QClause = \ss,cl -> {
     s = \\tense,anter,pol,form => case form of {
-      QDir => ss.s ++ cl.s ! tense ! anter ! pol ! OVS;
-      QIndir => ss.s ++ cl.s ! tense ! anter ! pol ! OSV
+      QDir => ss.s ++ cl.s ! tense ! anter ! pol ! VQFalse ! OVS;
+      QIndir => ss.s ++ cl.s ! tense ! anter ! pol ! VQFalse ! OSV
       }
     } ;
   
