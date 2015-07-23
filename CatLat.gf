@@ -13,8 +13,8 @@ concrete CatLat of Cat = CommonX ** open ResLat, ParamX, Prelude in {
 --
 ---- Sentence
 --
-    Cl = { s : ParamX.Tense => Anteriority => Polarity => Order => Str } ;
-    ClSlash = { s : ResLat.Tense => Anteriority => Polarity => Order => Str } ;
+    Cl = Clause ;
+    ClSlash = Clause ;
     Imp = {s : Polarity => ImpForm => Str} ;
 --
 ---- Question
@@ -73,8 +73,8 @@ concrete CatLat of Cat = CommonX ** open ResLat, ParamX, Prelude in {
 ---- Open lexical classes, e.g. Lexicon
 
     V, VS, VQ, VA = ResLat.Verb ; -- = {s : VForm => Str} ;
-    V2, V2A, V2Q, V2S = Verb ** {c : Prep } ;
-    V3 = Verb ** {c2, c3 : Prep} ;
+    V2, V2A, V2Q, V2S = Verb2 ;
+    V3 = Verb3 ;
     VV = ResLat.VV ;
     V2V = Verb ** {c2 : Str ; isAux : Bool} ;
 
