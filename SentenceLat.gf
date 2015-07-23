@@ -61,7 +61,11 @@ concrete SentenceLat of Sentence = CatLat ** open Prelude, ResLat in {
 --    } ;
 --
 --    AdvS a s = {s = a.s ++ "," ++ s.s} ;
---
+
+-- This covers subjunctive clauses, but they can also be added to the end.
+--  SSubjS : S -> Subj -> S -> S ;       -- I go home if she comes
+    SSubjS s1 subj s2 = ss ( subj.s ++ s2.s ++ s1.s );
+    
 --    RelS s r = {s = s.s ++ "," ++ r.s ! agrP3 Sg} ;
 --
 --  oper
