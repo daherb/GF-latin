@@ -9,7 +9,7 @@ concrete QuestionLat of Question = CatLat ** open ResLat, IrregLat, Prelude in {
          let cls = cl.s ! t ! a ! p 
          in table {
            QDir   => cls ! VQTrue ! VSO ; -- cls ! OQuest ;
-           QIndir => "" -- "if" ++ cls ! ODir
+           QIndir => "" -- "if" ++ cls ! ODir -- TODO
          }
        } ;
     
