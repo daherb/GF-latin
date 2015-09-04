@@ -48,7 +48,7 @@ param
     { 
       s = table {
 	Pl => n.s ! Pl ;
-	Sg => \\_ => "######" -- no singular forms
+	Sg => \\_ => nonExist -- no singular forms
 	};
       g = n.g ;
       preap = n.preap ;
@@ -204,13 +204,13 @@ param
   useVPasV : VerbPhrase -> Verb = \vp ->
     {
       act = \\a => vp.obj ++ vp.fin ! a ! VQFalse;
-      pass = \\_ => "???" ;
+      pass = \\_ => nonExist ;
       inf = \\a => vp.obj ++ vp.inf ! a ;
-      imp = \\_ => "???" ;
-      ger = \\_ => "???" ;
-      geriv = \\_ => "???" ;
-      sup = \\_ => "???" ;
-      part = \\_,_ => "???" ;
+      imp = \\_ => nonExist ;
+      ger = \\_ => nonExist ;
+      geriv = \\_ => nonExist ;
+      sup = \\_ => nonExist ;
+      part = \\_,_ => nonExist ;
     } ;
 
   mkVerb : 
@@ -364,7 +364,7 @@ param
 	  ) + "tote" ;
 	VImp2 Pl P3          => -- Imperative II 
 	  pres_stem + fill.p2 + "nto" ;
-	_ => "######" -- No imperative form
+	_ => nonExist -- No imperative form
 	} ;
       ger = 
 	table {
@@ -524,19 +524,19 @@ param
           VAct VSim VFut          n  p  => -- Future I
 	    fut_I_base + passPresEnding n p ;
           VAct VAnt (VPres VInd)  n  p  => -- Prefect Indicative
-	    "######" ; -- Use participle
+	    nonExist ; -- Use participle
           VAct VAnt (VPres VConj) n  p  => -- Prefect Conjunctive
-	    "######" ; -- Use participle
+	    nonExist ; -- Use participle
           VAct VAnt (VImpf VInd)  n  p  => -- Plusperfect Indicative
-	    "######" ; -- Use participle
+	    nonExist ; -- Use participle
           VAct VAnt (VImpf VConj) n  p  => -- Plusperfect Conjunctive
-	    "######" ; -- Use participle
-          VAct VAnt VFut          n  p  => -- Future II 
-	    "######" -- Use participle
-        } ; 
-      pass = 
-	\\_ => "######" ; -- no passive forms
-      inf = 
+	    nonExist ; -- Use participle
+          VAct VAnt VFut          n  p  => -- Future II
+	    nonExist -- Use participle
+        } ;
+      pass =
+	\\_ => nonExist ; -- no passive forms
+      inf =
 	table {
           VInfActPres        => -- Infinitive Present Active
 	    inf_pres ;
@@ -553,11 +553,11 @@ param
 	  VInfActFut Neutr   => -- Infinitive Perfect Active
 	    part_stem + "urum" ;
 	  VInfPassPres       => -- Infinitive Present Passive
-	    "######" ; -- no passive form
+	    nonExist ; -- no passive form
 	  VInfPassPerf _     => -- Infinitive Perfect Passive
-	    "######" ; -- no passive form
+	    nonExist ; -- no passive form
 	  VInfPassFut        => -- Infinitive Future Passive
-	    "######"  -- no passive form
+	    nonExist  -- no passive form
         } ;
       imp = 
 	table {
@@ -572,10 +572,10 @@ param
 	  VImp2 Sg ( P2 | P3 ) => -- Imperative II
 	    imp_base + "tor" ;
 	  VImp2 Pl P2          => -- Imperative II
-	    "######" ; -- really no such form?
+	    nonExist ; -- really no such form?
 	  VImp2 Pl P3          => -- Imperative II
 	    pres_ind_base + fill.p1 + "ntor" ;
-	  _ => "######" -- No imperative form
+	  _ => nonExist -- No imperative form
 	} ;
       ger = 
 	table {
@@ -814,8 +814,8 @@ oper
       	    }
       	} ,
       	table {
-      	  PronNonRefl => 
-      	    \\_ => "######" ;
+      	  PronNonRefl =>
+      	    \\_ => nonExist ;
       	  PronRefl =>
       	    table {
       	      Ag Masc  Sg c => ( pronForms "suus" "suum" "sui" "suo" "suo" ) ! c ;

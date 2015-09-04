@@ -60,7 +60,7 @@ oper
     mkV : (iacere,iacio,ieci,iactus : Str) -> V
       = \v,x,y,z -> lin V ( verb_ippp v x y z ) ; 
     mkV : (iacere,iacio,ieci : Str) -> V
-      = \v,x,y -> lin V ( verb_ippp v x y "######" ) ; 
+      = \v,x,y -> lin V ( verb_ippp v x y nonExist ) ;
   } ;
 
   V0 : Type = V ;
