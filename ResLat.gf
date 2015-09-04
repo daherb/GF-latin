@@ -167,7 +167,7 @@ param
     } ;
 
   Verb2 : Type = Verb ** { c : Preposition };
-  Verb3 : Type = Verb ** { c2 : Preposition ; c3 : Preposition };
+  Verb3 : Type = Verb ** { c : Preposition ; c2 : Preposition };
   
   VV : Type = Verb ** { isAux : Bool } ;
 
