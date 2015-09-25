@@ -10,6 +10,7 @@ our %TEST;
 sub to_hash
 {
     my ($POSTAG,$FORM,$LEMMA,$FEATS) = @_;
+    $LEMMA =~ s/#(\d+)$//g;
     if(!defined($LEX{$LEMMA}{$POSTAG}{$FEATS}{$FORM}))
     {
 	$LEX{$LEMMA}{$POSTAG}{$FEATS}{$FORM} = 1;
@@ -43,7 +44,7 @@ sub to_gf_lex
 		case "Df" { adverb($LEMMA,\@FEATS,\@FORMS,$abslexfh,$conclexfh,\$count) } # adverb
 		#	    case "S-" {} # article
 		#	    case "Ma" {} # cardinal numeral
-		case "Nb" { noun($LEMMA,\@FEATS,\@FORMS,$abslexfh,$conclexfh,\$count) } # common noun
+		case "Nb" { noun($POSTAG,$LEMMA,\@FEATS,\@FORMS,$abslexfh,$conclexfh,\$count) } # common noun
 		#	    case "C-" {} # conjunction
 		case "Pd" { pronoun($LEMMA,\@FEATS,\@FORMS,$abslexfh,$conclexfh,\$count) } # demonstrative pronoun
 		#	    case "F-" {} # foreign word
@@ -57,7 +58,7 @@ sub to_gf_lex
 		case "Ps" { pronoun($LEMMA,\@FEATS,\@FORMS,$abslexfh,$conclexfh,\$count) } # possessive pronoun
 		case "Pt" { pronoun($LEMMA,\@FEATS,\@FORMS,$abslexfh,$conclexfh,\$count) } # possessive reflexive pronoun
 		case "R-" { preposition($LEMMA,\@FEATS,\@FORMS,$abslexfh,$conclexfh,\$count) } # preposition
-		case "Ne" { noun($LEMMA,\@FEATS,\@FORMS,$abslexfh,$conclexfh,\$count) } # proper noun
+		case "Ne" { noun($POSTAG,$LEMMA,\@FEATS,\@FORMS,$abslexfh,$conclexfh,\$count) } # proper noun
 		#	    case "Py" {} # quantifier
 		#	    case "Pc" {} # reciprocal pronoun
 		case "Dq" { adverb($LEMMA,\@FEATS,\@FORMS,$abslexfh,$conclexfh,\$count) } # relative adverb
@@ -73,29 +74,58 @@ sub to_gf_lex
 sub adjective    
 {
     my ($LEMMA,$FEATS,$FORMS,$abslexfh,$conclexfh,$count) = @_ ;
-    if ($LEMMA =~ /(us|er)$/) {  print $conclexfh "\tlex".$$count."_A = mkA \"$LEMMA\" ;\n";  }
-    elsif ($LEMMA =~ /(?<stem>.*)is$/) { print $conclexfh  "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."e\" ;\n" ; }
-    elsif ($LEMMA =~ /(?<stem>.*)ns$/) { print $conclexfh "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."ntis\" ;\n" ; }
-#    elsif ($LEMMA =~ /(?<stem>.*[^e])r$/) { print $conclexfh "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."ris\" ;\n" ; } # prior, memor, interior, deterior, par, victor, ulterior, immemor broken. to fix 
-#    elsif ($LEMMA =~ /(?<stem>.*)rs$/) { print $conclexfh "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."rtis\" ;\n" ; } # iners, expers, misericors broken. to fix
-    elsif ($LEMMA =~ /(?<stem>.*)x$/) { print $conclexfh "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."cis\" ;\n"; }
-    else { print "missing case for Adjective $LEMMA - ".join(", ",@$FORMS)."\n"; return }
-    print $abslexfh "\tlex".$$count."_A : A ;\n";
-    foreach my $FORM (@$FORMS) { $TEST{$FORM} = 1 };
-    $$count++;
+#     if ($LEMMA =~ /(us|er)$/) {  print $conclexfh "\tlex".$$count."_A = mkA \"$LEMMA\" ;\n";  }
+#     elsif ($LEMMA =~ /(?<stem>.*)is$/) { print $conclexfh  "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."e\" ;\n" ; }
+#     elsif ($LEMMA =~ /(?<stem>.*)ns$/) { print $conclexfh "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."ntis\" ;\n" ; }
+# #    elsif ($LEMMA =~ /(?<stem>.*[^e])r$/) { print $conclexfh "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."ris\" ;\n" ; } # prior, memor, interior, deterior, par, victor, ulterior, immemor broken. to fix 
+# #    elsif ($LEMMA =~ /(?<stem>.*)rs$/) { print $conclexfh "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."rtis\" ;\n" ; } # iners, expers, misericors broken. to fix
+#     elsif ($LEMMA =~ /(?<stem>.*)x$/) { print $conclexfh "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."cis\" ;\n"; }
+#     else { print "missing case for Adjective $LEMMA - ".join(", ",@$FORMS)."\n"; return }
+#     print $abslexfh "\tlex".$$count."_A : A ;\n";
+#     foreach my $FORM (@$FORMS) { $TEST{$FORM} = 1 };
+#     $$count++;
 }
 
 sub noun
 {
-    my ($LEMMA,$FEATS,$FORMS,$abslexfh,$conclexfh,$count) = @_;
-    if ($LEMMA =~ /(us|a|um)$/) {  print $conclexfh "\tlex".$$count."_N = mkN \"$LEMMA\" ;\n";  }
-#    elsif ($LEMMA =~ /(?<stem>.*)a$/) { print $conclexfh  "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."e\";\n" ; }
-    # elsif ($LEMMA =~ /(?<stem>.*)ns$/) { print $conclexfh "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."ntis\";\n" ; }
-    # elsif ($LEMMA =~ /(?<stem>.*)r$/) { print $conclexfh "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."ris\";\n" ; }
-    # elsif ($LEMMA =~ /(?<stem>.*)rs$/) { print $conclexfh "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."rtis\";\n" ; }
-    # elsif ($LEMMA =~ /(?<stem>.*)x$/) { print $conclexfh "\tlex".$$count."_A = mkA \"$LEMMA\" \"".$+{stem}."cis\";\n"; }
+    my ($POSTAG,$LEMMA,$FEATS,$FORMS,$abslexfh,$conclexfh,$count) = @_;
+    # try to generate lexicon entry of form nominativ singular, genetive singular, gender
+    my $nomsg = undef ;
+    my $gensg = undef ;
+    my $gender = undef ;
+    foreach my $FEAT (@$FEATS)
+    {
+	if ($FEAT =~ /GEND(\w)/)
+	{
+	    switch ($1)
+	    {
+		case "m" { $gender = "masculine" }
+		case "f" { $gender = "feminine" }
+		case "n" { $gender = "neuter" }
+		case "p" { $gender = "masculine|feminine" }
+		case "o" { $gender = "masculine|neuter" }
+		case "r" { $gender = "feminine|neuter" }
+		case "q" { $gender = "masculine|feminine|neuter" }
+		else { }
+	    }
+	}
+    	if ($FEAT =~ /NUMBs\|.*\|CASEn/)
+    	{
+     	    $nomsg = (keys %{$LEX{$LEMMA}{$POSTAG}{$FEAT}})[0] if (scalar(keys %{$LEX{$LEMMA}{$POSTAG}{$FEAT}}) == 1);
+    	}
+	elsif ($FEAT =~ /NUMBs\|.*\|CASEg/)
+    	{
+     	    $gensg = (keys %{$LEX{$LEMMA}{$POSTAG}{$FEAT}})[0] if (scalar(keys %{$LEX{$LEMMA}{$POSTAG}{$FEAT}}) == 1);
+    	}
+    }
+    # if ($LEMMA =~ /(us|a|um)$/) {  print $conclexfh "\tlex".$$count."_N = mkN \"$LEMMA\" ;\n";  }
+    if (defined($nomsg) && defined($gensg) && defined($gender))
+    {
+	print $conclexfh "\tlex".$$count."_N = mkN \"$nomsg\" \"$gensg\" $gender ;\n";
+    }
     else { print "missing case for Noun $LEMMA - ".join(", ",@$FORMS)."\n"; return }
     print $abslexfh "\tlex".$$count."_N : N ;\n";
+    foreach my $FORM (@$FORMS) { $TEST{$FORM} = 1 };
     $$count++;
 }
 
@@ -117,6 +147,9 @@ sub preposition
 sub adverb
 {
     my ($LEMMA,$FEATS,$FORMS,$abslexfh,$conclexfh,$count) = @_;
+    # print $conclexfh "\tlex".$$count."_Adv = ss \"$LEMMA\" ;\n";
+    # print $abslexfh "\tlex".$$count."_Adv : Adv ;\n";
+    # $$count++;
 }
 
 # Main
@@ -139,7 +172,7 @@ sub adverb
     open my $abslexfh, ">", $conllname."Abs.gf";
     open my $conclexfh, ">", $conllname.".gf";
     print $abslexfh "abstract ".$conllname."Abs = Cat ** open Cat in {\nfun\n";
-    print $conclexfh "concrete $conllname of ".$conllname."Abs = CatLat ** open ParadigmsLat,Prelude,ParamX in {\nlin\n";
+    print $conclexfh "concrete $conllname of ".$conllname."Abs = CatLat ** open ParadigmsLat,Prelude,ParamX,ResLat in {\nlin\n";
     to_gf_lex($abslexfh,$conclexfh);
     print $abslexfh "}\n";
     print $conclexfh "}\n";
