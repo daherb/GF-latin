@@ -810,7 +810,7 @@ oper
       		  <Fem  ,Pl> => pronForms "eae" "eas" "earum" "eis" "eis" ;
       		  <Neutr,Pl> => pronForms "ea"  "ea"  "eorum" "eis" "eis"
       		} ;
-      	      PronRefl => pronForms "######" "se" "sui" "sibi" "se"
+      	      PronRefl => pronForms nonExist "se" "sui" "sibi" "se"
       	    }
       	} ,
       	table {
