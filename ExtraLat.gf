@@ -8,6 +8,6 @@ concrete ExtraLat of ExtraLatAbs =
 	g = p.g ;
 	n = p.n ;
 	p = p.p ;
-	s = p.pers ! PronNonDrop ! PronRefl ;
+	s = p.pers ! PronNonDrop ! PronNonRefl ;
       } ;
 } 
