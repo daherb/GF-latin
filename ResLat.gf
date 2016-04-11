@@ -145,7 +145,7 @@ param
   VTense = VPres VMood | VImpf VMood | VFut ; 
   VMood  = VInd | VConj ;
 
-  VQForm = VQTrue | VQFalse ;
+  VQForm = VQTrue | VQFalse ; -- Question suffix should be added to the Verb
   
   oper
   VerbPhrase : Type = {
