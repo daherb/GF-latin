@@ -149,8 +149,7 @@ param
   
   oper
   VerbPhrase : Type = {
-    fin : VActForm => VQForm => Str ;
-    inf : VInfForm => Str ;
+    s : VActForm => VQForm => Str ;
     obj : Str ;
     adj : Agr => Str
   } ;
@@ -203,9 +202,10 @@ param
 
   useVPasV : VerbPhrase -> Verb = \vp ->
     {
-      act = \\a => vp.obj ++ vp.fin ! a ! VQFalse;
+      act = \\a => vp.obj ++ vp.s ! a ! VQFalse;
       pass = \\_ => nonExist ;
-      inf = \\a => vp.obj ++ vp.inf ! a ;
+      --      inf = \\a => vp.obj ++ vp.inf ! a ;
+      inf = \\_ => nonExist ;
       imp = \\_ => nonExist ;
       ger = \\_ => nonExist ;
       geriv = \\_ => nonExist ;
@@ -863,8 +863,8 @@ oper
   VPSlash = VerbPhrase ** {c2 : Preposition} ;
 
   predV : Verb -> VerbPhrase = \v -> {
-    fin = \\a,q => v.act ! a ++ case q of { VQTrue => Prelude.BIND ++ "ne"; VQFalse => "" };
-    inf = v.inf ;
+    s = \\a,q => v.act ! a ++ case q of { VQTrue => Prelude.BIND ++ "ne"; VQFalse => "" };
+    -- inf = v.inf ;
     obj = [] ;
     adj = \\a => []
   } ;
@@ -878,23 +878,23 @@ oper
   appPrep : Preposition -> (Case => Str) -> Str = \c,s -> c.s ++ s ! c.c ;
 
   insertObj : Str -> VerbPhrase -> VerbPhrase = \obj,vp -> {
-    fin = vp.fin ;
-    inf = vp.inf ;
+    s = vp.s ;
+--    inf = vp.inf ;
     obj = obj ++ vp.obj ;
     adj = vp.adj
   } ;
 
    insertObjc: Str -> VPSlash -> VPSlash = \obj,vp -> {
-    fin = vp.fin ;
-    inf = vp.inf ;
+    s = vp.s ;
+--    inf = vp.inf ;
     obj = obj ++ vp.obj ;
     adj = vp.adj ;
     c2 = vp.c2
     } ;
     
   insertAdj : (Agr => Str) -> VerbPhrase -> VerbPhrase = \adj,vp -> {
-    fin = vp.fin ;
-    inf = vp.inf ;
+    s = vp.s ;
+--    inf = vp.inf ;
     obj = vp.obj ;
     adj = \\a => adj ! a ++ vp.adj ! a
   } ;
@@ -906,12 +906,12 @@ oper
   -- The VQForm parameter defines if the ordinary verbform or the quistion form with suffix "-ne" will be used
   mkClause : NounPhrase -> VerbPhrase -> Clause = \np,vp -> {
     s = \\tense,anter,pol,vqf,order => case order of {
-      SVO => np.s ! Nom ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.inf ! VInfActPres ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ vp.obj ;
-      VSO => negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ np.s ! Nom ++ vp.obj ;
-      VOS => negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ vp.obj ++ np.s ! Nom ;
-      OSV => vp.obj ++ np.s ! Nom ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ;
-      OVS => vp.obj ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ np.s ! Nom ;
-      SOV => np.s ! Nom ++ vp.obj ++ negation pol ++ vp.adj ! Ag np.g Sg Nom ++ vp.fin ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf 
+      SVO => np.s ! Nom ++ negation pol ++ vp.adj ! Ag np.g np.n Nom ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ vp.obj ;
+      VSO => negation pol ++ vp.adj ! Ag np.g np.n Nom ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ np.s ! Nom ++ vp.obj ;
+      VOS => negation pol ++ vp.adj ! Ag np.g np.n Nom ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ vp.obj ++ np.s ! Nom ;
+      OSV => vp.obj ++ np.s ! Nom ++ negation pol ++ vp.adj ! Ag np.g np.n Nom ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ;
+      OVS => vp.obj ++ negation pol ++ vp.adj ! Ag np.g np.n Nom ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ np.s ! Nom ;
+      SOV => np.s ! Nom ++ vp.obj ++ negation pol ++ vp.adj ! Ag np.g np.n Nom ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf 
       } 
       -- np.s ! Nom ++ vp.obj ++ vp.adj ! np.g ! np.n ++ negation p ++ vp.fin ! VAct a t np.n np.p
     } ;

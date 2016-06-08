@@ -12,8 +12,8 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat in {
 --  ComplVV : VV -> VP -> VP ;  -- want to run        
     ComplVV v vp =
       {
-	fin = vp.fin ;
-	inf = v.inf ;
+	s = vp.s ;
+--	inf = v.inf ;
 	obj = vp.obj ;
 	adj = vp.adj
       };
