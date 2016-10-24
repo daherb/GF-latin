@@ -716,6 +716,40 @@ param
         }
       } ;
 
+
+    addPrefix : Str -> Str -> Str =
+      \prefix,verb ->
+      case <prefix,verb> of {
+	<p + "b","f" + _> => p + verb ;
+	<p + "b", "t" + r> => prefix + "s" + verb;
+	<p + "b", "iact" + r> => prefix + "iect" + r;
+	<p + "b", "iac" + r> => prefix + "ic" + r;
+	<p + "d","capt" + r> => p + "ccept" + r ;
+	<p + "d","ca" + r> => p + "cci" + r ;
+	<p + "d","c" + _> => p + "c" + verb ;
+	<p + "d","t" + _> => p + "t" + verb ;
+	<p + "d","l" + _> => p + "l" + verb ;
+	_ => prefix + verb
+      } ;-- TODO too simple e.g. ab+fuit = afuit
+
+    prefixVerb2 : Str -> Verb2 -> Verb2 =
+      \prefix,verb ->
+      let v = { act = verb.act ; pass = verb.pass ; inf = verb.inf ; imp = verb.imp ; ger = verb.ger ; geriv = verb.geriv ; sup = verb.sup ; part = verb.part }
+      in
+        (prefixVerb prefix v) ** { c = verb.c };
+    prefixVerb : Str -> Verb -> Verb =
+      \prefix,verb ->
+      {
+	act = \\form => addPrefix prefix (verb.act ! form) ;
+	pass = \\form => addPrefix prefix (verb.pass ! form) ;
+	inf = \\form => addPrefix prefix (verb.inf ! form) ;
+	imp = \\form => addPrefix prefix (verb.imp ! form) ;
+	ger = \\form => addPrefix prefix (verb.ger ! form) ;
+	geriv = \\agr => addPrefix prefix (verb.geriv ! agr) ;
+	sup = \\form => addPrefix prefix (verb.sup ! form) ;
+	part = \\form,agr => addPrefix prefix (verb.part ! form ! agr) ;
+      } ;
+      
 -- pronouns
 
 param
