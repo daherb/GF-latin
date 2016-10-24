@@ -54,6 +54,17 @@ param
       preap = n.preap ;
       postap = n.postap ;
     };
+
+  singularN : Noun -> Noun = \n ->
+    { 
+      s = table {
+	Sg => n.s ! Sg ;
+	Pl => \\_ => nonExist -- no singular forms
+	};
+      g = n.g ;
+      preap = n.preap ;
+      postap = n.postap ;
+    };
   
   mkNoun : (n1,_,_,_,_,_,_,_,_,n10 : Str) -> Gender -> Noun = 
     \sn,sa,sg,sd,sab,sv,pn,pa,pg,pd,g -> {
