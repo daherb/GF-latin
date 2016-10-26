@@ -893,21 +893,21 @@ oper
 
 -- prepositions
 
-  Preposition : Type = {s : Str ; c : Case} ;
+  Preposition : Type = {s : Str ; c : Case ; isPost : Bool } ;
 
   -- conjunctions
   Conjunction : Type = { s1 : Str ; s2 : Str ; n : Number};
   mkConj : Str -> Str -> Number -> Conjunction = \s1,s2,num -> { s1 = s1; s2 = s2 ; n = num } ;
   
 -- Bayer-Lindauer $149ff.
-  about_P = lin Prep (mkPrep "de" Gen ) ; -- L...
-  at_P = lin Prep (mkPrep "ad" Acc ) ; -- L...
-  on_P = lin Prep ( mkPrep "ad" Gen ) ; -- L...
-  to_P = lin Prep ( mkPrep "ad" Acc ) ; -- L...
-  Gen_Prep = lin Prep ( mkPrep "" Gen ) ;
-  Acc_Prep = lin Prep ( mkPrep "" Acc ) ;
-  Dat_Prep = lin Prep ( mkPrep "" Dat ) ;
-  Abl_Prep = lin Prep ( mkPrep "" Abl ) ;
+  about_P : Preposition =  lin Prep (mkPrep "de" Gen); -- L...
+  at_P : Preposition = lin Prep (mkPrep "ad" Acc) ; -- L...
+  on_P : Preposition = lin Prep (mkPrep "ad" Gen); -- L...
+  to_P : Preposition = lin Prep (mkPrep "ad" Acc); -- L...
+  Gen_Prep : Preposition = lin Prep (mkPrep "" Gen);
+  Acc_Prep : Preposition = lin Prep (mkPrep "" Acc);
+  Dat_Prep : Preposition = lin Prep (mkPrep "" Dat);
+  Abl_Prep : Preposition = lin Prep (mkPrep "" Abl);
 
   VPSlash = VerbPhrase ** {c2 : Preposition} ;
 
@@ -1034,8 +1034,10 @@ oper
        "illa" "illorum" "illis")
     ;
 
-  mkPrep : Str -> Case -> Preposition  = \s,c -> lin Preposition {s = s ; c = c} ;
+  mkPrep : Str -> Case -> Preposition  = \s,c ->  {s = s ; c = c; isPost = False} ;
 
+  mkPostp : Str -> Case -> Preposition = \s,c ->  {s = s ; c = c ; isPost = True } ;
+      
   mkAdv : Str -> { s: Str } = \adv -> { s = adv } ;
 
 param
