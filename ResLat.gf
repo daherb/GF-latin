@@ -56,7 +56,7 @@ param
     };
 
   singularN : Noun -> Noun = \n ->
-    { 
+    lin N { 
       s = table {
 	Sg => n.s ! Sg ;
 	Pl => \\_ => nonExist -- no singular forms
