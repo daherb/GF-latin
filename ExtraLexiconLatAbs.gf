@@ -1,3 +1,3 @@
-abstract ExtraLexiconLatAbs = {
+abstract ExtraLexiconLatAbs = Lexicon, ExtraLexCaesarAbs ** {
 
 };

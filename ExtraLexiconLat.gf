@@ -1,2 +1,2 @@
-concrete ExtraLexiconLat of ExtraLexiconLatAbs = {
+concrete ExtraLexiconLat of ExtraLexiconLatAbs = LexiconLat, ExtraLexCaesar ** {
 };
