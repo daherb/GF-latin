@@ -720,15 +720,18 @@ param
     addPrefix : Str -> Str -> Str =
       \prefix,verb ->
       case <prefix,verb> of {
-	<p + "b","f" + _> => p + verb ;
-	<p + "b", "t" + r> => prefix + "s" + verb;
-	<p + "b", "iact" + r> => prefix + "iect" + r;
-	<p + "b", "iac" + r> => prefix + "ic" + r;
-	<p + "d","capt" + r> => p + "ccept" + r ;
-	<p + "d","ca" + r> => p + "cci" + r ;
-	<p + "d","c" + _> => p + "c" + verb ;
-	<p + "d","t" + _> => p + "t" + verb ;
-	<p + "d","l" + _> => p + "l" + verb ;
+	<p + "b","f"      + _ > => p + verb ;
+	<p + "b", "te"    + r > => prefix + "sti" + r;
+	<p + "b", "t"     + r > => prefix + "s" + verb;
+	<p + "b", "iact"  + r > => prefix + "iect" + r;
+	<p + "b", "iac"   + r > => prefix + "ic" + r;
+	<p + "d","capt"   + r > => p + "ccept" + r ;
+	<p + "d","ca"     + r > => p + "cci" + r ;
+	<p      ,"tex"     + r > => p + verb ;
+	<p      ,"te"     + r > => p + "ti" + r ;
+	<p + "d","c"      + _ >  => p + "c" + verb ;
+	<p + "d","t"      + _ >  => p + "t" + verb ;
+	<p + "d","l"      + _  > => p + "l" + verb ;
 	_ => prefix + verb
       } ;-- TODO too simple e.g. ab+fuit = afuit
 
