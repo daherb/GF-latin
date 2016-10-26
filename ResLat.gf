@@ -895,6 +895,10 @@ oper
 
   Preposition : Type = {s : Str ; c : Case} ;
 
+  -- conjunctions
+  Conjunction : Type = { s1 : Str ; s2 : Str ; n : Number};
+  mkConj : Str -> Str -> Number -> Conjunction = \s1,s2,num -> { s1 = s1; s2 = s2 ; n = num } ;
+  
 -- Bayer-Lindauer $149ff.
   about_P = lin Prep (mkPrep "de" Gen ) ; -- L...
   at_P = lin Prep (mkPrep "ad" Acc ) ; -- L...

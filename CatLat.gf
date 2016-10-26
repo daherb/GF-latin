@@ -66,7 +66,7 @@ concrete CatLat of Cat = CommonX ** open ResLat, ParamX, Prelude in {
 --
 ---- Structural
 --
-    Conj = {s1,s2 : Str ; n : Number} ;
+    Conj = ResLat.Conjunction; --{s1,s2 : Str ; n : Number} ;
     Subj = {s : Str} ;
     Prep = ResLat.Preposition ;
 --
