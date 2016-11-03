@@ -346,7 +346,7 @@ lin
   sit_V = mkV "sedere" ; -- sedeo, sedi, sessum 2 (Langenscheidts)
   smell_V = mkV "olere" ; -- oleo, -ui, - 2 (Langenscheidts)
   spit_V = mkV "spuere" "spuo" "spui" "sputum" ; -- spuo, -ui, -utum 3 (Langenscheidts)
-  stand_V = mkV "stare" ; -- sto, steti, staturus, statum 1 (Langenscheidts)
+  stand_V = mkV "stare" "sto" "steti" "staturus" ; -- sto, steti, staturus, statum 1 (Langenscheidts), problematic???
   swell_V = mkV "intumescere" "intumesco" "intumui" ; -- intumesco, -mui, - 3 (Langenscheidts)
   swim_V = mkV "natare" ; -- nato 1 (Langenscheidts)
   think_V = mkV "cogitare" ; -- cogito 1 (Langenscheidts)
