@@ -293,7 +293,7 @@ abstract ExtraLexCaesarAbs = Cat ** {
     circumire_V : V;
     circummunire_V : V;
     circumsistere_1_V : V;
-    circumsistere_2_V : V;
+--    circumsistere_2_V : V;
     circumvenire_V : V;
     cis_Prep : Prep;
     citare_V : V;
@@ -309,7 +309,7 @@ abstract ExtraLexCaesarAbs = Cat ** {
     constanter_Adv : Adv;
     constantia_N : N;
     constare_V : V;
-    consternare_V : V;
+--    consternare_V : V;
     consternere_V : V;
     constituere_V : V;
     constitutum_N : N;

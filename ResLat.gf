@@ -727,6 +727,9 @@ param
 	<p + "b", "iac"   + r > => prefix + "ic" + r;
 	<p + "d","capt"   + r > => p + "ccept" + r ;
 	<p + "d","ca"     + r > => p + "cci" + r ;
+	<p      ,"spe"     + r > => p + "spi" + r ;
+	<p      ,"spex"     + r > => prefix + verb;
+	<p      ,"stat"     + r > => p + "stit" + r ;
 	<p      ,"tex"     + r > => p + verb ;
 	<p      ,"te"     + r > => p + "ti" + r ;
 	<p + "d","c"      + _ >  => p + "c" + verb ;
