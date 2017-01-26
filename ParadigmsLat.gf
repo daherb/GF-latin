@@ -80,7 +80,7 @@ oper
   neuter = Neutr ;
 
   mkAdv : Str -> Adv
-    = \s -> lin Adv {s = s} ;
+    = \s -> lin Adv (ResLat.mkAdv s) ;
 
 -- To be implemented, just place holders
   mkPN : N -> PN = \n -> lin PN n ;
