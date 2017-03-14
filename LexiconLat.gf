@@ -230,7 +230,7 @@ lin
   white_A = mkA "albus" ; -- 3 (Langenscheidts)
   window_N = mkN "fenestra" ; -- -ae f. (Langenscheidts)
   wine_N = mkN "vinum" ; -- -i n. (Langenscheidts)
-  win_V2 = mkV2 (mkV "vincere") ; -- vinco, vici, victum 3 (Langenscheidts)
+  win_V2 = mkV2 (mkV "vincere" "vinco" "vinxi" "victum") ; -- vinco, vici, victum 3 (Langenscheidts)
   woman_N = mkN "femina" ; -- -ae f. (Langenscheidts)
   wonder_VQ = mkVQ (mkV "mirari") ; -- 1 (Langenscheidts)
   wood_N = mkN "lignum" ; -- -i n. (Langenscheidts)
