@@ -30,7 +30,7 @@ param
 --      comp_adv : Str ; 
 --      super_adv : Str 
       } ;
-    ComplexNoun : Type = 
+    CommonNoun : Type = 
     {
       s : Number => Case => Str ; 
       g : Gender ;
@@ -38,7 +38,7 @@ param
       postap : {s : Agr => Str } ;
     } ;
 -- nouns
-  useCNasN : ComplexNoun -> Noun = \cn ->
+  useCNasN : CommonNoun -> Noun = \cn ->
     {
       s = cn.s ;
       g = cn.g ;

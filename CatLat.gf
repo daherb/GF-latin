@@ -50,7 +50,7 @@ concrete CatLat of Cat = CommonX ** open ResLat, ParamX, Prelude in {
 --
 ---- Noun
 --
-    CN = ResLat.ComplexNoun ;
+    CN = ResLat.CommonNoun ;
     NP = ResLat.NounPhrase ;
     Pron = ResLat.Pronoun ;
     Det = Determiner ;
