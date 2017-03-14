@@ -15,7 +15,7 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat in {
 	s = vp.s ;
 --	inf = v.inf ;
 	obj = vp.obj ;
-	adj = vp.adj
+	compl = vp.compl
       };
 
 --  ComplVS : VS -> S -> VP ;  -- say that she runs
