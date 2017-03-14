@@ -87,12 +87,13 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat in {
 
 --  CompAP : AP -> Comp
     CompAP ap = ap ;
-
---    CompNP np = {s = \\_ => np.s ! Acc} ;
+    
+    -- CompNP : NP -> Comp
+    CompNP np = {s = \\_ => np.s ! Nom} ;
 
 --    CompAdv a = {s = \\_ => a.s} ;
 
---    CompCN
-
+    -- CompCN : CN -> Comp
+    CompCN cn = {s = \\a => cn.preap.s ! Ag cn.g Sg Nom ++ cn.s ! Sg ! Nom ++ cn.postap.s ! Ag cn.g Sg Nom} ;
 --    UseCopula v = v
 }
