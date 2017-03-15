@@ -2,12 +2,14 @@ concrete ConjunctionLat of Conjunction =
   CatLat ** open ResLat, StructuralLat, Coordination, Prelude in {
 --
 --  flags optimize=all_subs ;
---
+    --
+
   lin
---
-    ConjS = conjunctDistrSS ;
---
-    ConjAdv = conjunctDistrSS ;
+    -- ConjS    : Conj -> ListS -> S ;       -- he walks and she runs
+    ConjS conj ss = conjunctDistrSS conj (ss.l ! conj.c) ;
+
+    -- ConjAdv  : Conj -> ListAdv -> Adv ;   -- here or there
+    ConjAdv conj ss = conjunctDistrSS conj (ss.l ! conj.c) ;
 
     -- ConjNP   : Conj -> ListNP -> NP ;     -- she or we
     ConjNP conj ss = conjunctDistrTable Case conj (ss.l ! conj.c) **
@@ -17,14 +19,9 @@ concrete ConjunctionLat of Conjunction =
 
     -- ConjAP   : Conj -> ListAP -> AP ;
     ConjAP conj ss = conjunctDistrTable Agr conj (ss.l ! conj.c) ;
---
---
---{---b
---
---    ConjS = conjunctSS ;
+
+    --
 --    DConjS = conjunctDistrSS ;
---
---    ConjAdv = conjunctSS ;
 --    DConjAdv = conjunctDistrSS ;
 --
 --    ConjNP conj ss = conjunctTable Case conj ss ** {
@@ -39,17 +36,37 @@ concrete ConjunctionLat of Conjunction =
 ---}
 --
 ---- These fun's are generated from the list cat's.
---
---    BaseS = twoSS ;
---    ConsS = consrSS comma ;
-    BaseAdv = twoSS ;
-    ConsAdv = consrSS "et" ;
+    --
+
+    -- BaseS : S -> S -> ListS
+    BaseS x y = { l = \\c => twoSS x y } ;
+
+    -- ConsS : S -> ListS -> ListS
+    ConsS x xs = { l = \\c => (case c of
+	{
+	  And => consrSS and_Conj.s2 x (xs.l ! c) ;
+	  Or => consrSS or_Conj.s2 x (xs.l ! c) ;
+	  If => consrSS if_then_Conj.s2 x (xs.l ! c)
+	}) } ;
+
+    -- BaseAdv : Adv -> Adv -> ListAdv
+    BaseAdv x y = { l = \\c => twoSS x y} ;
+
+    -- ConsAdv : Adv -> ListAdv -> ListAdv
+    ConsAdv x xs = { l = \\c => (case c of
+	{
+	  And => consrSS and_Conj.s2 x (xs.l ! c) ;
+	  Or => consrSS or_Conj.s2 x (xs.l ! c) ;
+	  If => consrSS if_then_Conj.s2 x (xs.l ! c)
+	}) } ;
+
     -- BaseNP : NP -> NP -> ListNP ;      -- John, Mary
     BaseNP x y = {
       l = \\c => twoTable Case x y ;
       g = Masc ; -- Just guessing
       n = matchNumber x.n y.n ;
       p = P3 } ; 
+
     -- ConsNP : NP -> ListNP -> ListNP ;  -- John, Mary, Bill
     ConsNP x xs = {
       l = \\c => (case c of
@@ -77,8 +94,8 @@ concrete ConjunctionLat of Conjunction =
       } ;
 --
   lincat
-    [S] = {s1,s2 : Str} ;
-    [Adv] = {s1,s2 : Str} ;
+    [S] = { l : Coordinator => {s1,s2 : Str}} ;
+    [Adv] = { l: Coordinator => {s1,s2 : Str}} ;
     [NP] = {l : Coordinator => {s1,s2 : Case => Str} ; g : Gender ; n : Number ; p : Person } ;
     [AP] = {l : Coordinator => {s1,s2 : Agr => Str } } ;
 
