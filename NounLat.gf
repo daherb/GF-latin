@@ -145,6 +145,6 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
 --    SentCN cn sc = {s = \\n,c => cn.s ! n ! c ++ sc.s ; g = cn.g} ;
     --
     -- ApposCN : CN -> NP -> CN
-    ApposCN cn np = {s = \\n,c => cn.s ! n ! Nom ++ np.s ! c ; g = cn.g ; preap = cn.preap ; postap = cn.postap} ;
+    ApposCN cn np = {s = \\n,c => cn.s ! n ! c ++ np.s ! c ; g = cn.g ; preap = cn.preap ; postap = cn.postap} ;
 --
 }

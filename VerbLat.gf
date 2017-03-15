@@ -94,6 +94,6 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat in {
 --    CompAdv a = {s = \\_ => a.s} ;
 
     -- CompCN : CN -> Comp
-    CompCN cn = {s = \\a => cn.preap.s ! Ag cn.g Sg Nom ++ cn.s ! Sg ! Nom ++ cn.postap.s ! Ag cn.g Sg Nom} ;
+    CompCN cn = {s = table { Ag g n c => cn.preap.s ! Ag cn.g n Nom ++ cn.s ! n ! Nom ++ cn.postap.s ! Ag cn.g n Nom} };
 --    UseCopula v = v
 }
