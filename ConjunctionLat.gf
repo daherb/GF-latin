@@ -83,6 +83,9 @@ concrete ConjunctionLat of Conjunction =
     [AP] = {l : Coordinator => {s1,s2 : Agr => Str } } ;
 
   oper
+    -- Generates a new number value given two number values.
+    --   Pl if any of the two is Pl
+    --   Sg otherwise
     matchNumber : Number -> Number -> Number = \n1,n2 ->
       case <n1,n2> of {
 	<Pl,_> => Pl ;
