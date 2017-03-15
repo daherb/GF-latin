@@ -3,6 +3,10 @@ concrete ExtraLat of ExtraLatAbs =
 	 ExtraLexiconLat ** 
   open ResLat, Coordination, Prelude in {
   lin
+
+    -- PastPartAP      : VPSlash -> AP ;         -- lost (opportunity) ; (opportunity) lost in space
+    PastPartAP vp = { s = vp.part ! VPassPerf } ;
+    
     UsePronNonDrop p = -- Pron -> NP
       {
 	g = p.g ;
