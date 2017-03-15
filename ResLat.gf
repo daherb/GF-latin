@@ -161,6 +161,7 @@ param
   oper
   VerbPhrase : Type = {
     s : VActForm => VQForm => Str ;
+    part : VPartForm =>Agr => Str ;
     obj : Str ;
     compl : Agr => Str ; -- general complement. Agr might be ignored except for adjectives
   } ;
@@ -919,7 +920,7 @@ oper
 
   predV : Verb -> VerbPhrase = \v -> {
     s = \\a,q => v.act ! a ++ case q of { VQTrue => Prelude.BIND ++ "ne"; VQFalse => "" };
-    -- inf = v.inf ;
+    part = v.part;
     obj = [] ;
     compl = \\a => []
   } ;
@@ -934,14 +935,14 @@ oper
 
   insertObj : Str -> VerbPhrase -> VerbPhrase = \obj,vp -> {
     s = vp.s ;
---    inf = vp.inf ;
+    part = vp.part ;
     obj = obj ++ vp.obj ;
     compl = vp.compl
   } ;
 
-   insertObjc: Str -> VPSlash -> VPSlash = \obj,vp -> {
+  insertObjc: Str -> VPSlash -> VPSlash = \obj,vp -> {
     s = vp.s ;
---    inf = vp.inf ;
+    part = vp.part ;
     obj = obj ++ vp.obj ;
     compl = vp.compl ;
     c2 = vp.c2
@@ -949,7 +950,7 @@ oper
     
   insertAdj : (Agr => Str) -> VerbPhrase -> VerbPhrase = \adj,vp -> {
     s = vp.s ;
---    inf = vp.inf ;
+    part = vp.part ;
     obj = vp.obj ;
     compl = \\a => adj ! a ++ vp.compl ! a
   } ;

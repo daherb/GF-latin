@@ -13,7 +13,7 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat in {
     ComplVV v vp =
       {
 	s = vp.s ;
---	inf = v.inf ;
+	part = vp.part ;
 	obj = vp.obj ;
 	compl = vp.compl
       };
