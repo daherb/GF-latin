@@ -15,8 +15,9 @@ concrete ConjunctionLat of Conjunction =
 	g = ss.g ;
 	p = ss.p } ;
 
+    -- ConjAP   : Conj -> ListAP -> AP ;
+    ConjAP conj ss = conjunctDistrTable Agr conj (ss.l ! conj.c) ;
 --
-    ConjAP conj ss = conjunctDistrTable Agr conj ss ;
 --
 --{---b
 --
@@ -32,9 +33,6 @@ concrete ConjunctionLat of Conjunction =
 --    DConjNP conj ss = conjunctDistrTable Case conj ss ** {
 --      a = conjAgr (agrP3 conj.n) ss.a
 --      } ;
---
---    ConjAP conj ss = conjunctTable Agr conj ss ;
---
 --    DConjAP conj ss = conjunctDistrTable Agr conj ss ** {
 --      isPre = ss.isPre
 --      } ;
@@ -64,14 +62,25 @@ concrete ConjunctionLat of Conjunction =
       g = xs.g ;
       p = xs.p
       } ;
-    BaseAP x y = lin A ( twoTable Agr x y ) ;
-    ConsAP xs x = lin A ( consrTable Agr and_Conj.s2 xs x );
+    
+    -- BaseAP : AP -> AP -> ListAP
+    BaseAP x y = { l = \\c => twoTable Agr x y };
+
+    -- ConsAP : AP -> ListAP -> ListAP
+    ConsAP x xs =
+      { l = \\c => (case c of
+		      {
+			And => consrTable Agr and_Conj.s2 x (xs.l ! c) ;
+			Or => consrTable Agr or_Conj.s2 x (xs.l ! c) ;
+			If => consrTable Agr if_then_Conj.s2 x (xs.l ! c)
+		      })
+      } ;
 --
   lincat
     [S] = {s1,s2 : Str} ;
     [Adv] = {s1,s2 : Str} ;
     [NP] = {l : Coordinator => {s1,s2 : Case => Str} ; g : Gender ; n : Number ; p : Person } ;
-    [AP] = {s1,s2 : Agr => Str } ;
+    [AP] = {l : Coordinator => {s1,s2 : Agr => Str } } ;
 
   oper
     matchNumber : Number -> Number -> Number = \n1,n2 ->
@@ -80,6 +89,5 @@ concrete ConjunctionLat of Conjunction =
 	<_,Pl> => Pl ;
 	<_,_> => Sg
       } ;
-      
 --
 }
