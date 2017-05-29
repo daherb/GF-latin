@@ -2,7 +2,7 @@
 
 --1 Latin auxiliary operations.
 
-resource ResLat = ParamX ** open Prelude,TenseX in {
+resource ResLat = ParamX ** open Prelude in {
 
 param
   Case = Nom | Acc | Gen | Dat | Abl | Voc ;
