@@ -1048,7 +1048,7 @@ oper
 
   mkPostp : Str -> Case -> Preposition = \s,c ->  {s = s ; c = c ; isPost = True } ;
       
-  mkAdv : Str -> { s: Str } = \adv -> { s = adv } ;
+  mkAdverb : Str -> { s: Str } = \adv -> { s = adv } ;
 
 param
   Unit = one | ten | hundred | thousand | ten_thousand | hundred_thousand ;
