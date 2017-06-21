@@ -3,8 +3,8 @@ abstract ExtraLatAbs =
 	 ExtraLexiconLatAbs **
 {
   fun
-    UsePronNonDrop : Pron -> NP ; 
-
+    -- do not drop pronouns
+    UsePronNonDrop : Pron -> NP ;
     
     -- Some empty prepositions to enforce cases
     to_Prep : Prep;
