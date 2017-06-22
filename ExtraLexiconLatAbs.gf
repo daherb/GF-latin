@@ -19,6 +19,7 @@ abstract ExtraLexiconLatAbs = Cat, Lexicon, ExtraLexCaesarAbs ** {
     bark_Fem_N : N ;
     blood_Var_N : N ;
     day_Fem_N : N ;
+    horn_Var_N : N ;
     liver_Var_N : N ;
     louse_Fem_N : N ;
     nose_Neutr_N : N ;
