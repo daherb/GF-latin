@@ -14,7 +14,7 @@ concrete ExtraLat of ExtraLatAbs =
 	p = p.p ;
 	s = p.pers ! PronNonDrop ! PronNonRefl ;
       } ;
-
+    
     Nom_Prep = mkPrep "" Nom;
     Gen_Prep = mkPrep "" Gen;
     Acc_Prep = mkPrep "" Acc;
