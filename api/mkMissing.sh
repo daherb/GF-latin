@@ -5,7 +5,7 @@ echo "Remove old file"
 rm ../MissingLat.gf
 echo "Look for missing functions"
 # gf -src -i .. -batch TryLat.gf 2>&1 | grep "Warning: no linearization of" | sort -u > tmp/MissingLat.tmp
-gf -src -i .. -batch TryLat.gf 2>&1 | grep -E "constant not found|no linerization" | sort -u > tmp/MissingLat.tmp
+gf -src -i .. -batch TryLat.gf 2>&1 | grep -E "constant not found|no linearization of" | sort -u > tmp/MissingLat.tmp
 echo "Compile grammar"
 gf -src -make -i . -D tmp ../LangLat.gf 
 echo "Create placeholders for missing functions"
