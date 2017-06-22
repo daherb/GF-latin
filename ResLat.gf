@@ -164,7 +164,9 @@ param
     part : VPartForm =>Agr => Str ;
     obj : Str ;
     compl : Agr => Str ; -- general complement. Agr might be ignored except for adjectives
-  } ;
+    } ;
+
+  ObjectVerbPhrase : Type = VerbPhrase ** {c2 : Preposition} ;
 
   Verb : Type = {
     act   : VActForm => Str ;
