@@ -90,10 +90,12 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
       sp = \\_ => [] ;
       } ;
 
-    -- MassNP cn = {
-    --   s = cn.s ! Sg ;
-    --   a = Ag cn.g Sg
-    --   } ;
+    MassNP cn = {
+      s = cn.s ! Sg ;
+      g = cn.g ;
+      n = Sg ;
+      p = P3 ;
+      } ;
 
     UseN n = -- N -> CN
   lin CN ( n ** {preap, postap = {s = \\_ => "" } } ) ; 
