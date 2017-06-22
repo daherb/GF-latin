@@ -53,10 +53,12 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
       n  = num.n
       } ;
 
-    -- DetNP det = {
-    --   s = det.sp ! Neutr ;
-    --   g = Neutr ; n = det.n ; p = P3
-    --   } ;
+    DetNP det = {
+      s = det.s ! Neutr ;
+      g = Neutr ;
+      n = det.n ;
+      p = P3
+    } ;
 
 --    PossPron p = {
 --      s = \\_,_ => p.s ! Gen ;
