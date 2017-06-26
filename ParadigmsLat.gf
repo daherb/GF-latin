@@ -28,6 +28,9 @@ oper
   feminine  : Gender ;
   neuter    : Gender ;
 
+  changeGender : N -> Gender -> N = \n,gen ->
+    lin N { s = n.s ; g = gen } ;
+
   mkN = overload {
     mkN : (verbum : Str) -> N 
       = \n -> lin N ( noun n ) ;
