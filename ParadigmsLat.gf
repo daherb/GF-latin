@@ -51,6 +51,12 @@ oper
 	    };
       in
       lin A ( mkAdjective x y z < compsup.p1 , advs.p2 > < compsup.p2 , advs.p2> ** {isPre = False } ) ;
+
+    mkA : (verbum : Str) -> (comparable : Bool) -> A
+      = \n,b -> lin A ( case b of {
+	True => adj n ;
+	False => { s = table { Posit => (adj n).s ! Posit ; _ => \\_ => nonExist } }
+      } ** { isPre = False } )
   } ;
   
 
