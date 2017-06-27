@@ -910,17 +910,6 @@ oper
   Conjunction : Type = { s1 : Str ; s2 : Str ; n : Number ; c : Coordinator };
   mkConjunction : Str -> Str -> Number -> Coordinator -> Conjunction = \s1,s2,num,coord -> { s1 = s1; s2 = s2 ; n = num ; c = coord } ;
   
--- Bayer-Lindauer $149ff.
-  -- about_P : Preposition =  mkPrep "de" Gen; -- L...
-  -- at_P : Preposition = mkPrep "ad" Acc ; -- L...
-  -- on_P : Preposition = mkPrep "ad" Gen; -- L...
-  -- to_P : Preposition = mkPrep "ad" Acc; -- L...
-  Nom_Prep : Preposition = mkPrep "" Nom;
-  Gen_Prep : Preposition = mkPrep "" Gen;
-  Acc_Prep : Preposition = mkPrep "" Acc;
-  Dat_Prep : Preposition = mkPrep "" Dat;
-  Abl_Prep : Preposition = mkPrep "" Abl;
-
   VPSlash = VerbPhrase ** {c2 : Preposition} ;
 
   predV : Verb -> VerbPhrase = \v -> {

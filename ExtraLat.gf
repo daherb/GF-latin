@@ -1,7 +1,7 @@
 concrete ExtraLat of ExtraLatAbs =
 	 CatLat,
 	 ExtraLexiconLat ** 
-  open ResLat, Coordination, Prelude in {
+  open ResLat, ParadigmsLat, Coordination, Prelude in {
   lin
 
     -- PastPartAP      : VPSlash -> AP ;         -- lost (opportunity) ; (opportunity) lost in space

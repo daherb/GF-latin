@@ -1,5 +1,5 @@
 concrete StructuralLat of Structural = CatLat ** 
-  open ResLat, ParadigmsLat, Prelude, IrregLat, ConstructX in 
+  open ResLat, ParadigmsLat, Prelude, IrregLat, ConstructX, ExtraLat in 
   {
     
   flags optimize=all ;
