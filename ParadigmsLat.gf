@@ -91,6 +91,9 @@ oper
   mkAdv : Str -> Adv
     = \s -> lin Adv (mkAdverb s) ;
 
+  pluralN = ResLat.pluralN ;
+  singularN = ResLat.singularN ;
+
   mkConj : Str -> Str -> Number -> Coordinator -> Conjunction = mkConjunction ;
 
   mkPrep : Str -> Case -> Preposition  = mkPreposition ;
