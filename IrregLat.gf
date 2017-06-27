@@ -508,4 +508,63 @@ concrete IrregLat of IrregLatAbs = CatLat ** open Prelude, ParadigmsLat, ResLat 
 	    \\_ => nonExist ;
       } ;
 
+    make_V = 
+      let
+	pres_stem = "faci" ;
+	pres_ind_base = "faci" ;
+	pres_conj_base = "facia" ;
+	impf_ind_base = "facieba" ;
+	impf_conj_base = "facere" ;
+	fut_I_base = "facie" ;
+	imp_base = "faci" ;
+	perf_stem = "fec" ;
+	perf_ind_base = "fec" ;
+	perf_conj_base = "feceri" ;
+	pqperf_ind_base = "fecera" ;
+	pqperf_conj_base = "fecisse" ;
+	fut_II_base = "feceri" ;
+	part_stem = "fact" ;
+	verb = mkVerb "facere" pres_stem pres_ind_base pres_conj_base impf_ind_base impf_conj_base fut_I_base
+    	  imp_base perf_stem perf_ind_base perf_conj_base pqperf_ind_base pqperf_conj_base fut_II_base part_stem ;
+      in
+      {
+      	act = verb.act ;
+      	pass =
+      	  table {
+	    VPass (VPres VInd) Sg P1 => "fio" ;
+	    VPass (VPres VInd) Pl P3 => "fiunt" ;
+	    VPass (VPres VInd) n p => "fi" + actPresEnding n p ;
+	    VPass (VPres VConj) n p => "fia" + actPresEnding n p ;
+	    VPass (VImpf VInd) n p => "fieba" + actPresEnding n p ;
+	    VPass (VImpf VConj) n p => "fiere" + actPresEnding n p ;
+	    VPass VFut Sg P1 => "fiam" ;
+	    VPass VFut n p => "fie" + actPresEnding n p 
+	  } ;
+      	ger = 
+	  verb.ger ;
+      	geriv =
+	  verb.geriv ;
+      	imp =
+	  table {
+	    VImp1 Sg => "fac" ;
+      	    i => verb.imp ! i
+	  } ;
+      	inf =
+	  table {
+	    VInfActFut Masc => "facturus" ;
+	    VInfActFut Fem => "factura" ;
+	    VInfActFut Neutr => "facturum" ;
+	    VInfPassPres => "fieri" ;
+	    VInfPassPerf Masc => "factus" ;
+	    VInfPassPerf Fem => "facta" ;
+      	    i => verb.inf ! i
+	  };
+      	part = 
+      	  verb.part ;
+      	sup =
+      	  table {
+	    VSupAcc => "factum" ;
+	    VSupAbl => "factu"
+	  } ;
+      } ;
 }
