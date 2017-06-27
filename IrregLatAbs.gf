@@ -1,7 +1,7 @@
 abstract IrregLatAbs = Cat ** {
   fun
     be_V : V ;
-    can_VV : VV ;
+    can_V : V ;
     bring_V : V ;
     want_V : V ;
     go_V : V;
@@ -9,5 +9,5 @@ abstract IrregLatAbs = Cat ** {
     rain_V : V;
     hate_V : V;
     not8want_V : V ;
-    make_V : V;
+    make_V : V ;
 }

@@ -63,7 +63,7 @@ concrete IrregLat of IrregLatAbs = CatLat ** open Prelude, ParadigmsLat, ResLat 
       } ;
 
     -- Bayer-Lindauer 93 2.2
-    can_VV = 
+    can_V = 
       let
     	pres_stem = "pos" ;
     	pres_ind_base = "pos" ;
@@ -114,7 +114,6 @@ concrete IrregLat of IrregLatAbs = CatLat ** open Prelude, ParadigmsLat, ResLat 
     	  VPassPerf =>
     	    \\_ => nonExist -- no such participle
 	  } ;
-    	isAux = False
       };
 
     -- Bayer-Lindauer 94
