@@ -204,9 +204,9 @@ concrete IrregLat of IrregLatAbs = CatLat ** open Prelude, ParadigmsLat, ResLat 
 	  pass =
 	    \\_ => nonExist ;
 	  ger = 
-	    verb.ger ;
+	    \\_ => nonExist ;
 	  geriv =
-	    verb.geriv ;
+	    \\_ => nonExist ;
 	  imp = 
 	    \\_ => nonExist ;
 	  inf = 
@@ -220,7 +220,7 @@ concrete IrregLat of IrregLatAbs = CatLat ** open Prelude, ParadigmsLat, ResLat 
 	      \\_ => nonExist
 	    } ; 
 	  sup =
-	    verb.sup ;
+	    \\_ => nonExist ;
       } ;
 
     -- Bayer-Lindauer 96 1
