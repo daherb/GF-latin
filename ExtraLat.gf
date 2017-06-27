@@ -5,7 +5,7 @@ concrete ExtraLat of ExtraLatAbs =
   lin
 
     -- PastPartAP      : VPSlash -> AP ;         -- lost (opportunity) ; (opportunity) lost in space
-    PastPartAP vp = { s = vp.part ! VPassPerf } ;
+--    PastPartAP vp = { s = vp.part ! VPassPerf } ;
     
     UsePronNonDrop p = -- Pron -> NP
       {

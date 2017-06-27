@@ -161,7 +161,7 @@ param
   oper
   VerbPhrase : Type = {
     s : VActForm => VQForm => Str ;
-    part : VPartForm =>Agr => Str ;
+--    part : VPartForm =>Agr => Str ;
     obj : Str ;
     compl : Agr => Str ; -- general complement. Agr might be ignored except for adjectives
     } ;
@@ -173,10 +173,10 @@ param
     pass  : VPassForm => Str ;
     inf   : VInfForm => Str ;
     imp   : VImpForm => Str ;
-    ger   : VGerund => Str ;
-    geriv : Agr => Str ; 
-    sup   : VSupine => Str ;
-    part  : VPartForm =>Agr => Str ;
+--    ger   : VGerund => Str ;
+--    geriv : Agr => Str ; 
+--    sup   : VSupine => Str ;
+--    part  : VPartForm =>Agr => Str ;
     } ;
 
   Verb2 : Type = Verb ** { c : Preposition };
@@ -743,9 +743,10 @@ param
 
     prefixVerb2 : Str -> Verb2 -> Verb2 =
       \prefix,verb ->
-      let v = { act = verb.act ; pass = verb.pass ; inf = verb.inf ; imp = verb.imp ; ger = verb.ger ; geriv = verb.geriv ; sup = verb.sup ; part = verb.part }
+      let v = { act = verb.act ; pass = verb.pass ; inf = verb.inf ; imp = verb.imp ; } -- ger = verb.ger ; geriv = verb.geriv ; sup = verb.sup ; part = verb.part }
       in
-        (prefixVerb prefix v) ** { c = verb.c };
+      (prefixVerb prefix v) ** { c = verb.c };
+    
     prefixVerb : Str -> Verb -> Verb =
       \prefix,verb ->
       {
@@ -753,10 +754,10 @@ param
 	pass = \\form => addPrefix prefix (verb.pass ! form) ;
 	inf = \\form => addPrefix prefix (verb.inf ! form) ;
 	imp = \\form => addPrefix prefix (verb.imp ! form) ;
-	ger = \\form => addPrefix prefix (verb.ger ! form) ;
-	geriv = \\agr => addPrefix prefix (verb.geriv ! agr) ;
-	sup = \\form => addPrefix prefix (verb.sup ! form) ;
-	part = \\form,agr => addPrefix prefix (verb.part ! form ! agr) ;
+	-- ger = \\form => addPrefix prefix (verb.ger ! form) ;
+	-- geriv = \\agr => addPrefix prefix (verb.geriv ! agr) ;
+	-- sup = \\form => addPrefix prefix (verb.sup ! form) ;
+	-- part = \\form,agr => addPrefix prefix (verb.part ! form ! agr) ;
       } ;
       
 -- pronouns
@@ -914,7 +915,7 @@ oper
 
   predV : Verb -> VerbPhrase = \v -> {
     s = \\a,q => v.act ! a ++ case q of { VQTrue => Prelude.BIND ++ "ne"; VQFalse => "" };
-    part = v.part;
+--    part = v.part;
     obj = [] ;
     compl = \\a => []
   } ;
@@ -929,14 +930,14 @@ oper
 
   insertObj : Str -> VerbPhrase -> VerbPhrase = \obj,vp -> {
     s = vp.s ;
-    part = vp.part ;
+--    part = vp.part ;
     obj = obj ++ vp.obj ;
     compl = vp.compl
   } ;
 
   insertObjc: Str -> VPSlash -> VPSlash = \obj,vp -> {
     s = vp.s ;
-    part = vp.part ;
+--    part = vp.part ;
     obj = obj ++ vp.obj ;
     compl = vp.compl ;
     c2 = vp.c2
