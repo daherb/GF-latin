@@ -453,4 +453,59 @@ concrete IrregLat of IrregLatAbs = CatLat ** open Prelude, ParadigmsLat, ResLat 
 	  } ;
 	sup = \\_ => nonExist ; -- no such supine form
       } ;
+
+    not8want_V =
+      let
+	pres_stem = "nol" ;
+	pres_ind_base = "nol" ;
+	pres_conj_base = "noli" ;
+	impf_ind_base = "noleba" ;
+	impf_conj_base = "nolle" ;
+	fut_I_base = "nole" ;
+	imp_base = "nol" ;
+	perf_stem = "nolu" ;
+	perf_ind_base = "nolu" ;
+	perf_conj_base = "nolueri" ;
+	pqperf_ind_base = "noluera" ;
+	pqperf_conj_base = "noluisse" ;
+	fut_II_base = "nolueri" ;
+	part_stem = "nolet" ;
+	verb = mkVerb "nolle" pres_stem pres_ind_base pres_conj_base impf_ind_base impf_conj_base fut_I_base
+    	  imp_base perf_stem perf_ind_base perf_conj_base pqperf_ind_base pqperf_conj_base fut_II_base part_stem ;
+      in
+      {
+	act =
+	  table {
+	    VAct VSim (VPres VInd)  n  p  => 
+	      table Number [ table Person [ "nolo" ; "non vis" ; "non vult" ] ;
+    			     table Person [ "nolumus" ; "non vultis" ; "nolunt" ]
+    	      ] ! n ! p ;
+    	    a => verb.act ! a
+	  } ;
+	  pass =
+	    \\_ => nonExist ;
+	  ger = 
+	    \\_ => nonExist ;
+	  geriv =
+	    \\_ => nonExist ;
+	  imp = table {
+	    VImp1 Sg => "noli" ;
+	    i => verb.imp ! i
+	    } ;
+	  inf = table {
+	    VInfActFut _ | VInfPassPres | VInfPassPerf _ | VinfPassFut => nonExist ;
+	    i => verb.inf ! i 
+	    } ;
+	  part = table {
+	    VActFut =>
+	      \\_ => nonExist ;
+	    VActPres =>
+	      verb.part ! VActPres ;
+	    VPassPerf =>
+	      \\_ => nonExist
+	    } ; 
+	  sup =
+	    \\_ => nonExist ;
+      } ;
+
 }
