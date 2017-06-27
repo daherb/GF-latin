@@ -59,7 +59,7 @@ param
     lin N { 
       s = table {
 	Sg => n.s ! Sg ;
-	Pl => \\_ => nonExist -- no singular forms
+	Pl => \\_ => nonExist -- no plural forms
 	};
       g = n.g ;
       preap = n.preap ;
