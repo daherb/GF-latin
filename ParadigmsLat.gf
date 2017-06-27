@@ -91,6 +91,11 @@ oper
   mkAdv : Str -> Adv
     = \s -> lin Adv (mkAdverb s) ;
 
+  mkConj : Str -> Str -> Number -> Coordinator -> Conjunction = mkConjunction ;
+
+  mkPrep : Str -> Case -> Preposition  = mkPreposition ;
+
+  mkPron = mkPronoun ;
 -- To be implemented, just place holders
   mkPN : N -> PN = \n -> lin PN n ;
   mkN2 : N -> Prep -> N2 = \n,p -> lin N2 ( n ** { c = p } );

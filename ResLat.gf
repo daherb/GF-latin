@@ -908,7 +908,7 @@ oper
 param Coordinator = And | Or | If;
 oper
   Conjunction : Type = { s1 : Str ; s2 : Str ; n : Number ; c : Coordinator };
-  mkConj : Str -> Str -> Number -> Coordinator -> Conjunction = \s1,s2,num,coord -> { s1 = s1; s2 = s2 ; n = num ; c = coord } ;
+  mkConjunction : Str -> Str -> Number -> Coordinator -> Conjunction = \s1,s2,num,coord -> { s1 = s1; s2 = s2 ; n = num ; c = coord } ;
   
 -- Bayer-Lindauer $149ff.
   -- about_P : Preposition =  mkPrep "de" Gen; -- L...
@@ -1046,9 +1046,9 @@ oper
        "illa" "illorum" "illis")
     ;
 
-  mkPrep : Str -> Case -> Preposition  = \s,c ->  {s = s ; c = c; isPost = False} ;
+  mkPreposition : Str -> Case -> Preposition  = \s,c ->  {s = s ; c = c; isPost = False} ;
 
-  mkPostp : Str -> Case -> Preposition = \s,c ->  {s = s ; c = c ; isPost = True } ;
+  mkPostposition : Str -> Case -> Preposition = \s,c ->  {s = s ; c = c ; isPost = True } ;
       
   mkAdverb : Str -> { s: Str } = \adv -> { s = adv } ;
 
