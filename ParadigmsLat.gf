@@ -24,10 +24,16 @@ resource ParadigmsLat = open
 -- To abstract over gender names, we define the following identifiers.
 
 oper
-  masculine : Gender ;
-  feminine  : Gender ;
-  neuter    : Gender ;
-
+  masculine : Gender = Masc ;
+  feminine  : Gender = Fem ;
+  neuter    : Gender = Neutr ;
+  nom : Case = Nom ;
+  acc : Case = Acc ;
+  gen : Case = Gen ;
+  dat : Case = Dat ;
+  abl : Case = Abl ;
+  voc : Case = Voc ;
+  
   changeGender : N -> Gender -> N = \n,gen ->
     lin N { s = n.s ; g = gen } ;
 
@@ -84,9 +90,6 @@ oper
       = \v,p -> lin V2 ( v ** { c = p } ) ; 
     } ;
 
-  masculine = Masc ;
-  feminine = Fem ;
-  neuter = Neutr ;
 
   mkAdv : Str -> Adv
     = \s -> lin Adv (mkAdverb s) ;
