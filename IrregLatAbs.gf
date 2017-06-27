@@ -10,4 +10,5 @@ abstract IrregLatAbs = Cat ** {
     hate_V : V;
     not8want_V : V ;
     make_V : V ;
+    give_V : V ;
 }

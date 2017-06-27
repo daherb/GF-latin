@@ -566,4 +566,41 @@ concrete IrregLat of IrregLatAbs = CatLat ** open Prelude, ParadigmsLat, ResLat 
 	    VSupAbl => "factu"
 	  } ;
       } ;
+
+    give_V = 
+      let
+    	pres_stem = "da" ;
+    	pres_ind_base = "da" ;
+    	pres_conj_base = "de" ;
+    	impf_ind_base = "daba" ;
+    	impf_conj_base = "dare" ;
+    	fut_I_base = "dabi" ;
+    	imp_base = "da" ;
+    	perf_stem = "ded" ;
+    	perf_ind_base = "ded" ;
+    	perf_conj_base = "dederi" ;
+    	pqperf_ind_base = "dedera" ;
+    	pqperf_conj_base = "dedisse" ;
+    	fut_II_base = "dederi" ;
+    	part_stem = "dat" ;
+    	verb = mkVerb "dare" pres_stem pres_ind_base pres_conj_base impf_ind_base impf_conj_base fut_I_base
+    	  imp_base perf_stem perf_ind_base perf_conj_base pqperf_ind_base pqperf_conj_base fut_II_base part_stem ;
+      in
+      {
+      	act = verb.act ;
+      	pass =
+    	  verb.pass ;
+      	ger = 
+    	  verb.ger ;
+      	geriv =
+    	  verb.geriv ;
+      	imp =
+    	  verb.imp ;
+      	inf = verb.inf ;
+      	part = 
+      	  verb.part ;
+      	sup =
+    	  verb.sup ;
+      } ;
+
 }
