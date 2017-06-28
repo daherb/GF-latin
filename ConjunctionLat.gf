@@ -46,7 +46,8 @@ concrete ConjunctionLat of Conjunction =
 	{
 	  And => consrSS and_Conj.s2 x (xs.l ! c) ;
 	  Or => consrSS or_Conj.s2 x (xs.l ! c) ;
-	  If => consrSS if_then_Conj.s2 x (xs.l ! c)
+	  If => consrSS if_then_Conj.s2 x (xs.l ! c) ;
+	  _ => consrSS "," x (xs.l ! c)
 	}) } ;
 
     -- BaseAdv : Adv -> Adv -> ListAdv
@@ -57,7 +58,8 @@ concrete ConjunctionLat of Conjunction =
 	{
 	  And => consrSS and_Conj.s2 x (xs.l ! c) ;
 	  Or => consrSS or_Conj.s2 x (xs.l ! c) ;
-	  If => consrSS if_then_Conj.s2 x (xs.l ! c)
+	  If => consrSS if_then_Conj.s2 x (xs.l ! c) ;
+	  _ => consrSS "," x (xs.l ! c) 
 	}) } ;
 
     -- BaseNP : NP -> NP -> ListNP ;      -- John, Mary
@@ -73,7 +75,8 @@ concrete ConjunctionLat of Conjunction =
 	{
 	  And => consrTable Case and_Conj.s2 x (xs.l ! c) ;
 	  Or => consrTable Case or_Conj.s2 x (xs.l ! c) ;
-	  If => consrTable Case if_then_Conj.s2 x (xs.l ! c)
+	  If => consrTable Case if_then_Conj.s2 x (xs.l ! c) ;
+	  _ => consrTable Case "," x (xs.l ! c)
 	});
       n = matchNumber x.n xs.n ;
       g = xs.g ;
@@ -89,7 +92,8 @@ concrete ConjunctionLat of Conjunction =
 		      {
 			And => consrTable Agr and_Conj.s2 x (xs.l ! c) ;
 			Or => consrTable Agr or_Conj.s2 x (xs.l ! c) ;
-			If => consrTable Agr if_then_Conj.s2 x (xs.l ! c)
+			If => consrTable Agr if_then_Conj.s2 x (xs.l ! c) ;
+			_ => consrTable Agr "," x (xs.l ! c)
 		      })
       } ;
 --
