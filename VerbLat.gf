@@ -75,7 +75,7 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat in {
 
 --    ExtAdvVP vp adv = vp
 
---    AdVVP adv vp = insertObj adv.s vp ;
+    AdVVP adv vp = insertObj adv.s vp ;
 
 --    AdvVPSlash : VPSlash -> Adv -> VPSlash ;  -- use (it) here
 
