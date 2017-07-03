@@ -175,7 +175,9 @@ param
   oper
   VerbPhrase : Type = {
     s : VActForm => VQForm => Str ;
---    part : VPartForm =>Agr => Str ;
+    --    part : VPartForm =>Agr => Str ;
+    inf : VInfForm => Str ;
+    imp : VImpForm => Str ;
     obj : Str ;
     compl : Agr => Str ; -- general complement. Agr might be ignored except for adjectives
     adv : Adverb
@@ -234,12 +236,12 @@ param
       act = \\a => vp.obj ++ vp.s ! a ! VQFalse;
       pass = \\_ => nonExist ;
       --      inf = \\a => vp.obj ++ vp.inf ! a ;
-      inf = \\_ => nonExist ;
-      imp = \\_ => nonExist ;
-      ger = \\_ => nonExist ;
-      geriv = \\_ => nonExist ;
-      sup = \\_ => nonExist ;
-      part = \\_,_ => nonExist ;
+      inf = vp.inf ;
+      imp = vp.imp ;
+      -- ger = \\_ => nonExist ;
+      -- geriv = \\_ => nonExist ;
+      -- sup = \\_ => nonExist ;
+      -- part = \\_,_ => nonExist ;
     } ;
 
   mkVerb : 
@@ -930,7 +932,9 @@ oper
 
   predV : Verb -> VerbPhrase = \v -> {
     s = \\a,q => v.act ! a ++ case q of { VQTrue => Prelude.BIND ++ "ne"; VQFalse => "" };
---    part = v.part;
+    --    part = v.part;
+    imp = v.imp ;
+    inf = v.inf ;
     obj = [] ;
     compl = \\a => [] ;
     adv = ss "" 
@@ -967,7 +971,9 @@ oper
     
   insertAdj : (Agr => Str) -> VerbPhrase -> VerbPhrase = \adj,vp -> {
     s = vp.s ;
-    part = vp.part ;
+--    part = vp.part ;
+    imp = vp.imp ;
+    inf = vp.inf ;
     obj = vp.obj ;
     compl = \\a => adj ! a ++ vp.compl ! a ;
     adv = vp.adv
@@ -976,6 +982,8 @@ oper
   insertAdv : Adverb -> VerbPhrase -> VerbPhrase = \a,vp -> {
      s = vp.s ;
 --    part = vp.part ;
+    imp = vp.imp ;
+    inf = vp.inf ;
     obj = vp.obj ;
     compl = vp.compl ;
     adv = cc2 vp.adv a
@@ -1007,6 +1015,7 @@ oper
       SOV => cl.s ! ap ++ cl.o ! ap ++ cl.neg ! pol ! ap ++ cl.v ! tense ! anter ! vqf ! ap
 	}
     } ;
+      
   -- questions
   mkQuestion : SS -> Clause -> QClause = \ss,cl -> {
      s = \\tense,anter,pol,form => case form of {

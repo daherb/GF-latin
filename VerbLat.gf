@@ -1,5 +1,5 @@
 --1 Construction rules for latin verb phrases
-concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat in {
+concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat,ExtraLat in {
 
   flags optimize=all_subs ;
 
@@ -14,6 +14,8 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat in {
       {
 	s = vp.s ;
 	part = vp.part ;
+	imp = vp.imp ;
+	inf = vp.inf ;
 	obj = vp.obj ;
 	compl = vp.compl ;
 	adv = vp.adv 
