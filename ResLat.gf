@@ -99,8 +99,9 @@ param
   
 -- to change the default gender
 
-  nounWithGen : Gender -> Noun -> Noun = \g,n ->
-    {s = n.s ; g = g} ;
+  nounWithGender : Gender -> Noun -> Noun = \g,n ->
+    {s = n.s ; g = g } ; -- massable = n.massable ;} ;
+
 
   regNP : (_,_,_,_,_,_ : Str) -> Gender -> Number -> NounPhrase = 
     \nom,acc,gen,dat,abl,voc,g,n ->

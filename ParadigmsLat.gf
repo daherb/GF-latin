@@ -33,9 +33,6 @@ oper
   dat : Case = Dat ;
   abl : Case = Abl ;
   voc : Case = Voc ;
-  
-  changeGender : N -> Gender -> N = \n,gen ->
-    lin N { s = n.s ; g = gen } ;
 
   mkN = overload {
     mkN : (verbum : Str) -> N 
