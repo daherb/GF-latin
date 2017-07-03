@@ -75,9 +75,11 @@ param
       postap = n.postap 
 --      massable = n.massable ;
     };
-  
-  mkNoun : (n1,_,_,_,_,_,_,_,_,n10 : Str) -> Gender -> Noun = 
+	
+  mkNoun : (n1,_,_,_,_,_,_,_,_,n10 : Str) -> Gender -> Noun =
     \sn,sa,sg,sd,sab,sv,pn,pa,pg,pd,g -> {
+--  mkNoun : (n1,_,_,_,_,_,_,_,_,n10 : Str) -> Gender -> Bool -> Noun = 
+    --\sn,sa,sg,sd,sab,sv,pn,pa,pg,pd,g,m -> {
       s = table {
 	Sg => table {
           Nom => sn ;
@@ -95,6 +97,7 @@ param
           }
 	} ;
       g = g
+--      massable = m
     } ;
   
 -- to change the default gender
@@ -102,6 +105,8 @@ param
   nounWithGender : Gender -> Noun -> Noun = \g,n ->
     {s = n.s ; g = g } ; -- massable = n.massable ;} ;
 
+  -- nounMassable : Bool -> Noun -> Noun = \m,n ->
+  --   {s = n.s ; g = n.g ; massable = m } ;
 
   regNP : (_,_,_,_,_,_ : Str) -> Gender -> Number -> NounPhrase = 
     \nom,acc,gen,dat,abl,voc,g,n ->

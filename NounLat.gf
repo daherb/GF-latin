@@ -101,9 +101,10 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
       sp = \\_ => [] ;
       } ;
 
-      s = cn.s ! Sg ;
     MassNP cn =
       {
+	s = cn.s ! Sg ;
+	-- s = case cn.massable of { True => cn.s ! Sg ; False => \\_ => nonExist } ;
 	g = cn.g ;
 	n = Sg ;
 	p = P3 ;
