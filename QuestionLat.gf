@@ -6,9 +6,9 @@ concrete QuestionLat of Question = CatLat ** open ResLat, IrregLat, Prelude in {
 --   QuestCl : Cl -> QCl ;            -- does John walk
      QuestCl cl = {
        s = \\t,a,p => 
-         let cls = cl.s ! t ! a ! p 
+         let cls = (combineClause cl).s ! t ! a ! p 
          in table {
-           QDir   => cls ! VQTrue ! VSO ; -- cls ! OQuest ;
+           QDir   => cls ! VQTrue ! VSO ! PreV ; -- cls ! OQuest ;
            QIndir => "" -- "if" ++ cls ! ODir -- TODO
          }
        } ;

@@ -15,7 +15,10 @@ concrete ConjunctionLat of Conjunction =
     ConjNP conj ss = conjunctDistrTable Case conj (ss.l ! conj.c) **
       { n = case conj.c of { And => Pl ; _ => ss.n } ;
 	g = ss.g ;
-	p = ss.p } ;
+	p = ss.p ;
+	adv = { s = "" } ;
+	preap, postap = { s = \\_ => "" }
+      } ;
 
     -- ConjAP   : Conj -> ListAP -> AP ;
     ConjAP conj ss = conjunctDistrTable Agr conj (ss.l ! conj.c) ;
@@ -67,7 +70,9 @@ concrete ConjunctionLat of Conjunction =
       l = \\c => twoTable Case x y ;
       g = Masc ; -- Just guessing
       n = matchNumber x.n y.n ;
-      p = P3 } ; 
+      p = P3 ;
+      adv = ss ( x.adv.s ++ y.adv.s )
+      } ; 
 
     -- ConsNP : NP -> ListNP -> ListNP ;  -- John, Mary, Bill
     ConsNP x xs = {
@@ -80,7 +85,8 @@ concrete ConjunctionLat of Conjunction =
 	});
       n = matchNumber x.n xs.n ;
       g = xs.g ;
-      p = xs.p
+      p = xs.p ;
+      adv = ss ( x.adv.s ++ xs.adv.s )
       } ;
     
     -- BaseAP : AP -> AP -> ListAP
@@ -100,7 +106,7 @@ concrete ConjunctionLat of Conjunction =
   lincat
     [S] = { l : Coordinator => {s1,s2 : Str}} ;
     [Adv] = { l: Coordinator => {s1,s2 : Str}} ;
-    [NP] = {l : Coordinator => {s1,s2 : Case => Str} ; g : Gender ; n : Number ; p : Person } ;
+    [NP] = {l : Coordinator => {s1,s2 : Case => Str} ; g : Gender ; n : Number ; p : Person ; adv : Adverb } ;
     [AP] = {l : Coordinator => {s1,s2 : Agr => Str } } ;
 
   oper

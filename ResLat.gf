@@ -12,16 +12,20 @@ param
   oper
     consonant : pattern Str = #( "p" | "b" | "f" | "v" | "m" | "t" | "d" | "s" | "z" | "n" | "r" | "c" | "g" | "l" | "q" | "qu" | "h" );
 
-    Noun : Type = {s : Number => Case => Str ; g : Gender} ;
+    Noun : Type = {s : Number => Case => Str ; g : Gender } ; -- massable : Bool } ;
     NounPhrase : Type = 
       {
 	s : Case => Str ; 
 	g : Gender ; 
 	n : Number ; 
 	p : Person ;
+	adv : Adverb ;
+	preap : {s : Agr => Str } ;
+	postap : {s : Agr => Str } ;
       } ;
   param
-    Order = SVO | VSO | VOS | OSV | OVS | SOV ; 
+    Order = SVO | VSO | VOS | OSV | OVS | SOV ;
+    AdvPos = PreS | PreV | PreO | PreNeg | InS | InV ; -- InO
   param
     Agr = Ag Gender Number Case ; -- Agreement for NP et al.
   oper
@@ -34,14 +38,18 @@ param
     {
       s : Number => Case => Str ; 
       g : Gender ;
+      adv : Adverb ;
       preap : {s : Agr => Str } ;
-      postap : {s : Agr => Str } ;
-    } ;
+      postap : {s : Agr => Str }
+	--	massable : Bool
+      } ;
+    
 -- nouns
   useCNasN : CommonNoun -> Noun = \cn ->
     {
       s = cn.s ;
-      g = cn.g ;
+      g = cn.g
+--      massable = cn.massable;
     } ;
 
   pluralN : Noun -> Noun = \n ->
@@ -52,7 +60,8 @@ param
 	};
       g = n.g ;
       preap = n.preap ;
-      postap = n.postap ;
+      postap = n.postap
+--      massable = n.massable ;
     };
 
   singularN : Noun -> Noun = \n ->
@@ -63,7 +72,8 @@ param
 	};
       g = n.g ;
       preap = n.preap ;
-      postap = n.postap ;
+      postap = n.postap 
+--      massable = n.massable ;
     };
   
   mkNoun : (n1,_,_,_,_,_,_,_,_,n10 : Str) -> Gender -> Noun = 
@@ -98,10 +108,14 @@ param
       s = table Case [ nom ; acc ; gen ; dat ; abl ; voc ] ;
       g = g ;
       n = n ;
-      p = P3 
+      p = P3;
+      adv = ss "" ;
+      preap, postap = { s = \\_ => "" } 
     } ;
-
-  emptyNP : NounPhrase = { s = \\_ => ""; g = Masc; n = Sg; p = P1 }; 
+  
+  dummyNP : Str -> NounPhrase = \s -> regNP s s s s s s Masc Sg ;
+	  
+  emptyNP : NounPhrase = { s = \\_ => ""; g = Masc; n = Sg; p = P1 ; adv = ss "" ; preap, postap = { s = \\_ => "" } }; 
 -- also used for adjectives and so on
 
 -- adjectives
@@ -164,6 +178,7 @@ param
 --    part : VPartForm =>Agr => Str ;
     obj : Str ;
     compl : Agr => Str ; -- general complement. Agr might be ignored except for adjectives
+    adv : Adverb
     } ;
 
   ObjectVerbPhrase : Type = VerbPhrase ** {c2 : Preposition} ;
@@ -917,7 +932,8 @@ oper
     s = \\a,q => v.act ! a ++ case q of { VQTrue => Prelude.BIND ++ "ne"; VQFalse => "" };
 --    part = v.part;
     obj = [] ;
-    compl = \\a => []
+    compl = \\a => [] ;
+    adv = ss "" 
   } ;
 
   predV2 : Verb2 -> VPSlash = \v ->
@@ -928,52 +944,76 @@ oper
 
   appPrep : Preposition -> (Case => Str) -> Str = \c,s -> c.s ++ s ! c.c ;
 
-  insertObj : Str -> VerbPhrase -> VerbPhrase = \obj,vp -> {
+  insertObj : NounPhrase -> Preposition -> VerbPhrase -> VerbPhrase = \np,prep,vp -> {
     s = vp.s ;
---    part = vp.part ;
-    obj = obj ++ vp.obj ;
-    compl = vp.compl
+    --    part = vp.part ;
+    imp = vp.imp ;
+    inf = vp.inf ;
+    obj = (appPrep prep np.s) ++ vp.obj ;
+    compl = vp.compl ;
+    adv = cc2 vp.adv np.adv
   } ;
 
-  insertObjc: Str -> VPSlash -> VPSlash = \obj,vp -> {
+  insertObjc: NounPhrase -> VPSlash -> VPSlash = \np,vp -> {
     s = vp.s ;
---    part = vp.part ;
-    obj = obj ++ vp.obj ;
+    --    part = vp.part ;
+    imp = vp.imp ;
+    inf = vp.inf ;
+    obj = (appPrep vp.c2 np.s) ++ vp.obj ;
     compl = vp.compl ;
-    c2 = vp.c2
+    c2 = vp.c2 ;
+    adv = cc2 vp.adv np.adv
     } ;
     
   insertAdj : (Agr => Str) -> VerbPhrase -> VerbPhrase = \adj,vp -> {
     s = vp.s ;
     part = vp.part ;
     obj = vp.obj ;
-    compl = \\a => adj ! a ++ vp.compl ! a
+    compl = \\a => adj ! a ++ vp.compl ! a ;
+    adv = vp.adv
   } ;
 
+  insertAdv : Adverb -> VerbPhrase -> VerbPhrase = \a,vp -> {
+     s = vp.s ;
+--    part = vp.part ;
+    obj = vp.obj ;
+    compl = vp.compl ;
+    adv = cc2 vp.adv a
+    } ;
+  
   -- clauses
-  Clause = {s : Tense => Anteriority => Polarity => VQForm => Order => Str} ;
+  Clause = {s,o : AdvPos => Str ; v : Tense => Anteriority => VQForm => AdvPos => Str ; neg : Polarity => AdvPos => Str ; } ;
   QClause = {s : Tense => Anteriority => Polarity => QForm => Str} ;
 
   -- The VQForm parameter defines if the ordinary verbform or the quistion form with suffix "-ne" will be used
-  mkClause : NounPhrase -> VerbPhrase -> Clause = \np,vp -> {
-    s = \\tense,anter,pol,vqf,order => case order of {
-      SVO => np.s ! Nom ++ negation pol ++ vp.compl ! Ag np.g np.n Nom ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ vp.obj ;
-      VSO => negation pol ++ vp.compl ! Ag np.g np.n Nom ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ np.s ! Nom ++ vp.obj ;
-      VOS => negation pol ++ vp.compl ! Ag np.g np.n Nom ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ vp.obj ++ np.s ! Nom ;
-      OSV => vp.obj ++ np.s ! Nom ++ negation pol ++ vp.compl ! Ag np.g np.n Nom ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ;
-      OVS => vp.obj ++ negation pol ++ vp.compl ! Ag np.g np.n Nom ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ++ np.s ! Nom ;
-      SOV => np.s ! Nom ++ vp.obj ++ negation pol ++ vp.compl ! Ag np.g np.n Nom ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf 
-      } 
-      -- np.s ! Nom ++ vp.obj ++ vp.adj ! np.g ! np.n ++ negation p ++ vp.fin ! VAct a t np.n np.p
+  mkClause : NounPhrase -> VerbPhrase -> Clause = \np,vp ->
+    let
+      adv = (cc2 np.adv vp.adv).s
+    in
+    {
+      s = \\ap => case ap of { PreS => adv ; _ => [] } ++ np.preap.s ! (Ag np.g np.n Nom) ++ case ap of { InS => adv ; _ => [] } ++ np.s ! Nom ++ np.postap .s ! (Ag np.g np.n Nom);
+      v = \\tense,anter,vqf,ap => case ap of { PreV => adv ; _ => [] } ++ vp.compl ! Ag np.g np.n Nom ++ case ap of { InV => adv ; _ => [] } ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ;
+      o = \\ap => case ap of { PreO => adv ; _ => [] } ++ vp.obj ;
+      neg = \\pol,ap => case ap of { PreO => adv ; _ => [] } ++ negation pol ;
     } ;
-
+  
+  combineClause : Clause -> { s : Tense => Anteriority => Polarity => VQForm => Order => AdvPos => Str } = \cl ->
+    { s = \\tense,anter,pol,vqf,order,ap  => case order of {
+      SVO => cl.s ! ap ++ cl.neg ! pol ! ap ++ cl.v ! tense ! anter ! vqf ! ap ++ cl.o ! ap ;
+      VSO => cl.neg ! pol ! ap ++ cl.v ! tense ! anter ! vqf ! ap ++ cl.s ! ap ++ cl.o ! ap ;
+      VOS => cl.neg ! pol ! ap ++ cl.v ! tense ! anter ! vqf ! ap ++ cl.o ! ap ++ cl.s ! ap ;
+      OSV => cl.o ! ap ++ cl.s ! ap ++ cl.neg ! pol ! ap ++ cl.v ! tense ! anter ! vqf ! ap ;
+      OVS => cl.o ! ap ++ cl.neg ! pol ! ap ++ cl.v ! tense ! anter ! vqf ! ap ++ cl.s ! ap ;
+      SOV => cl.s ! ap ++ cl.o ! ap ++ cl.neg ! pol ! ap ++ cl.v ! tense ! anter ! vqf ! ap
+	}
+    } ;
   -- questions
   mkQuestion : SS -> Clause -> QClause = \ss,cl -> {
-    s = \\tense,anter,pol,form => case form of {
-      QDir => ss.s ++ cl.s ! tense ! anter ! pol ! VQFalse ! OVS;
-      QIndir => ss.s ++ cl.s ! tense ! anter ! pol ! VQFalse ! OSV
-      }
-    } ;
+     s = \\tense,anter,pol,form => case form of {
+       QDir => ss.s ++ (combineClause cl).s ! tense ! anter ! pol ! VQFalse ! OVS ! PreS ;
+       QIndir => ss.s ++ (combineClause cl).s ! tense ! anter ! pol ! VQFalse ! OSV ! PreO
+       }
+    };
   
   negation : Polarity -> Str = \p -> case p of {
     Pos => [] ;   
@@ -1039,10 +1079,13 @@ oper
   mkPreposition : Str -> Case -> Preposition  = \s,c ->  {s = s ; c = c; isPost = False} ;
 
   mkPostposition : Str -> Case -> Preposition = \s,c ->  {s = s ; c = c ; isPost = True } ;
-      
-  mkAdverb : Str -> { s: Str } = \adv -> { s = adv } ;
 
-param
-  Unit = one | ten | hundred | thousand | ten_thousand | hundred_thousand ;
+  -- adverbs
+  Adverb : Type = SS ;
+  mkAdverb : Str -> Adverb = \adv -> ss adv ;
+
+  -- numerals
+  param
+    Unit = one | ten | hundred | thousand | ten_thousand | hundred_thousand ;
 
 }

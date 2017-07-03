@@ -15,14 +15,15 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat in {
 	s = vp.s ;
 	part = vp.part ;
 	obj = vp.obj ;
-	compl = vp.compl
+	compl = vp.compl ;
+	adv = vp.adv 
       };
 
 --  ComplVS : VS -> S -> VP ;  -- say that she runs
-    ComplVS v s  = insertObj (S.that_Subj.s ++ s.s) (predV v) ;
+    ComplVS v s  = insertObj ( dummyNP (S.that_Subj.s ++ s.s)) Nom_Prep (predV v) ;
 
 --  ComplVQ : VQ -> QS -> VP ;  -- wonder who runs
-    ComplVQ v q  = insertObj ( q.s ! QIndir) (predV v) ;
+    ComplVQ v q  = insertObj (dummyNP (q.s ! QIndir)) Nom_Prep (predV v) ;
     
 --  ComplVA : VA -> AP -> VP ;  -- they become red
     ComplVA v ap = (predV v) ** { adj = ap.s } ;
@@ -35,21 +36,21 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat in {
     
 --  Slash3V3 : V3  -> NP -> VPSlash ;  -- give (it) to her
     Slash3V3 v np =
-      lin VP ( insertObjc ( v.c2.s ++ np.s ! v.c2.c ) ( predV3 v ) ) ;
+      lin VP ( insertObjc np ( predV3 v ) ) ;
 
 --    SlashV2V v vp = insertObjc (\\a => infVP v.isAux vp a) (predVc v) ;
 
 --    SlashV2S v s  = insertObjc (\\_ => conjThat ++ s.s) (predVc v) ;
 
 --  SlashV2Q : V2Q -> QS -> VPSlash ;  -- ask (him) who came
-    SlashV2Q v q  = lin VP (insertObjc (q.s ! QIndir) (predV2 v) ) ;
+    SlashV2Q v q  = lin VP (insertObjc (dummyNP (q.s ! QIndir)) (predV2 v) ) ;
 
 --  SlashV2A : V2A -> AP -> VPSlash ;  -- paint (it) red
     SlashV2A v ap = lin VP ( (predV2 v) ** { adj = ap.s } ) ; 
 
 --  ComplSlash : VPSlash -> NP -> VP ; -- love it
     ComplSlash vp np = -- VPSlash -> NP -> VP
-      insertObj (appPrep vp.c2 np.s) vp ;
+      insertObj np vp.c2 vp ;
 
 --    SlashVV vv vp = 
 --      insertObj (\\a => infVP vv.isAux vp a) (predVV vv) **
@@ -71,11 +72,11 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat in {
 --    PassV2 v = insertObj (\\_ => v.s ! VPPart) (predAux auxBe) ;
 
 --  AdvVP    : VP -> Adv -> VP ;        -- sleep here
-    AdvVP vp adv = insertObj adv.s vp ;
+    AdvVP vp adv = insertAdv adv vp ;
 
 --    ExtAdvVP vp adv = vp
 
-    AdVVP adv vp = insertObj adv.s vp ;
+    AdVVP adv vp = insertAdv adv vp ;
 
 --    AdvVPSlash : VPSlash -> Adv -> VPSlash ;  -- use (it) here
 
