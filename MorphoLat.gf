@@ -160,7 +160,7 @@ oper
       _  => noun3 verbum verbi g
       }
     in  
-    nounWithGen g s ;
+    nounWithGender g s ;
 
   noun : Str -> Noun = \verbum -> 
     case verbum of {
