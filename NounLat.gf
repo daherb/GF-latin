@@ -5,7 +5,7 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
   lin
     DetCN det cn = -- Det -> CN -> NP
       {
-	s = \\c => det.s ! cn.g ! c ++ cn.preap.s ! (Ag cn.g det.n c) ++ cn.s ! det.n ! c ++ cn.postap.s ! (Ag cn.g det.n c) ; 
+	s = \\c => det.s ! cn.g ! c ++ cn.s ! det.n ! c ; -- might be slightly problematic because preap will be added before the determiner
 	n = det.n ; g = cn.g ; p = P3 ;
 	adv = cn.adv ;
 	preap = cn.preap ;

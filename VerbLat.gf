@@ -22,7 +22,7 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat,Extr
       };
 
 --  ComplVS : VS -> S -> VP ;  -- say that she runs
-    ComplVS v s  = insertObj ( dummyNP (S.that_Subj.s ++ s.s)) Nom_Prep (predV v) ;
+    ComplVS v s  = insertObj ( dummyNP (S.that_Subj.s ++ s.s ! PreS)) Nom_Prep (predV v) ;
 
 --  ComplVQ : VQ -> QS -> VP ;  -- wonder who runs
     ComplVQ v q  = insertObj (dummyNP (q.s ! QIndir)) Nom_Prep (predV v) ;

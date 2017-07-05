@@ -2,7 +2,7 @@
 
 --1 Latin auxiliary operations.
 
-resource ResLat = ParamX ** open Prelude in {
+resource ResLat = ParamX ** open Prelude, (C=CommonX) in {
 
 param
   Case = Nom | Acc | Gen | Dat | Abl | Voc ;
@@ -25,7 +25,7 @@ param
       } ;
   param
     Order = SVO | VSO | VOS | OSV | OVS | SOV ;
-    AdvPos = PreS | PreV | PreO | PreNeg | InS | InV ; -- InO
+    AdvPos = PreS | PreV | PreO | PreNeg | InV | InS ; -- | InO
   param
     Agr = Ag Gender Number Case ; -- Agreement for NP et al.
   oper
@@ -959,7 +959,7 @@ oper
     --    part = vp.part ;
     imp = vp.imp ;
     inf = vp.inf ;
-    obj = (appPrep prep np.s) ++ vp.obj ;
+    obj = np.preap.s ! (Ag np.g np.n prep.c) ++ (appPrep prep np.s) ++ np.postap.s ! (Ag np.g np.n prep.c) ++ vp.obj ;
     compl = vp.compl ;
     adv = cc2 vp.adv np.adv
   } ;
@@ -969,7 +969,7 @@ oper
     --    part = vp.part ;
     imp = vp.imp ;
     inf = vp.inf ;
-    obj = (appPrep vp.c2 np.s) ++ vp.obj ;
+    obj = np.preap.s ! (Ag np.g np.n vp.c2.c) ++ (appPrep vp.c2 np.s) ++ np.postap.s ! (Ag np.g np.n vp.c2.c) ++ vp.obj ;
     compl = vp.compl ;
     c2 = vp.c2 ;
     adv = cc2 vp.adv np.adv
@@ -996,37 +996,69 @@ oper
     } ;
   
   -- clauses
-  Clause = {s,o : AdvPos => Str ; v : Tense => Anteriority => VQForm => AdvPos => Str ; neg : Polarity => AdvPos => Str ; } ;
-  QClause = {s : Tense => Anteriority => Polarity => QForm => Str} ;
+  Sentence =
+    {
+      s,o,v,neg : AdvPos => Str ; -- Subject, verbphrase, object and negation particle plus potential adverb
+      t : C.Tense ; -- tense marker
+      p : C.Pol ; -- polarity marker
+      sadv : Adverb -- sentence adverb¡
+    } ;
+  
+  Clause = {s,o : AdvPos => Str ; v : Tense => Anteriority => VQForm => AdvPos => Str ; neg : Polarity => AdvPos => Str ; adv : Adverb } ;
+  QClause = {s : C.Tense => Anteriority => C.Pol => QForm => Str} ;
 
   -- The VQForm parameter defines if the ordinary verbform or the quistion form with suffix "-ne" will be used
   mkClause : NounPhrase -> VerbPhrase -> Clause = \np,vp ->
     let
-      adv = (cc2 np.adv vp.adv).s
+      adv  = (cc2 np.adv vp.adv).s ;
+      pres   : AdvPos -> Str = \ap -> case ap of { PreS => adv ; _ => [] } ;
+      prev   : AdvPos -> Str = \ap -> case ap of { PreV => adv ; _ => [] } ;
+      preo   : AdvPos -> Str = \ap -> case ap of { PreO => adv ; _ => [] } ;
+      preneg : AdvPos -> Str = \ap -> case ap of { PreO => adv ; _ => [] } ;
+      ins    : AdvPos -> Str = \ap -> case ap of { InS  => adv ; _ => [] } ;
+      inv    : AdvPos -> Str = \ap -> case ap of { InV  => adv ; _ => [] }
     in
     {
-      s = \\ap => case ap of { PreS => adv ; _ => [] } ++ np.preap.s ! (Ag np.g np.n Nom) ++ case ap of { InS => adv ; _ => [] } ++ np.s ! Nom ++ np.postap .s ! (Ag np.g np.n Nom);
-      v = \\tense,anter,vqf,ap => case ap of { PreV => adv ; _ => [] } ++ vp.compl ! Ag np.g np.n Nom ++ case ap of { InV => adv ; _ => [] } ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ;
-      o = \\ap => case ap of { PreO => adv ; _ => [] } ++ vp.obj ;
-      neg = \\pol,ap => case ap of { PreO => adv ; _ => [] } ++ negation pol ;
+      s = \\ap => pres ap ++ np.preap.s ! (Ag np.g np.n Nom) ++ ins ap ++ np.s ! Nom ++ np.postap .s ! (Ag np.g np.n Nom);
+      v = \\tense,anter,vqf,ap => prev ap ++ vp.compl ! Ag np.g np.n Nom ++ inv ap ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ;
+      o = \\ap => preo ap ++ vp.obj ;
+      neg = \\pol,ap => preneg ap ++ negation pol ;
+      adv = lin Adv (mkAdverb [])
     } ;
   
-  combineClause : Clause -> { s : Tense => Anteriority => Polarity => VQForm => Order => AdvPos => Str } = \cl ->
-    { s = \\tense,anter,pol,vqf,order,ap  => case order of {
-      SVO => cl.s ! ap ++ cl.neg ! pol ! ap ++ cl.v ! tense ! anter ! vqf ! ap ++ cl.o ! ap ;
-      VSO => cl.neg ! pol ! ap ++ cl.v ! tense ! anter ! vqf ! ap ++ cl.s ! ap ++ cl.o ! ap ;
-      VOS => cl.neg ! pol ! ap ++ cl.v ! tense ! anter ! vqf ! ap ++ cl.o ! ap ++ cl.s ! ap ;
-      OSV => cl.o ! ap ++ cl.s ! ap ++ cl.neg ! pol ! ap ++ cl.v ! tense ! anter ! vqf ! ap ;
-      OVS => cl.o ! ap ++ cl.neg ! pol ! ap ++ cl.v ! tense ! anter ! vqf ! ap ++ cl.s ! ap ;
-      SOV => cl.s ! ap ++ cl.o ! ap ++ cl.neg ! pol ! ap ++ cl.v ! tense ! anter ! vqf ! ap
-	}
+  combineClause : Clause -> C.Tense -> Anteriority -> C.Pol -> VQForm -> Sentence = \cl,tense,anter,pol,vqf ->
+    { s = cl.s ;
+      o =  cl.o ;
+      v =  cl.v ! tense.t ! anter ! vqf ;
+      neg = cl.neg ! pol.p ;
+      sadv = mkAdverb [] ;
+      t = tense ;
+      p = pol
     } ;
-      
+
+  combineSentence : Sentence -> ( AdvPos => Order => Str ) = \s ->
+    let
+      pres   : AdvPos -> Str = \ap -> case ap of { PreS => s.sadv.s ; _ => [] } ;
+      prev   : AdvPos -> Str = \ap -> case ap of { PreV => s.sadv.s ; _ => [] } ;
+      preo   : AdvPos -> Str = \ap -> case ap of { PreO => s.sadv.s ; _ => [] } ;
+      preneg : AdvPos -> Str = \ap -> case ap of { PreO => s.sadv.s ; _ => [] } 
+    in
+    \\ap,order  => case order of {
+      SVO => s.t.s ++ s.p.s ++ pres ap ++ s.s   ! ap ++ preneg ap ++ s.neg ! ap ++ prev ap ++ s.v   ! ap ++ preo ap ++ s.o ! ap;
+      VSO => s.t.s ++ s.p.s ++ preneg ap ++ s.neg ! ap ++ prev ap ++ s.v   ! ap ++ pres ap ++ s.s   ! ap ++ preo ap ++ s.o ! ap;
+      VOS => s.t.s ++ s.p.s ++ preneg ap ++ s.neg ! ap ++ prev ap ++ s.v   ! ap ++ preo ap ++ s.o   ! ap ++ pres ap ++ s.s ! ap ;
+      OSV => s.t.s ++ s.p.s ++ preo ap ++ s.o   ! ap ++ pres ap ++ s.s   ! ap ++ preneg ap ++ s.neg ! ap ++ prev ap ++ s.v ! ap;
+      OVS => s.t.s ++ s.p.s ++ preo ap ++ s.o   ! ap ++ preneg ap ++ s.neg ! ap ++ prev ap ++ s.v   ! ap ++ pres ap ++ s.s ! ap ;
+      SOV => s.t.s ++ s.p.s ++ pres ap ++ s.s   ! ap ++ preo ap ++ s.o   ! ap ++ preneg ap ++ s.neg ! ap ++ prev ap ++ s.v ! ap
+      } ;
+
+
+  
   -- questions
   mkQuestion : SS -> Clause -> QClause = \ss,cl -> {
      s = \\tense,anter,pol,form => case form of {
-       QDir => ss.s ++ (combineClause cl).s ! tense ! anter ! pol ! VQFalse ! OVS ! PreS ;
-       QIndir => ss.s ++ (combineClause cl).s ! tense ! anter ! pol ! VQFalse ! OSV ! PreO
+       QDir => ss.s ++ (combineSentence (combineClause cl tense anter pol VQFalse)) ! PreS ! OVS  ;
+       QIndir => ss.s ++ (combineSentence (combineClause cl tense anter pol VQFalse)) ! PreO ! OSV
        }
     };
   

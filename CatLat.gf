@@ -6,7 +6,7 @@ concrete CatLat of Cat = CommonX - [Voc] ** open ResLat, ParamX, Prelude in {
 
 ---- Tensed/Untensed
 --
-    S  = {s : Str} ;
+    S  = Sentence ;
     QS = {s : QForm => Str} ;
 --    RS = {s : Agr => Str ; c : Case} ; -- c for it clefts
 --    SSlash = {s : Str ; c2 : Str} ;
@@ -19,7 +19,9 @@ concrete CatLat of Cat = CommonX - [Voc] ** open ResLat, ParamX, Prelude in {
 --
 ---- Question
 --
-    QCl = {s : ResLat.Tense => Anteriority => Polarity => QForm => Str } ;
+    --
+    -- TO FIX
+    QCl = Clause ; -- {s : ResLat.Tense => Anteriority => Polarity => QForm => Str } ;
     IP = {s : Case => Str ; n : Number} ;
     IComp = {s : Str} ;    
     IDet = Determiner ; --{s : Str ; n : Number} ;

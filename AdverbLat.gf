@@ -18,7 +18,7 @@ concrete AdverbLat of Adverb = CatLat ** open ResLat, Prelude in
 -- Subordinate clauses can function as adverbs.
 
 --  SubjS  : Subj -> S -> Adv ;              -- when she sleeps
-    SubjS = cc2 ;
+    SubjS subj s = ss2 subj.s (s.s ! PreS ) ; -- cc2 ;
     
 -----b    AdvSC s = s ; --- this rule give stack overflow in ordinary parsing
 --

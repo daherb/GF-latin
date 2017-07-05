@@ -4,7 +4,7 @@ concrete PhraseLat of Phrase = CatLat ** open Prelude, ResLat in {
     PhrUtt pconj utt voc = {s = pconj.s ++ utt.s ++ voc.s} ;
     --
 -- UttS : S -> Utt
-    UttS s = { s = s.s };
+    UttS s = { s = combineSentence s ! PreS ! SOV };
 
 --  UttQS : QS -> Utt
     UttQS qs = {s = qs.s ! QDir } ;

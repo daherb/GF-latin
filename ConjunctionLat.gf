@@ -6,7 +6,8 @@ concrete ConjunctionLat of Conjunction =
 
   lin
     -- ConjS    : Conj -> ListS -> S ;       -- he walks and she runs
-    ConjS conj ss = conjunctDistrSS conj (ss.l ! conj.c) ;
+    -- TO FIX
+    -- ConjS conj ss = { s = \\_ => conjunctDistrX conj (ss.l ! conj.c) ; sadv = lin Adv { s = []} } ;
 
     -- ConjAdv  : Conj -> ListAdv -> Adv ;   -- here or there
     ConjAdv conj ss = conjunctDistrSS conj (ss.l ! conj.c) ;
@@ -42,16 +43,20 @@ concrete ConjunctionLat of Conjunction =
     --
 
     -- BaseS : S -> S -> ListS
-    BaseS x y = { l = \\c => twoSS x y } ;
+    -- TO FIX
+    -- BaseS x y = {
+    --   l = \\c => twoStr (x.s ! PreS) (y.s ! PreS)
+    --   } ;
 
     -- ConsS : S -> ListS -> ListS
-    ConsS x xs = { l = \\c => (case c of
-	{
-	  And => consrSS and_Conj.s2 x (xs.l ! c) ;
-	  Or => consrSS or_Conj.s2 x (xs.l ! c) ;
-	  If => consrSS if_then_Conj.s2 x (xs.l ! c) ;
-	  _ => consrSS "," x (xs.l ! c)
-	}) } ;
+    -- TO FIX
+    -- ConsS x xs = { l = \\c => (case c of
+    -- 	{
+    -- 	  And => consrSS and_Conj.s2 (ss (x.s ! PreS)) (xs.l ! c) ;
+    -- 	  Or => consrSS or_Conj.s2 (ss (x.s ! PreS)) (xs.l ! c) ;
+    -- 	  If => consrSS if_then_Conj.s2 (ss (x.s ! PreS)) (xs.l ! c) ;
+    -- 	  _ => consrSS "," (ss (x.s ! PreS)) (xs.l ! c)
+    -- 	}) } ;
 
     -- BaseAdv : Adv -> Adv -> ListAdv
     BaseAdv x y = { l = \\c => twoSS x y} ;
