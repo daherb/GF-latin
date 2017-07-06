@@ -9,10 +9,10 @@ concrete ExtraLat of ExtraLatAbs =
     
     UsePronNonDrop p = -- Pron -> NP
       {
-	g = p.g ;
-	n = p.n ;
+	g = p.pers.g ;
+	n = p.pers.n ;
 	p = p.p ;
-	s = p.pers ! PronNonDrop ! PronNonRefl ;
+	s = p.pers.s ! PronNonDrop ! PronNonRefl ;
 	adv = ss "" ;
 	preap, postap = { s = \\_ => "" } 
       } ;

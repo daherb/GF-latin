@@ -795,15 +795,31 @@ param
 --    PronIndef PronIndefUsage PronIndefPol PronIndefMeaning ;
 
 oper
-  
-  Pronoun : Type = {
-    pers : PronDropForm => PronReflForm => Case => Str ;
-    poss : PronReflForm => Agr => Str ;
+
+  PersonalPronoun = {
+    s : PronDropForm => PronReflForm => Case => Str ;
     g : Gender ;
-    n : Number ;
-    p : Person ;
+    n : Number
     } ;
 
+  PossessivePronoun = {
+    s : PronReflForm => Agr => Str ;
+    } ;
+  
+  -- Pronoun : Type = {
+  --   pers : PronDropForm => PronReflForm => Case => Str ;
+  --   poss : PronReflForm => Agr => Str ;
+  --   g : Gender ;
+  --   n : Number ;
+  --   p : Person ;
+  --   } ;
+
+  Pronoun : Type = {
+    pers : PersonalPronoun ;
+    poss : PossessivePronoun ;
+    p : Person
+    } ;
+  
   pronForms = overload {
     pronForms : (_,_,_,_,_ : Str) -> Case => Str = 
       \ego,me,mei,mihi,mee -> table Case [ego ; me ; mei ; mihi ; mee ; ego] ;
@@ -917,10 +933,8 @@ oper
       createPronouns g n p ;
     in
     {
-     pers = prons.p1 ;
-     poss = prons.p2 ;
-     g = g ;
-     n = n ;
+     pers = { s = prons.p1 ; g = g ; n = n } ;
+     poss = { s = prons.p2 } ;
      p = p
     } ;
 

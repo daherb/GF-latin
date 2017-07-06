@@ -15,12 +15,12 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
     UsePN pn = lin NP { s = pn.s ! Sg ; g = pn.g ; n = Sg ; p = P3 ;  adv = ss "" ; preap, postap = { s = \\_ => "" } } ;
     UsePron p = -- Pron -> Np
       { 
-	g = p.g ;
-	n = p.n ;
+	g = p.pers.g ;
+	n = p.pers.n ;
 	p = p.p ;
 	s = \\c => case c of { 
-	  Nom => p.pers ! PronDrop ! PronNonRefl ; -- Drop pronoun in nominative case
-	  _ => p.pers ! PronNonDrop ! PronNonRefl  -- but don't drop it otherwise
+	  Nom => p.pers.s ! PronDrop ! PronNonRefl ; -- Drop pronoun in nominative case
+	  _ => p.pers.s ! PronNonDrop ! PronNonRefl  -- but don't drop it otherwise
 	  } ! c ;
 	adv = ss "" ;
 	preap, postap = { s = \\_ => "" } 
