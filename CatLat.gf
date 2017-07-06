@@ -18,7 +18,6 @@ concrete CatLat of Cat = CommonX - [Voc] ** open ResLat, ParamX, Prelude in {
     Imp = {s : Polarity => ImpForm => Str} ;
 --
 ---- Question
---
     --
     -- TO FIX
     QCl = Clause ; -- {s : ResLat.Tense => Anteriority => Polarity => QForm => Str } ;

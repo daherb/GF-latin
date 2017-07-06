@@ -44,9 +44,9 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
     AdvNP np adv = {
       s = \\c => np.s ! c ;
       g = np.g ; n = np.n; p = np.p ;
-      adv = adv ;
+      adv = cc2 np.adv adv ;
       preap = np.preap ;
-      postap = np.postap
+      postap = np.postap ;
 			     
       } ;
 --
