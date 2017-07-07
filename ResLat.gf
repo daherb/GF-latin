@@ -1148,5 +1148,9 @@ oper
   -- numerals
   param
     Unit = one | ten | hundred | thousand | ten_thousand | hundred_thousand ;
+  oper
+    Cardinal : Type = {s : Gender => Case => Str ; n : Number};
+    Ordinal : Type = { s : Gender => Number => Case => Str } ;
+    Numeral : Type = { card : Cardinal ; ord : Ordinal } ;
 
 }

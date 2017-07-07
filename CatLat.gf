@@ -55,14 +55,15 @@ concrete CatLat of Cat = CommonX - [Voc] ** open ResLat, ParamX, Prelude in {
     NP = ResLat.NounPhrase ;
     Pron = ResLat.Pronoun ;
     Det = Determiner ;
-    Predet, Ord = {s : Str} ;
+    Predet = {s : Str} ;
+    Ord = Ordinal ;
     Num  = {s : Gender => Case => Str ; n : Number} ;
---    Card = {s : Str ; n : Number} ;
+    Card = {s : Gender => Case => Str ; n : Number} ;
     Quant = Quantifier ;
 --
 ---- Numeral
 --
---    Numeral = {s : CardOrd => Str ; n : Number} ;
+    Numeral = Numeral ;
     Digits  = {s : Str ; unit : Unit} ;
 --
 ---- Structural
