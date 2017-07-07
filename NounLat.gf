@@ -79,13 +79,13 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
     NumSg = {s = \\_,_ => [] ; n = Sg} ;
     NumPl = {s = \\_,_ => [] ; n = Pl} ;
 
---    NumCard n = n ** {hasCard = True} ;
+    NumCard n = n ;
 --
 --    NumDigits n = {s = n.s ! NCard ; n = n.n} ;
 --    OrdDigits n = {s = n.s ! NOrd} ;
 --
---    NumNumeral numeral = {s = numeral.s ! NCard; n = numeral.n} ;
---    OrdNumeral numeral = {s = numeral.s ! NOrd} ;
+    NumNumeral numeral = numeral.card ;
+    OrdNumeral numeral = numeral.ord ;
 --
 --    AdNum adn num = {s = adn.s ++ num.s ; n = num.n} ;
 --
