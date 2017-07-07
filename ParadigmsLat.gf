@@ -99,6 +99,8 @@ oper
   mkPrep : Str -> Case -> Preposition  = mkPreposition ;
 
   mkPron = mkPronoun ;
+
+  mkNum = mkNumeral ;
 -- To be implemented, just place holders
   mkPN : N -> PN = \n -> lin PN n ;
   mkN2 : N -> Prep -> N2 = \n,p -> lin N2 ( n ** { c = p } );

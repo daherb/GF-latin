@@ -2,7 +2,7 @@
 
 --1 Latin auxiliary operations.
 
-resource ResLat = ParamX ** open Prelude, (C=CommonX) in {
+resource ResLat = ParamX ** open Prelude, Predef, (C=CommonX) in {
 
 param
   Case = Nom | Acc | Gen | Dat | Abl | Voc ;
@@ -1153,4 +1153,42 @@ oper
     Ordinal : Type = { s : Gender => Number => Case => Str } ;
     Numeral : Type = { card : Cardinal ; ord : Ordinal } ;
 
+    mkNumeral : Str -> Str -> Numeral = \c,o -> -- cardinal and ordinal form
+      let
+	cardFlex : Gender => Case => Str = case c of { "unus" => \\gen,cas => case <gen,cas> of {
+				    <Masc, Nom | Voc> => "unus" ; <Masc, Acc> => "unum" ; <Masc, Abl> => "uno" ;
+				    <Fem, Nom | Abl | Voc> => "una" ; <Fem, Acc> => "unam" ;
+				    <Neutr, Nom | Acc | Voc> => "unum" ; <Neutr, Abl> => "uno" ;
+				    <_, Gen> => "unius" ; <_, Dat> => "uni"
+				    } ;
+				  "duo" => table {
+				    Masc | Neutr => table Case [ "duo" ; "duo" ; "duorum" ; "duobus" ; "duobus" ; "duo" ] ;
+				    Fem => table Case [ "duae" ; "duas" ; "duarum" ; "duabus" ; "duabus" ; "duae" ] } ;
+				  "tres" => \\gen,cas => case <gen,cas> of {
+				    <Neutr, Nom | Acc | Voc > => "tria" ; <_, Nom | Acc | Voc > => "tres" ;
+				    <_, Gen> => "trium" ; <_, Dat | Abl > => "tribus"
+				    } ;
+				  "milia" => table {
+				    Neutr => table Case [ "milia" ; "milia" ; "milium" ; "milibus" ; "milibus" ; "milia" ] ;
+				    _ => \\_ => nonExist
+				    } ;
+				    _ => \\_,_ => c
+	  } ;
+	ordFlex : Gender => Number => Case => Str =
+	  case o of {
+	    stem + "us" => table {
+	      Masc => table Number [ table Case [ stem + "us" ; stem + "um" ; stem + "i" ; stem + "o" ; stem + "o" ; stem + "e" ] ;
+				     table Case [ stem + "i" ; stem + "os" ; stem + "orum" ; stem + "is" ; stem + "is" ; stem + "i" ] ;
+		];
+	      Fem => table Number [ table Case [ stem + "a" ; stem + "am" ; stem + "ae" ; stem + "ae" ; stem + "a" ; stem + "a" ] ;
+				    table Case [ stem + "ae" ; stem + "as" ; stem + "arum" ; stem + "is" ; stem + "is" ; stem + "ae" ] ;
+		] ;
+	      Neutr => table Number [ table Case [ stem + "um" ; stem + "um" ; stem + "i" ; stem + "o" ; stem + "o" ; stem + "um" ] ;
+				      table Case [ stem + "a" ; stem + "a" ; stem + "orum" ; stem + "is" ; stem + "is" ; stem + "a" ] ;
+		]
+	      } ;
+	    _ => error "unsupported ordinal form"
+	  }
+      in
+      { card = { s = cardFlex ; n = case c of { "unus" => Sg ; _ => Pl }  } ; ord = { s = ordFlex } } ;
 }
