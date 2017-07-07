@@ -250,8 +250,8 @@ lin
   stop_V = mkV "sistere" "sisto" "steti" "statum" ; -- sisto, stiti/steti, statum 3 (Langenscheidts)
   jump_V = mkV "saltare" ; -- 1 (Langenscheidts)
 
-  left_Ord = ss "sinister" ; -- -tra, -trum (Langenscheidts)
-  right_Ord = ss "dexter" ; -- -t(e)ra, -t(e)rum (Langenscheidts)
+  left_Ord = lin Ord { s = \\g,n,c => (mkA "sinister").s ! R.Posit ! R.Ag g n c } ; -- -tra, -trum (Langenscheidts)
+  right_Ord = lin Ord { s = \\g,n,c => (mkA "dexter").s ! R.Posit ! R.Ag g n c } ; -- -t(e)ra, -t(e)rum (Langenscheidts)
   far_Adv = mkAdv "longe" ; -- (Langenscheidts)
   correct_A = mkA "rectus" ; -- 3 (Langenscheidts)
   dry_A = mkA "aridus" ; -- 3 (Langenscheidts)
