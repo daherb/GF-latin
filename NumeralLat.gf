@@ -8,16 +8,16 @@ concrete NumeralLat of Numeral = CatLat ** open ResLat,ParadigmsLat in {
 
   lin
     num x = x ;
-    n2 = mkNum "duo" "secundus" ;
-    n3 = mkNum "tres" "tertius" ;
-    n4 = mkNum "quattuor"  "quartus" ;
-    n5 = mkNum "quinque"  "quintus" ;
-    n6 = mkNum "sex" "sextus" ;
-    n7 = mkNum "septem" "sptimus" ;
-    n8 = mkNum "octo" "ocatvus" ;
-    n9 = mkNum "novem" "nonus" ;
+    n2 = lin Numeral ( mkNum "duo" "secundus" ) ;
+    n3 = lin Numeral ( mkNum "tres" "tertius" ) ;
+    n4 = lin Numeral ( mkNum "quattuor"  "quartus" ) ;
+    n5 = lin Numeral ( mkNum "quinque"  "quintus" ) ;
+    n6 = lin Numeral ( mkNum "sex" "sextus" ) ;
+    n7 = lin Numeral ( mkNum "septem" "sptimus" ) ;
+    n8 = lin Numeral ( mkNum "octo" "ocatvus" ) ;
+    n9 = lin Numeral ( mkNum "novem" "nonus" ) ;
 
-  lin pot01 = mkNum "unus" "primus" ;
+  lin pot01 = lin Numeral ( mkNum "unus" "primus" ) ;
   lin pot0 d = d ;
 --lin pot110 = regCardOrd "ten" ** {n = Pl} ;
 --lin pot111 = regCardOrd "eleven" ** {n = Pl} ;
