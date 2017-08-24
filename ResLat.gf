@@ -1151,9 +1151,9 @@ oper
   oper
     Cardinal : Type = {s : Gender => Case => Str ; n : Number};
     Ordinal : Type = { s : Gender => Number => Case => Str } ;
-    Numeral : Type = { card : Cardinal ; ord : Ordinal } ;
+    Numer : Type = { card : Cardinal ; ord : Ordinal } ;
 
-    mkNumeral : Str -> Str -> Numeral = \c,o -> -- cardinal and ordinal form
+    mkNumeral : Str -> Str -> Numer = \c,o -> -- cardinal and ordinal form
       let
 	cardFlex : Gender => Case => Str = case c of { "unus" => \\gen,cas => case <gen,cas> of {
 				    <Masc, Nom | Voc> => "unus" ; <Masc, Acc> => "unum" ; <Masc, Abl> => "uno" ;
