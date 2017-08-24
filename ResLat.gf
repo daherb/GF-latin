@@ -1147,6 +1147,7 @@ oper
 
   -- numerals
   param
+    CardOrd = NCard | NOrd ;
     Unit = one | ten | hundred | thousand | ten_thousand | hundred_thousand ;
   oper
     Cardinal : Type = {s : Gender => Case => Str ; n : Number};
