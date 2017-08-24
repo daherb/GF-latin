@@ -13,12 +13,22 @@ concrete ConjunctionLat of Conjunction =
     ConjAdv conj ss = conjunctDistrSS conj (ss.l ! conj.c) ;
 
     -- ConjNP   : Conj -> ListNP -> NP ;     -- she or we
-    ConjNP conj ss = conjunctDistrTable Case conj (ss.l ! conj.c) **
-      { n = case conj.c of { And => Pl ; _ => ss.n } ;
-	g = ss.g ;
-	p = ss.p ;
-	adv = { s = "" } ;
-	preap, postap = { s = \\_ => "" }
+    ConjNP conj nps =
+      -- case nps.isBase of {
+      --  	False => conjunctDistrTable Case conj (nps.l ! conj.c) ;
+      --  	True => \\_ => "" -- ss (\\c => (nps.l ! And).s1 ! c++ (nps.l ! And).s2 ! c ++ BIND ++ "que") 
+      -- } **
+--      conjunctDistrTable Case conj (nps.l ! conj.c) **
+      {
+	s = case nps.isBase of {
+          False => \\_ => nonExist ; -- (conjunctDistrTable Case conj (nps.l ! conj.c)).s ;
+          True => \\c => (nps.l ! And).s1 ! c++ (nps.l ! And).s2 ! c ++ BIND ++ "que"
+	  } ;
+	n = case conj.c of { And => Pl ; _ => nps.n } ;
+      	g = nps.g ;
+      	p = nps.p ;
+      	adv = { s = "" } ;
+      	preap, postap = { s = \\_ => "" }
       } ;
 
     -- ConjAP   : Conj -> ListAP -> AP ;
@@ -67,7 +77,9 @@ concrete ConjunctionLat of Conjunction =
 	  And => consrSS and_Conj.s2 x (xs.l ! c) ;
 	  Or => consrSS or_Conj.s2 x (xs.l ! c) ;
 	  If => consrSS if_then_Conj.s2 x (xs.l ! c) ;
-	  _ => consrSS "," x (xs.l ! c) 
+	  Comma => consrSS "," x (xs.l ! c) ;
+	  _ =>  consrSS "" x (xs.l ! c)
+	    
 	}) } ;
 
     -- BaseNP : NP -> NP -> ListNP ;      -- John, Mary
@@ -76,7 +88,8 @@ concrete ConjunctionLat of Conjunction =
       g = Masc ; -- Just guessing
       n = matchNumber x.n y.n ;
       p = P3 ;
-      adv = ss ( x.adv.s ++ y.adv.s )
+      adv = ss ( x.adv.s ++ y.adv.s ) ;
+      isBase = True
       } ; 
 
     -- ConsNP : NP -> ListNP -> ListNP ;  -- John, Mary, Bill
@@ -91,7 +104,8 @@ concrete ConjunctionLat of Conjunction =
       n = matchNumber x.n xs.n ;
       g = xs.g ;
       p = xs.p ;
-      adv = ss ( x.adv.s ++ xs.adv.s )
+      adv = ss ( x.adv.s ++ xs.adv.s ) ;
+      isBase = False
       } ;
     
     -- BaseAP : AP -> AP -> ListAP
@@ -111,7 +125,7 @@ concrete ConjunctionLat of Conjunction =
   lincat
     [S] = { l : Coordinator => {s1,s2 : Str}} ;
     [Adv] = { l: Coordinator => {s1,s2 : Str}} ;
-    [NP] = {l : Coordinator => {s1,s2 : Case => Str} ; g : Gender ; n : Number ; p : Person ; adv : Adverb } ;
+    [NP] = {l : Coordinator => {s1,s2 : Case => Str} ; g : Gender ; n : Number ; p : Person ; adv : Adverb ; isBase : Bool} ;
     [AP] = {l : Coordinator => {s1,s2 : Agr => Str } } ;
 
   oper
