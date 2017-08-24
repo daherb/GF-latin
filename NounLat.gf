@@ -82,8 +82,9 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
     NumCard n = n ;
 --
 --    NumDigits n = {s = n.s ! NCard ; n = n.n} ;
---    OrdDigits n = {s = n.s ! NOrd} ;
---
+    --    OrdDigits n = {s = n.s ! NOrd} ;
+    --
+  lin
     NumNumeral numeral = numeral.card ;
     OrdNumeral numeral = numeral.ord ;
 --
