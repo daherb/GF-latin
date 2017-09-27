@@ -7,22 +7,20 @@ concrete ConjunctionLat of Conjunction =
   lin
     -- ConjS    : Conj -> ListS -> S ;       -- he walks and she runs
     -- TO FIX
-    -- ConjS conj ss = { s = \\_ => conjunctDistrX conj (ss.l ! conj.c) ; sadv = lin Adv { s = []} } ;
+    -- ConjS conj ss = { s = \\_ => conjunctDistrX conj (ss.l ! conj.c) ; sadv = lin Adv { s = []} ; neg = ss.neg } ;
 
     -- ConjAdv  : Conj -> ListAdv -> Adv ;   -- here or there
     ConjAdv conj ss = conjunctDistrSS conj (ss.l ! conj.c) ;
 
     -- ConjNP   : Conj -> ListNP -> NP ;     -- she or we
     ConjNP conj nps =
-      -- case nps.isBase of {
-      --  	False => conjunctDistrTable Case conj (nps.l ! conj.c) ;
-      --  	True => \\_ => "" -- ss (\\c => (nps.l ! And).s1 ! c++ (nps.l ! And).s2 ! c ++ BIND ++ "que") 
-      -- } **
---      conjunctDistrTable Case conj (nps.l ! conj.c) **
       {
-	s = case nps.isBase of {
-          False => \\_ => nonExist ; -- (conjunctDistrTable Case conj (nps.l ! conj.c)).s ;
-          True => \\c => (nps.l ! And).s1 ! c++ (nps.l ! And).s2 ! c ++ BIND ++ "que"
+	s = case conj.c of {
+	  And => case nps.isBase of {
+            False => (conjunctDistrTable Case conj (nps.l ! And)).s ;
+            True => \\c => (nps.l ! And).s1 ! c++ (nps.l ! And).s2 ! c ++ BIND ++ "que"
+	    } ;
+	  c => (conjunctDistrTable Case conj (nps.l ! And)).s
 	  } ;
 	n = case conj.c of { And => Pl ; _ => nps.n } ;
       	g = nps.g ;
@@ -54,33 +52,17 @@ concrete ConjunctionLat of Conjunction =
 
     -- BaseS : S -> S -> ListS
     -- TO FIX
-    -- BaseS x y = {
-    --   l = \\c => twoStr (x.s ! PreS) (y.s ! PreS)
-    --   } ;
+    -- BaseS x y = { l = \\c => twoStr (x.s ! PreS) (y.s ! PreS) } ;
 
     -- ConsS : S -> ListS -> ListS
     -- TO FIX
-    -- ConsS x xs = { l = \\c => (case c of
-    -- 	{
-    -- 	  And => consrSS and_Conj.s2 (ss (x.s ! PreS)) (xs.l ! c) ;
-    -- 	  Or => consrSS or_Conj.s2 (ss (x.s ! PreS)) (xs.l ! c) ;
-    -- 	  If => consrSS if_then_Conj.s2 (ss (x.s ! PreS)) (xs.l ! c) ;
-    -- 	  _ => consrSS "," (ss (x.s ! PreS)) (xs.l ! c)
-    -- 	}) } ;
+    -- ConsS x xs = { l = \\_ => consrSS bindComma (ss (x.s ! PreS)) (xs.l ! Comma) };
 
     -- BaseAdv : Adv -> Adv -> ListAdv
     BaseAdv x y = { l = \\c => twoSS x y} ;
 
     -- ConsAdv : Adv -> ListAdv -> ListAdv
-    ConsAdv x xs = { l = \\c => (case c of
-	{
-	  And => consrSS and_Conj.s2 x (xs.l ! c) ;
-	  Or => consrSS or_Conj.s2 x (xs.l ! c) ;
-	  If => consrSS if_then_Conj.s2 x (xs.l ! c) ;
-	  Comma => consrSS "," x (xs.l ! c) ;
-	  _ =>  consrSS "" x (xs.l ! c)
-	    
-	}) } ;
+    ConsAdv x xs = { l = \\_ => consrSS bindComma x (xs.l ! Comma) } ;
 
     -- BaseNP : NP -> NP -> ListNP ;      -- John, Mary
     BaseNP x y = {
@@ -94,13 +76,7 @@ concrete ConjunctionLat of Conjunction =
 
     -- ConsNP : NP -> ListNP -> ListNP ;  -- John, Mary, Bill
     ConsNP x xs = {
-      l = \\c => (case c of
-	{
-	  And => consrTable Case and_Conj.s2 x (xs.l ! c) ;
-	  Or => consrTable Case or_Conj.s2 x (xs.l ! c) ;
-	  If => consrTable Case if_then_Conj.s2 x (xs.l ! c) ;
-	  _ => consrTable Case "," x (xs.l ! c)
-	});
+      l = \\_ => consrTable Case bindComma x ( xs.l ! Comma );
       n = matchNumber x.n xs.n ;
       g = xs.g ;
       p = xs.p ;
@@ -113,17 +89,10 @@ concrete ConjunctionLat of Conjunction =
 
     -- ConsAP : AP -> ListAP -> ListAP
     ConsAP x xs =
-      { l = \\c => (case c of
-		      {
-			And => consrTable Agr and_Conj.s2 x (xs.l ! c) ;
-			Or => consrTable Agr or_Conj.s2 x (xs.l ! c) ;
-			If => consrTable Agr if_then_Conj.s2 x (xs.l ! c) ;
-			_ => consrTable Agr "," x (xs.l ! c)
-		      })
-      } ;
+      { l = \\_ => consrTable Agr and_Conj.s2 x (xs.l ! Comma ) } ;
 --
   lincat
-    [S] = { l : Coordinator => {s1,s2 : Str}} ;
+    -- [S] = { l : Coordinator => {s1,s2 : Str} } ; -- TO FIX
     [Adv] = { l: Coordinator => {s1,s2 : Str}} ;
     [NP] = {l : Coordinator => {s1,s2 : Case => Str} ; g : Gender ; n : Number ; p : Person ; adv : Adverb ; isBase : Bool} ;
     [AP] = {l : Coordinator => {s1,s2 : Agr => Str } } ;
