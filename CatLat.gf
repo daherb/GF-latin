@@ -87,4 +87,8 @@ concrete CatLat of Cat = CommonX ** open ResLat, ParamX, Prelude in {
     N3 = Noun ** { c : Prep ; c2 : Prep } ;
     PN = Noun ;
     A2 = Adjective ** { c : Prep} ;
+
+  linref
+    NP = \np -> np.preap.s ! Ag np.g np.n Nom ++ np.s ! Nom ++ np.postap.s ! Ag np.g np.n Nom ;
+    VP = \vp -> vp.adv.s ++ vp.inf !  VInfActPres ++ vp.obj ++ vp.compl ! Ag Masc Sg Nom ;
 }
