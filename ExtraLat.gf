@@ -2,8 +2,9 @@ concrete ExtraLat of ExtraLatAbs =
 	 CatLat,
 	 ExtraLexiconLat ** 
   open ResLat, ParadigmsLat, Coordination, Prelude in {
+  lincat CS = Str ;
   lin
-
+    useS s = combineSentence s ! PreO ! SOV ;
     -- PastPartAP      : VPSlash -> AP ;         -- lost (opportunity) ; (opportunity) lost in space
 --    PastPartAP vp = { s = vp.part ! VPassPerf } ;
     

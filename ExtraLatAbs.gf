@@ -1,8 +1,10 @@
 abstract ExtraLatAbs =
 	 Extra,
 	 ExtraLexiconLatAbs **
-{
+  {
+    cat CS ;
   fun
+    useS : S -> CS ;
     -- do not drop pronouns
     UsePronNonDrop : Pron -> NP ;
     
