@@ -28,7 +28,7 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat,Extr
     ComplVQ v q  = insertObj (dummyNP (q.s ! QIndir)) Nom_Prep (predV v) ;
     
 --  ComplVA : VA -> AP -> VP ;  -- they become red
-    ComplVA v ap = (predV v) ** { adj = ap.s } ;
+    ComplVA v ap = (predV v) ** { compl = ap.s } ;
 
 --  SlashV2a : V2 -> VPSlash ;  -- love (it)
     SlashV2a v = lin VP (predV2 v) ;
