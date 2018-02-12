@@ -1028,7 +1028,7 @@ oper
       pres   : AdvPos -> Str = \ap -> case ap of { PreS => adv ; _ => [] } ;
       prev   : AdvPos -> Str = \ap -> case ap of { PreV => adv ; _ => [] } ;
       preo   : AdvPos -> Str = \ap -> case ap of { PreO => adv ; _ => [] } ;
-      preneg : AdvPos -> Str = \ap -> case ap of { PreO => adv ; _ => [] } ;
+      preneg : AdvPos -> Str = \ap -> case ap of { PreNeg => adv ; _ => [] } ;
       ins    : AdvPos -> Str = \ap -> case ap of { InS  => adv ; _ => [] } ;
       inv    : AdvPos -> Str = \ap -> case ap of { InV  => adv ; _ => [] }
     in
