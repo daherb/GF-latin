@@ -26,6 +26,7 @@ param
   param
     Order = SVO | VSO | VOS | OSV | OVS | SOV ;
     AdvPos = PreS | PreV | PreO | PreNeg | InV | InS ; -- | InO
+    SAdvPos = SPreS | SPreV | SPreO | SPreNeg ;
   param
     Agr = Ag Gender Number Case ; -- Agreement for NP et al.
   oper
@@ -943,7 +944,7 @@ oper
   Preposition : Type = {s : Str ; c : Case ; isPost : Bool } ;
 
   -- conjunctions
-param Coordinator = And | Or | If | Neither | Because | Comma | Empty ;
+param Coordinator = And | Or | If | Neither | Because | Comma | Colon | Empty ;
 oper
   Conjunction : Type = { s1 : Str ; s2 : Str ; n : Number ; c : Coordinator };
   mkConjunction : Str -> Str -> Number -> Coordinator -> Conjunction = \s1,s2,num,coord -> { s1 = s1; s2 = s2 ; n = num ; c = coord } ;
@@ -1050,20 +1051,20 @@ oper
       p = pol
     } ;
 
-  combineSentence : Sentence -> ( AdvPos => Order => Str ) = \s ->
+  combineSentence : Sentence -> ( SAdvPos => AdvPos => Order => Str ) = \s ->
     let
-      pres   : AdvPos -> Str = \ap -> case ap of { PreS => s.sadv.s ; _ => [] } ;
-      prev   : AdvPos -> Str = \ap -> case ap of { PreV => s.sadv.s ; _ => [] } ;
-      preo   : AdvPos -> Str = \ap -> case ap of { PreO => s.sadv.s ; _ => [] } ;
-      preneg : AdvPos -> Str = \ap -> case ap of { PreO => s.sadv.s ; _ => [] } 
+      pres   : SAdvPos -> Str = \ap -> case ap of { SPreS =>    s.sadv.s ; _ => [] } ;
+      prev   : SAdvPos -> Str = \ap -> case ap of { SPreV =>    s.sadv.s ; _ => [] } ;
+      preo   : SAdvPos -> Str = \ap -> case ap of { SPreO =>    s.sadv.s ; _ => [] } ;
+      preneg : SAdvPos -> Str = \ap -> case ap of { SPreNeg =>  s.sadv.s ; _ => [] } 
     in
-    \\ap,order  => case order of {
-      SVO => s.t.s ++ s.p.s ++ pres ap ++ s.s   ! ap ++ preneg ap ++ s.neg ! ap ++ prev ap ++ s.v   ! ap ++ preo ap ++ s.o ! ap;
-      VSO => s.t.s ++ s.p.s ++ preneg ap ++ s.neg ! ap ++ prev ap ++ s.v   ! ap ++ pres ap ++ s.s   ! ap ++ preo ap ++ s.o ! ap;
-      VOS => s.t.s ++ s.p.s ++ preneg ap ++ s.neg ! ap ++ prev ap ++ s.v   ! ap ++ preo ap ++ s.o   ! ap ++ pres ap ++ s.s ! ap ;
-      OSV => s.t.s ++ s.p.s ++ preo ap ++ s.o   ! ap ++ pres ap ++ s.s   ! ap ++ preneg ap ++ s.neg ! ap ++ prev ap ++ s.v ! ap;
-      OVS => s.t.s ++ s.p.s ++ preo ap ++ s.o   ! ap ++ preneg ap ++ s.neg ! ap ++ prev ap ++ s.v   ! ap ++ pres ap ++ s.s ! ap ;
-      SOV => s.t.s ++ s.p.s ++ pres ap ++ s.s   ! ap ++ preo ap ++ s.o   ! ap ++ preneg ap ++ s.neg ! ap ++ prev ap ++ s.v ! ap
+    \\sap,ap,order  => case order of {
+      SVO => s.t.s ++ s.p.s ++ pres sap ++ s.s   ! ap ++ preneg sap ++ s.neg ! ap ++ prev sap ++ s.v   ! ap ++ preo sap ++ s.o ! ap;
+      VSO => s.t.s ++ s.p.s ++ preneg sap ++ s.neg ! ap ++ prev sap ++ s.v   ! ap ++ pres sap ++ s.s   ! ap ++ preo sap ++ s.o ! ap;
+      VOS => s.t.s ++ s.p.s ++ preneg sap ++ s.neg ! ap ++ prev sap ++ s.v   ! ap ++ preo sap ++ s.o   ! ap ++ pres sap ++ s.s ! ap ;
+      OSV => s.t.s ++ s.p.s ++ preo sap ++ s.o   ! ap ++ pres sap ++ s.s   ! ap ++ preneg sap ++ s.neg ! ap ++ prev sap ++ s.v ! ap;
+      OVS => s.t.s ++ s.p.s ++ preo sap ++ s.o   ! ap ++ preneg sap ++ s.neg ! ap ++ prev sap ++ s.v   ! ap ++ pres sap ++ s.s ! ap ;
+      SOV => s.t.s ++ s.p.s ++ pres sap ++ s.s   ! ap ++ preo sap ++ s.o   ! ap ++ preneg sap ++ s.neg ! ap ++ prev sap ++ s.v ! ap
       } ;
 
 
@@ -1071,8 +1072,8 @@ oper
   -- questions
   mkQuestion : SS -> Clause -> QClause = \ss,cl -> {
      s = \\tense,anter,pol,form => case form of {
-       QDir => ss.s ++ (combineSentence (combineClause cl tense anter pol VQFalse)) ! PreS ! OVS  ;
-       QIndir => ss.s ++ (combineSentence (combineClause cl tense anter pol VQFalse)) ! PreO ! OSV
+       QDir => ss.s ++ (combineSentence (combineClause cl tense anter pol VQFalse)) ! SPreS ! PreS ! OVS  ;
+       QIndir => ss.s ++ (combineSentence (combineClause cl tense anter pol VQFalse)) ! SPreO ! PreO ! OSV
        }
     };
   
