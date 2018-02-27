@@ -12,12 +12,12 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat,Extr
 --  ComplVV : VV -> VP -> VP ;  -- want to run        
     ComplVV v vp =
       {
-	s = vp.s ;
+	s = \\af,qf => v.act ! af ;
 	part = vp.part ;
 	imp = vp.imp ;
 	inf = vp.inf ;
 	obj = vp.obj ;
-	compl = vp.compl ;
+	compl = \\ag => vp.compl ! ag ++ vp.inf ! VInfActPres ;
 	adv = vp.adv 
       };
 
