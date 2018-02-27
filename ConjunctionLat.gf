@@ -25,8 +25,9 @@ concrete ConjunctionLat of Conjunction =
 	n = case conj.c of { And => Pl ; _ => nps.n } ;
       	g = nps.g ;
       	p = nps.p ;
-      	adv = { s = "" } ;
-      	preap, postap = { s = \\_ => "" }
+      	adv = nps.adv ;
+      	preap = nps.preap ;
+	postap = nps.postap ;
       } ;
 
     -- ConjAP   : Conj -> ListAP -> AP ;
@@ -67,10 +68,12 @@ concrete ConjunctionLat of Conjunction =
     -- BaseNP : NP -> NP -> ListNP ;      -- John, Mary
     BaseNP x y = {
       l = \\c => twoTable Case x y ;
-      g = Masc ; -- Just guessing
+      g = Masc ; -- Just guessing (but maybe sexist bullshit)
       n = matchNumber x.n y.n ;
       p = P3 ;
       adv = ss ( x.adv.s ++ y.adv.s ) ;
+      preap = lin AP { s = \\a => x.preap.s ! a ++ y.preap.s ! a } ;
+      postap = lin AP { s = \\a => x.postap.s ! a ++ y.postap.s ! a } ;
       isBase = True
       } ; 
 
@@ -81,6 +84,8 @@ concrete ConjunctionLat of Conjunction =
       g = xs.g ;
       p = xs.p ;
       adv = ss ( x.adv.s ++ xs.adv.s ) ;
+      preap = lin AP { s = \\a => x.preap.s ! a ++ xs.preap.s ! a } ;
+      postap = lin AP { s = \\a => x.postap.s ! a ++ xs.postap.s ! a } ;
       isBase = False
       } ;
     
@@ -94,7 +99,7 @@ concrete ConjunctionLat of Conjunction =
   lincat
     -- [S] = { l : Coordinator => {s1,s2 : Str} } ; -- TO FIX
     [Adv] = { l: Coordinator => {s1,s2 : Str}} ;
-    [NP] = {l : Coordinator => {s1,s2 : Case => Str} ; g : Gender ; n : Number ; p : Person ; adv : Adverb ; isBase : Bool} ;
+    [NP] = {l : Coordinator => {s1,s2 : Case => Str} ; g : Gender ; n : Number ; p : Person ; adv : Adverb ; preap : AP ; postap : AP ; isBase : Bool } ;
     [AP] = {l : Coordinator => {s1,s2 : Agr => Str } } ;
 
   oper
