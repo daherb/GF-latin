@@ -1085,7 +1085,7 @@ oper
 -- determiners
 
   Determiner : Type = {
-    s : Gender => Case => Str ; -- s,sp : Gender => Case => Str ; Don't know what sp is for
+    s,sp : Gender => Case => Str ; -- sp for split determiners (not clear if really needed)
     n : Number
     } ;
 
@@ -1093,6 +1093,7 @@ oper
     {
       n = n ;
       s = \\g,c => a.s ! Posit ! Ag g n c ;
+      sp = \\_,_ => ""
     } ;
 
   Quantifier : Type = {
