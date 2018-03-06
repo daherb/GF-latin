@@ -11,7 +11,7 @@ concrete AdverbLat of Adverb = CatLat ** open ResLat, Prelude in
 --      } ;
 
 --  PrepNP : Prep -> NP -> Adv ;        -- in the house
-    PrepNP prep np = {s = prep.s ++ np.adv.s ++ np.preap.s ! (Ag np.g np.n prep.c) ++ np.s ! prep.c ++  np.postap.s ! (Ag np.g np.n prep.c )} ;
+    PrepNP prep np = {s = prep.s ++ np.adv.s ++ np.det.s ! np.g ! prep.c ++ np.preap.s ! (Ag np.g np.n prep.c) ++ np.s ! prep.c ++  np.postap.s ! (Ag np.g np.n prep.c ) ++ np.det.sp ! np.g ! prep.c } ;
 
 --    AdAdv = cc2 ;
 

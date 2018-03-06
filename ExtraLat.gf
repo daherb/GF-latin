@@ -15,7 +15,8 @@ concrete ExtraLat of ExtraLatAbs =
 	p = p.p ;
 	s = p.pers.s ! PronNonDrop ! PronNonRefl ;
 	adv = ss "" ;
-	preap, postap = { s = \\_ => "" } 
+	preap, postap = { s = \\_ => "" } ;
+	det = { s = \\_,_ => "" ; sp = \\_,_ => "" ; n = p.pers.n } ;
       } ;
     
     Nom_Prep = mkPrep "" Nom;

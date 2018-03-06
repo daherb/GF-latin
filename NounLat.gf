@@ -9,11 +9,22 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
 	n = det.n ; g = cn.g ; p = P3 ;
 	adv = cn.adv ;
 	preap = cn.preap ;
-	postap = cn.postap
+	postap = cn.postap ;
+	det = det 
       } ;
 
-    UsePN pn = lin NP { s = pn.s ! Sg ; g = pn.g ; n = Sg ; p = P3 ;  adv = ss "" ; preap, postap = { s = \\_ => "" } } ;
-    UsePron p = -- Pron -> Np
+    UsePN pn =
+      lin NP
+	{
+	  s = pn.s ! Sg ;
+	  g = pn.g ;
+	  n = Sg ;
+	  p = P3 ;
+	  adv = ss "" ;
+	  preap, postap = { s = \\_ => "" } ;
+	  det = { s,sp = \\_,_ => "" ; n = Sg }
+	} ;
+    UsePron p = -- Pron -> NP
       { 
 	g = p.pers.g ;
 	n = p.pers.n ;
@@ -23,7 +34,8 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
 	  _ => p.pers.s ! PronNonDrop ! PronNonRefl  -- but don't drop it otherwise
 	  } ! c ;
 	adv = ss "" ;
-	preap, postap = { s = \\_ => "" } 
+	preap, postap = { s = \\_ => "" } ;
+	det = { s,sp = \\_,_ => "" ; n = p.pers.n } ;	
       } ;
 --    PredetNP pred np = {
 --      s = \\c => pred.s ++ np.s ! c ;
@@ -47,7 +59,7 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
       adv = cc2 np.adv adv ;
       preap = np.preap ;
       postap = np.postap ;
-			     
+      det = np.det;
       } ;
 --
 --    DetQuantOrd quant num ord = {
@@ -68,7 +80,8 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
       n = det.n ;
       p = P3 ;
       adv = ss "" ;
-      preap, postap = { s = \\_ => "" } 
+      preap, postap = { s = \\_ => "" } ;
+      det = { s,sp = \\_,_ => "" ; n = det.n } ;
     } ;
 
 --    PossPron p = {
@@ -112,6 +125,7 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
 	adv = cn.adv ; 
 	preap = cn.preap ;
 	postap = cn.postap ;
+	det = { s,sp = \\_,_ => "" ; n = Sg } ;
       };
 
     UseN n = -- N -> CN
@@ -168,6 +182,13 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
 --    SentCN cn sc = {s = \\n,c => cn.s ! n ! c ++ sc.s ; g = cn.g} ;
     --
     -- ApposCN : CN -> NP -> CN
-    ApposCN cn np = {s = \\n,c => cn.s ! n ! c ++ np.s ! c ; g = cn.g ; preap = cn.preap ; postap = cn.postap ; adv = cn.adv } ; -- massable = cn.massable } ;
+    ApposCN cn np =
+      {
+	s = \\n,c => cn.s ! n ! c ++ np.det.s ! np.g ! c ++ np.preap.s ! (Ag np.g n c) ++ np.s ! c ++ np.postap .s ! (Ag np.g n c) ++ np.det.sp ! np.g ! c ;
+	g = cn.g ;
+	preap = cn.preap ;
+	postap = cn.postap ;
+	adv = cn.adv
+      } ; -- massable = cn.massable } ;
 --
 }

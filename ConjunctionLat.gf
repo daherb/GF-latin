@@ -28,6 +28,7 @@ concrete ConjunctionLat of Conjunction =
       	adv = nps.adv ;
       	preap = nps.preap ;
 	postap = nps.postap ;
+	det = { s = \\_,_ => "" ; sp = \\_,_ => "" ; n = nps.n };
       } ;
 
     -- ConjAP   : Conj -> ListAP -> AP ;
@@ -74,7 +75,9 @@ concrete ConjunctionLat of Conjunction =
       adv = ss ( x.adv.s ++ y.adv.s ) ;
       preap = lin AP { s = \\a => x.preap.s ! a ++ y.preap.s ! a } ;
       postap = lin AP { s = \\a => x.postap.s ! a ++ y.postap.s ! a } ;
-      isBase = True
+      isBase = True ;
+      det = { s = \\g,c => x.det.s ! g ! c ++ y.det.s ! g ! c ; sp = \\g,c => x.det.sp ! g ! c ++ y.det.sp ! g ! c ; n = matchNumber x.get.n y.get.n } ;
+	
       } ; 
 
     -- ConsNP : NP -> ListNP -> ListNP ;  -- John, Mary, Bill
@@ -87,6 +90,7 @@ concrete ConjunctionLat of Conjunction =
       preap = lin AP { s = \\a => x.preap.s ! a ++ xs.preap.s ! a } ;
       postap = lin AP { s = \\a => x.postap.s ! a ++ xs.postap.s ! a } ;
       isBase = False
+	-- TODO det
       } ;
     
     -- BaseAP : AP -> AP -> ListAP

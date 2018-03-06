@@ -22,6 +22,7 @@ param
 	adv : Adverb ;
 	preap : {s : Agr => Str } ;
 	postap : {s : Agr => Str } ;
+	det : Determiner 
       } ;
   param
     Order = SVO | VSO | VOS | OSV | OVS | SOV ;
@@ -117,12 +118,13 @@ param
       n = n ;
       p = P3;
       adv = ss "" ;
-      preap, postap = { s = \\_ => "" } 
+      preap, postap = { s = \\_ => "" } ;
+      det = { s = \\_,_ => "" ; sp = \\_,_ => "" ; n = n} ;
     } ;
   
   dummyNP : Str -> NounPhrase = \s -> regNP s s s s s s Masc Sg ;
 	  
-  emptyNP : NounPhrase = { s = \\_ => ""; g = Masc; n = Sg; p = P1 ; adv = ss "" ; preap, postap = { s = \\_ => "" } }; 
+  emptyNP : NounPhrase = { s = \\_ => ""; g = Masc; n = Sg; p = P1 ; adv = ss "" ; preap, postap = { s = \\_ => "" } ; det = { s = \\_,_ => "" ; sp = \\_,_ => "" ; n = Sg } ;}; 
 -- also used for adjectives and so on
 
 -- adjectives
