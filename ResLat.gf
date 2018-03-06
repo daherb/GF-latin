@@ -976,7 +976,7 @@ oper
     --    part = vp.part ;
     imp = vp.imp ;
     inf = vp.inf ;
-    obj = np.preap.s ! (Ag np.g np.n prep.c) ++ (appPrep prep np.s) ++ np.postap.s ! (Ag np.g np.n prep.c) ++ vp.obj ;
+    obj = np.det.s ! np.g ! prep.c ++ np.preap.s ! (Ag np.g np.n prep.c) ++ (appPrep prep np.s) ++ np.postap.s ! (Ag np.g np.n prep.c) ++ np.det.sp ! np.g ! prep.c ++ vp.obj ;
     compl = vp.compl ;
     adv = cc2 vp.adv np.adv
   } ;
@@ -986,7 +986,7 @@ oper
     --    part = vp.part ;
     imp = vp.imp ;
     inf = vp.inf ;
-    obj = np.preap.s ! (Ag np.g np.n vp.c2.c) ++ (appPrep vp.c2 np.s) ++ np.postap.s ! (Ag np.g np.n vp.c2.c) ++ vp.obj ;
+    obj = np.det.s ! np.g ! vp.c2.c ++ np.preap.s ! (Ag np.g np.n vp.c2.c) ++ (appPrep vp.c2 np.s) ++ np.postap.s ! (Ag np.g np.n vp.c2.c) ++ np.det.sp ! np.g ! vp.c2.c ++ vp.obj ;
     compl = vp.compl ;
     c2 = vp.c2 ;
     adv = cc2 vp.adv np.adv
@@ -1036,7 +1036,7 @@ oper
       inv    : AdvPos -> Str = \ap -> case ap of { InV  => adv ; _ => [] }
     in
     {
-      s = \\ap => pres ap ++ np.preap.s ! (Ag np.g np.n Nom) ++ ins ap ++ np.s ! Nom ++ np.postap .s ! (Ag np.g np.n Nom);
+      s = \\ap => pres ap ++ np.det.s ! np.g ! Nom ++ np.preap.s ! (Ag np.g np.n Nom) ++ ins ap ++ np.s ! Nom ++ np.postap .s ! (Ag np.g np.n Nom) ++ np.det.sp ! np.g ! Nom ;
       v = \\tense,anter,vqf,ap => prev ap ++ vp.compl ! Ag np.g np.n Nom ++ inv ap ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ;
       o = \\ap => preo ap ++ vp.obj ;
       neg = \\pol,ap => preneg ap ++ negation pol ;
