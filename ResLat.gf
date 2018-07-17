@@ -196,7 +196,7 @@ param
     adv : Adverb
     } ;
 
-  ObjectVerbPhrase : Type = VerbPhrase ** {c2 : Preposition} ;
+  ObjectVerbPhrase : Type = VerbPhrase ** {c : Preposition} ;
 
   Verb : Type = {
     act   : VActForm => Str ;
@@ -955,7 +955,7 @@ oper
   Conjunction : Type = { s1 : Str ; s2 : Str ; n : Number ; c : Coordinator };
   mkConjunction : Str -> Str -> Number -> Coordinator -> Conjunction = \s1,s2,num,coord -> { s1 = s1; s2 = s2 ; n = num ; c = coord } ;
   
-  VPSlash = VerbPhrase ** {c2 : Preposition} ;
+  VPSlash = VerbPhrase ** {c : Preposition} ;
 
   predV : Verb -> VerbPhrase = \v -> {
     s = \\a,q => v.act ! a ++ case q of { VQTrue => Prelude.BIND ++ "ne"; VQFalse => "" };
@@ -968,10 +968,10 @@ oper
   } ;
 
   predV2 : Verb2 -> VPSlash = \v ->
-    predV v ** {c2 = v.c} ;
+    predV v ** {c = v.c} ;
 
   predV3 : Verb3 -> VPSlash = \v
-    -> predV v ** {c2 = v.c2; c3 = v.c3 } ;
+    -> predV v ** {c = v.c; c2 = v.c2 } ;
 
   appPrep : Preposition -> (Case => Str) -> Str = \c,s -> c.s ++ s ! c.c ;
 
@@ -990,9 +990,9 @@ oper
     --    part = vp.part ;
     imp = vp.imp ;
     inf = vp.inf ;
-    obj = np.det.s ! np.g ! vp.c2.c ++ np.preap.s ! (Ag np.g np.n vp.c2.c) ++ (appPrep vp.c2 np.s) ++ np.postap.s ! (Ag np.g np.n vp.c2.c) ++ np.det.sp ! np.g ! vp.c2.c ++ vp.obj ;
+    obj = np.det.s ! np.g ! vp.c.c ++ np.preap.s ! (Ag np.g np.n vp.c.c) ++ (appPrep vp.c np.s) ++ np.postap.s ! (Ag np.g np.n vp.c.c) ++ np.det.sp ! np.g ! vp.c.c ++ vp.obj ;
     compl = vp.compl ;
-    c2 = vp.c2 ;
+    c = vp.c ;
     adv = cc2 vp.adv np.adv
     } ;
     
