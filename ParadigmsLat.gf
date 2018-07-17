@@ -32,7 +32,7 @@ oper
   gen : Case = Gen ;
   dat : Case = Dat ;
   abl : Case = Abl ;
-  voc : Case = Voc ;
+  voc : Case = ResLat.Voc ;
 
   mkN = overload {
     mkN : (verbum : Str) -> N 
