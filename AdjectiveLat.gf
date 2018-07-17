@@ -31,7 +31,7 @@ concrete AdjectiveLat of Adjective = CatLat ** open ResLat, Prelude in {
     
 --  CAdvAP  : CAdv -> AP -> NP -> AP ; -- as cool as John
     CAdvAP cadv ap np =
-      { s = \\ag => cadv.s ++ ap.s ! ag ++ np.s ! 
+      { s = \\ag => cadv.s ++ ap.s ! ag ++ cadv.p ++ np.s ! Nom } ;
     
 -- The superlative use is covered in $Ord$.
 
