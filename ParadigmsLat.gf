@@ -46,22 +46,22 @@ oper
       = \n -> lin A ( adj n ** {isPre = False } ) ;
     mkA : (verbum, verbi : Str) -> A 
       = \x,y -> lin A ( adj123 x y ** {isPre = False } ) ;
-    mkA : (bonus,bona,bonum : N) -> A 
-      = \x,y,z -> 
-      let compsup = comp_super x ;
-	  advs : Str * Str = 
-	    case x.s!Sg!Nom of {
-	      -- Bayer-Lindauer 50 4
-	      idon + #vowel + "us" => < "magis" , "maxime" > ;
-	      _ => < "" , "" >
-	    };
-      in
-      lin A ( mkAdjective x y z < compsup.p1 , advs.p2 > < compsup.p2 , advs.p2> ** {isPre = False } ) ;
+    -- mkA : (bonus,bona,bonum : N) -> A 
+    --   = \x,y,z -> 
+    --   let compsup = comp_super x ;
+    -- 	  advs : Str * Str = 
+    -- 	    case x.s!Sg!Nom of {
+    -- 	      -- Bayer-Lindauer 50 4
+    -- 	      idon + #vowel + "us" => < "magis" , "maxime" > ;
+    -- 	      _ => < "" , "" >
+    -- 	    };
+    --   in
+    --   lin A ( mkAdjective x y z < compsup.p1 , advs.p2 > < compsup.p2 , advs.p2> ** {isPre = False } ) ;
 
     mkA : (verbum : Str) -> (comparable : Bool) -> A
       = \n,b -> lin A ( case b of {
 	True => adj n ;
-	False => { s = table { Posit => (adj n).s ! Posit ; _ => \\_ => nonExist } }
+	False => let a = adj n in { s = table { Posit => a.s ! Posit ; _ => \\_ => nonExist } ; adv = a.adv }
       } ** { isPre = False } )
   } ;
   

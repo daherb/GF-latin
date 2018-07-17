@@ -2,26 +2,42 @@ concrete AdverbLat of Adverb = CatLat ** open ResLat, Prelude in
   {
 
   lin
---    PositAdvAdj a = {s = a.s ! AAdv} ;
---    ComparAdvAdj cadv a np = {
---      s = cadv.s ++ a.s ! AAdv ++ "than" ++ np.s ! Nom
---      } ;
---    ComparAdvAdjS cadv a s = {
---      s = cadv.s ++ a.s ! AAdv ++ "than" ++ s.s
---      } ;
+
+--  PositAdvAdj : A -> Adv ;                 -- warmly
+    PositAdvAdj a = { s = a.adv ! Posit } ;
 
 --  PrepNP : Prep -> NP -> Adv ;        -- in the house
-    PrepNP prep np = {s = prep.s ++ np.adv.s ++ np.det.s ! np.g ! prep.c ++ np.preap.s ! (Ag np.g np.n prep.c) ++ np.s ! prep.c ++  np.postap.s ! (Ag np.g np.n prep.c ) ++ np.det.sp ! np.g ! prep.c } ;
+    PrepNP prep np =
+      {
+	s = prep.s ++ np.adv.s ++ np.det.s ! np.g ! prep.c ++ np.preap.s ! (Ag np.g np.n prep.c) ++
+	  np.s ! prep.c ++  np.postap.s ! (Ag np.g np.n prep.c ) ++ np.det.sp ! np.g ! prep.c
+      } ;
 
---    AdAdv = cc2 ;
 
+--  ComparAdvAdj  : CAdv -> A -> NP -> Adv ; -- more warmly than John
+    ComparAdvAdj cadv a np = {
+      s = cadv.s ++ a.adv ! Compar ++ cadv.p ++ np.s ! Nom
+      } ;
+
+--  ComparAdvAdjS : CAdv -> A -> S  -> Adv ; -- more warmly than he runs
+    ComparAdvAdjS cadv a s =
+      {
+	s = cadv.s ++ a.adv ! Compar ++ cadv.p ++ combineSentence s ! SPreS ! PreV ! SOV ;
+      } ;
+
+--  AdAdv  : AdA -> Adv -> Adv ;             -- very quickly
+    AdAdv = cc2 ;
+
+--  PositAdAAdj : A -> AdA ;                 -- extremely
+    PositAdAAdj a =
+      { s = a.adv ! Posit } ;
+    
 -- Subordinate clauses can function as adverbs.
 
 --  SubjS  : Subj -> S -> Adv ;              -- when she sleeps
-    SubjS subj s = ss2 subj.s (s.s ! PreS ) ; -- cc2 ;
+    SubjS subj s = ss2 subj.s (combineSentence s ! SPreS ! PreV ! SOV ) ;
     
------b    AdvSC s = s ; --- this rule give stack overflow in ordinary parsing
---
---    AdnCAdv cadv = {s = cadv.s ++ "than"} ;
+--  AdnCAdv : CAdv -> AdN ;                  -- less (than five)
+    AdnCAdv cadv = {s = cadv.s ++ cadv.p} ;
 --
 }

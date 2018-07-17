@@ -334,7 +334,8 @@ oper
     (noun1 (bon + "a")) 
     (noun2um (bon + "um")) 
     < compsup.p1 , advs.p1 > 
-    < compsup.p2 , advs.p2 > ;
+    < compsup.p2 , advs.p2 >
+    (bon + "o") (bon + "ius") (bon + "issimo") ; 
 
   adj3x : (_,_ : Str) -> Adjective = \acer,acris ->
    let
@@ -353,7 +354,7 @@ oper
     (noun3adj acrise.p2 acris Neutr) 
     < compsuper.p1 , "" >
     < compsuper.p2 , "" >
-    ;
+    (ac + "riter") (ac + "rius") (ac + "rissimo") ; 
     
 -- smart paradigms
 

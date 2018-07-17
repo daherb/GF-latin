@@ -34,7 +34,8 @@ param
     Adjective : Type = {
       s : Degree => Agr => Str ; 
 --      comp_adv : Str ; 
---      super_adv : Str 
+      --      super_adv : Str
+      adv : Degree => Str ;
       } ;
     CommonNoun : Type = 
     {
@@ -129,10 +130,12 @@ param
 
 -- adjectives
 
-  mkAdjective : (_,_,_ : Noun) -> 
+  mkAdjective : (bonus,bona,bonum : Noun) -> 
     ( (Agr => Str) * Str ) -> 
-    ( (Agr => Str) * Str ) -> Adjective = 
-    \bonus,bona,bonum,melior,optimus ->
+    ( (Agr => Str) * Str ) ->
+    (bono,bonius,bonissimo : Str) ->
+    Adjective = 
+    \bonus,bona,bonum,melior,optimus,bono,bonius,bonissimo ->
     {
       s = table {
 	Posit => table {
@@ -144,7 +147,8 @@ param
 	Superl => optimus.p1 
 	} ;
       comp_adv = melior.p2 ;
-      super_adv = optimus.p2
+      super_adv = optimus.p2 ;
+      adv = table { Posit => bono ; Compar => bonius ; Superl => bonissimo } ;
     } ;
 
 
@@ -162,7 +166,7 @@ param
 
 
   emptyAdj : Adjective = 
-    { s = \\_,_ => "" ; comp_adv = "" ; super_adv = "" } ; 
+    { s = \\_,_ => "" ; comp_adv = "" ; super_adv = "" ; adv = \\_ => "" } ; 
 
 -- verbs
 
