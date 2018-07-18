@@ -3,7 +3,8 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
   flags optimize=all_subs ;
 
   lin
-    DetCN det cn = -- Det -> CN -> NP
+--  DetCN   : Det -> CN -> NP ;   -- the man
+    DetCN det cn =
       {
 	s = \\c => cn.s ! det.n ! c ;
 	n = det.n ; g = cn.g ; p = P3 ;
@@ -13,6 +14,7 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
 	det = det 
       } ;
 
+--  UsePN   : PN -> NP ;          -- John
     UsePN pn =
       lin NP
 	{
@@ -23,8 +25,10 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
 	  adv = ss "" ;
 	  preap, postap = { s = \\_ => "" } ;
 	  det = { s,sp = \\_,_ => "" ; n = Sg }
-	} ;
-    UsePron p = -- Pron -> NP
+	    } ;
+
+--  UsePron : Pron -> NP ;        -- he
+    UsePron p =
       { 
 	g = p.pers.g ;
 	n = p.pers.n ;
@@ -37,30 +41,47 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
 	preap, postap = { s = \\_ => "" } ;
 	det = { s,sp = \\_,_ => "" ; n = p.pers.n } ;	
       } ;
---    PredetNP pred np = {
---      s = \\c => pred.s ++ np.s ! c ;
---      a = np.a
---      } ;
---
+
+--  PredetNP : Predet -> NP -> NP ; -- only the man
+    PredetNP predet np =
+      np ** {
+	det = np.det ** { s = \\g,c => predet.s ++ np.det.s ! g ! c }
+      } ;
+
+--  PPartNP : NP -> V2  -> NP ;    -- the man seen
 --    PPartNP np v2 = {
 --      s = \\c => np.s ! c ++ v2.s ! VPPart ;
 --      a = np.a
 --      } ;
---
---    RelNP np rs = {
---      s = \\c => np.s ! c ++ "," ++ rs.s ! np.a ;
---      a = np.a
---      } ;
+    --
 
---    AdvNP   : NP -> Adv -> NP ;    -- Paris today
-    AdvNP np adv = {
-      s = \\c => np.s ! c ;
-      g = np.g ; n = np.n; p = np.p ;
-      adv = cc2 np.adv adv ;
-      preap = np.preap ;
-      postap = np.postap ;
-      det = np.det;
-      } ;
+--  AdvNP   : NP -> Adv -> NP ;    -- Paris today
+    AdvNP np adv = np ** { adv = cc2 np.adv adv } ;
+      -- {
+      -- s = \\c => np.s ! c ;
+      -- g = np.g ; n = np.n; p = np.p ;
+      -- adv = cc2 np.adv adv ;
+      -- preap = np.preap ;
+      -- postap = np.postap ;
+      -- det = np.det;
+      -- } ;
+
+--    ExtAdvNP: NP -> Adv -> NP ;    -- boys, such as ..
+    ExtAdvNP = AdvNP ;
+
+--  RelNP   : NP -> RS  -> NP ;    -- Paris, which is here
+    RelNP np rs = np ** { adv = cc2 rs np.adv } ;
+
+--  DetNP   : Det -> NP ;  -- these five
+    DetNP det = {
+      s = det.s ! Neutr ;
+      g = Neutr ;
+      n = det.n ;
+      p = P3 ;
+      adv = ss "" ;
+      preap, postap = { s = \\_ => "" } ;
+      det = { s,sp = \\_,_ => "" ; n = det.n } ;
+    } ;
 --
 --    DetQuantOrd quant num ord = {
 --      s  = quant.s ! num.hasCard ! num.n ++ num.s ++ ord.s ; 
@@ -74,15 +95,7 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
       n  = num.n
       } ;
 
-    DetNP det = {
-      s = det.s ! Neutr ;
-      g = Neutr ;
-      n = det.n ;
-      p = P3 ;
-      adv = ss "" ;
-      preap, postap = { s = \\_ => "" } ;
-      det = { s,sp = \\_,_ => "" ; n = det.n } ;
-    } ;
+
 
 --    PossPron p = {
 --      s = \\_,_ => p.s ! Gen ;
