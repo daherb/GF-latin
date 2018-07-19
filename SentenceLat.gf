@@ -45,7 +45,7 @@ concrete SentenceLat of Sentence = CatLat ** open Prelude, ResLat in {
 --    EmbedVP vp = {s = infVP False vp (agrP3 Sg)} ; --- agr
 --
     UseCl  t p cl = -- Temp -> Pol-> Cl -> S
-      (combineClause cl t t.a p VQFalse) ;
+      (combineClause cl (lin Tense t) t.a (lin Pol p) VQFalse) ;
 
     -- TO FIX
     --UseQCl t p cl =
