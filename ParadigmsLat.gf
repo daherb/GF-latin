@@ -42,9 +42,9 @@ oper
   } ;
   
   mkA = overload {
-    mkA : (verbum : Str) -> A 
+    mkA : (verbum : Str) -> A -- Nominative masculine
       = \n -> lin A ( adj n ** {isPre = False } ) ;
-    mkA : (verbum, verbi : Str) -> A 
+    mkA : (verbum, verbi : Str) -> A -- Nominative and Genitive masculine
       = \x,y -> lin A ( adj123 x y ** {isPre = False } ) ;
     -- mkA : (bonus,bona,bonum : N) -> A 
     --   = \x,y,z -> 
@@ -57,7 +57,8 @@ oper
     -- 	    };
     --   in
     --   lin A ( mkAdjective x y z < compsup.p1 , advs.p2 > < compsup.p2 , advs.p2> ** {isPre = False } ) ;
-
+    mkA : (bonus,bona,bonum : Str) -> A -- Nominative masculine, feminine and neuter
+      = \x,y,z -> lin A (adjfull x y z ) ;
     mkA : (verbum : Str) -> (comparable : Bool) -> A
       = \n,b -> lin A ( case b of {
 	True => adj n ;

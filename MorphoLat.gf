@@ -8,7 +8,7 @@
 -- syntax. To build a lexicon, it is better to use $ParadigmsLat$, which
 -- gives a higher-level access to this module.
 
-resource MorphoLat = ParamX, ResLat ** open Prelude in {
+resource MorphoLat = ParamX, ResLat ** open Prelude, Predef in {
 --
 --  flags optimize=all ;
 --
@@ -179,7 +179,7 @@ oper
       _ + "a"  => noun1 verbum ;
       _ + "us" => noun2us verbum ;
       _ + "um" => noun2um verbum ;
-      _ + ( "er" | "ir" ) => 
+      _ + ( "er" | "ir" | "ur" | "tr") => 
 	let
 	  puer = verbum ; 
 	  pue = Predef.tk 1 puer ; 
@@ -189,6 +189,7 @@ oper
 	    -- Exception of adjectives where e is part of the word stem 31 3.2
 	    ("asper" | "miser" | "tener" | "frugifer") + _ => "e";
 	    -- "liber" => ( "e"  | "" ) ; conflicting with noun liber
+	    _ + "tr" => "t";
 	    _ => ""
 	    } ;
 	  pu = Predef.tk 1 pue ;
@@ -310,6 +311,8 @@ oper
 	-- Usual cases
 	pulch + "er" => pulch + "r" ;
 	bon + "us" => bon ;
+	cam + "ur" => cam ;
+	dime + "tr" => bonus ; 
 	_ => Predef.error ("adj12 does not apply to" ++ bonus)
 	} ; 
       nbonus = (noun12 bonus) ;
@@ -337,7 +340,7 @@ oper
     < compsup.p2 , advs.p2 >
     (bon + "o") (bon + "ius") (bon + "issimo") ; 
 
-  adj3x : (_,_ : Str) -> Adjective = \acer,acris ->
+  adj3x : (_,_ : Str) -> Adjective = \acer,acris -> -- FISHY??
    let
      ac = Predef.tk 2 acer ;
      acrise : Str * Str = case acer of {
@@ -355,10 +358,88 @@ oper
     < compsuper.p1 , "" >
     < compsuper.p2 , "" >
     (ac + "riter") (ac + "rius") (ac + "rissimo") ; 
-    
+
+  adjgre : Str -> Str -> Str -> Adjective = \bonus,bona,bonum ->
+    let
+      first : Str -> Agr => Str =
+	\stem ->
+	table { Ag Masc Sg Nom => stem + "os" ;
+		Ag (Masc | Neutr) Sg Gen => stem + "ou" ;
+		Ag (Masc | Neutr) Sg Dat => stem + "oi" ;
+		Ag (Masc | Neutr) Sg Acc => stem + "on" ;
+		Ag Masc Sg Voc => stem + "e" ;
+		Ag Fem Sg (Nom | Voc) => stem + "a" ;
+		Ag Fem Sg Gen => stem + "as" ;
+		Ag Fem Sg Dat => stem + "ai" ;
+		Ag Fem Sg Acc => stem + "an" ;
+		Ag Neutr Sg (Nom | Voc) => stem + "on" ;
+		Ag Masc Pl (Nom | Voc) => stem + "oi" ;
+		Ag (Masc | Fem | Neutr) Pl Gen => stem + "on" ;
+		Ag (Masc | Neutr) Pl Dat => stem + "ois" ;
+		Ag Masc Pl Acc => stem + "ous" ;
+		Ag Fem Pl (Nom | Voc) => stem + "ai" ;
+		Ag Fem Pl Dat => stem + "ais" ;
+		Ag Fem Pl Acc => stem + "as" ;
+		Ag Neutr Pl (Nom | Acc | Voc) => stem + "a" ;
+		Ag _ _ Abl => nonExist
+	} ;
+      second : Str -> Agr => Str =
+	\stem ->
+	table { Ag (Masc | Fem) Sg Nom => stem + "os" ;
+		Ag (Masc | Fem | Neutr) Sg Gen => stem + "ou" ;
+		Ag (Masc | Fem | Neutr) Sg Dat => stem + "oi" ;
+		Ag (Masc | Fem | Neutr) Sg Acc => stem + "on" ;
+		Ag (Masc | Fem) Sg Voc => stem + "e" ;
+		Ag Neutr Sg (Nom | Voc) => stem + "on" ;
+		Ag (Masc | Fem) Pl (Nom | Voc) => stem + "oi";
+		Ag (Masc | Fem | Neutr) Pl Gen => stem + "on" ;
+		Ag (Masc | Fem | Neutr) Pl Dat => stem + "ois" ;
+		Ag (Masc | Fem) Pl Acc => stem + "ous" ;
+		Ag Neutr Pl (Nom | Acc | Voc) => stem + "a" ;
+		Ag _ _ Abl => nonExist
+	} ;
+      third : Str -> Agr => Str =
+	\stem ->
+	table { Ag (Masc | Fem | Neutr) Sg (Nom | Voc) => stem + "es" ;
+		Ag (Masc | Fem | Neutr) Sg Gen => stem + "ous" ;
+		Ag (Masc | Fem | Neutr) Sg Dat => stem + "ei" ;
+		Ag (Masc | Fem) Sg Acc => stem + "e" ;
+		Ag Neutr Sg Acc => stem + "es" ;
+		Ag (Masc | Fem) Pl (Nom | Acc | Voc) => "eis" ;
+		Ag (Masc | Fem | Neutr) Pl Gen => "on" ;
+		Ag (Masc | Fem | Neutr) Pl Dat => "esi" ;
+		Ag Neutr Pl (Nom | Acc | Voc ) => "e" ;
+		Ag _ _ Abl => nonExist
+	} ;
+    in
+    { s = case <bonus,bona,bonum> of {
+	<agi + "os"    , _ + "a" , _ + "on"> =>
+	  table { Posit => first agi ;
+		  Compar => first (agi + "oter") ;
+		  Super => first (agi + "otat")
+	  } ;
+	<arctic + "os" , _ + "e" , _ + "on"> =>
+	  table { Posit => second arctic ;
+		  Compar => second (arctic + "oter") ;
+		  Super => second (arctic + "otat")
+	  } ;
+	<akapn + "os"  , _ + "os", _ + "on"> =>
+	  table { Posit => second akapn ;
+		  Compar => second (akapn + "oter") ;
+		  Super => second (akapn + "otat")
+	  } ;
+	<isoscel + "es", _ + "es", _ + "es"> =>
+	  table { Posit => third isoscel ;
+		  Compar => first (isoscel + "oter") ;
+		  Super => first (isoscel + "otat")
+	  } ;
+	_ => error ("Greek adjective " ++ bonus ++ bona ++ bonum ) -- { s = \\_,_ => "" ; adv = \\_ => ""} ;
+	} ;
+      adv = mkAdverb bonus
+    } ;
 -- smart paradigms
 
-  adj123 : Str -> Str -> Adjective = \bonus,boni ->
+  adj123 : Str -> Str -> Adjective = \bonus,boni -> 
     case <bonus,boni> of {
       <_ + ("us" | "er"), _ + "i" > => adj12 bonus ;
       <_ + ("us" | "er"), _ + "is"> => adj3x bonus boni ;
@@ -373,8 +454,18 @@ oper
       facil + "is"      => adj3x bonus bonus ;
       feli  + "x"       => adj3x bonus (feli + "cis") ;
       _                 => adj3x bonus (bonus + "is") ---- any example?
-    } ;  
+    } ;
   
+  adjfull : (bonus,bona,bonum : Str) -> Adjective = \bonus,bona,bonum ->
+    case <bonus,bona,bonum> of {
+      <_ + ("er"|"us"|"ur"|"tr"), _ + "a"  , _ + "um"> => adj12 bonus ;
+      <_ + ("er"|"is"), _ + "is" , _ + "e" > => adj3x bonus bonum ; -- FISHY?
+      <_ + "ior"      , _ + "ior", _ + "ius"> => adj3x bonus bonum ; -- FISHY?
+      <_ + "os"       , _ + "os" , _ + "on"> => adjgre bonus bona bonum ;
+      <_ + "es"       , _ + "es" , _ + "es"> => adjgre bonus bona bonum ;
+      <_ + "os"       , _ + ("e"|"a")  , _ + "on"> => adjgre bonus bona bonum ;
+      _ => Predef.error ("Not supported" ++ bonus ++ bona ++ bonum)
+    } ;
 
 ----3 Verbs
 
