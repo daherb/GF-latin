@@ -62,7 +62,7 @@ concrete SentenceLat of Sentence = CatLat ** open Prelude, ResLat in {
 --    } ;
 --
     -- AdvS : Adv -> S -> S
-    AdvS a s = { s = s.s ; o = s.o ; v = s.v ; neg = s.neg ; t = s.t ; p = s.p ; sadv = lin Adv { s = a.s ++ s.sadv.s } } ;
+    AdvS adv s = { s = s.s ; o = s.o ; v = s.v ; neg = s.neg ; t = s.t ; p = s.p ; sadv = adv.s ! Posit ++ s.sadv } ;
 
 -- This covers subjunctive clauses, but they can also be added to the end.
     --  SSubjS : S -> Subj -> S -> S ;       -- I go home if she comes

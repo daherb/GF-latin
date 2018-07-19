@@ -88,9 +88,13 @@ oper
     } ;
 
 
-  mkAdv : Str -> Adv
-    = \s -> lin Adv (mkAdverb s) ;
-
+  mkAdv = overload {
+    mkAdv : Str -> Adv
+      = \s -> lin Adv (mkAdverb s) ;
+    mkAdv : (pos,comp,super : Str) -> Adv
+      = \p,c,s -> lin Adv (mkFullAdverb p c s);
+    };
+  
   pluralN = ResLat.pluralN ;
   singularN = ResLat.singularN ;
 

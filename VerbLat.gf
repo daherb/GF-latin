@@ -87,13 +87,13 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat,Extr
 --    ExtAdvVP vp adv = vp
 
 --  AdVVP    : AdV -> VP -> VP ;        -- always sleep
-    AdVVP adv vp = insertAdv adv vp ;
+    AdVVP adv vp = vp ** { adv = vp.adv ++ adv.s } ;
 
 --  AdvVPSlash : VPSlash -> Adv -> VPSlash ;  -- use (it) here
-    AdvVPSlash vp adv = vp ** { adv = cc2 adv vp.adv } ;
+    AdvVPSlash vp adv = vp ** { adv = (adv.s ! Posit) ++ vp.adv } ;
     
 --  AdVVPSlash : AdV -> VPSlash -> VPSlash ;  -- always use (it)
-    AdVVPSlash adv vp = vp ** { adv = cc2 vp.adv adv } ;
+    AdVVPSlash adv vp = vp ** { adv = vp.adv ++ adv.s } ;
     
 --    VPSlashPrep : VP -> Prep -> VPSlash ;  -- live in (it)
 
@@ -106,7 +106,7 @@ concrete VerbLat of Verb = CatLat ** open (S=StructuralLat),ResLat,IrregLat,Extr
     CompNP np = {s = \\_ => let a = Ag np.g np.n Nom in np.preap.s ! a ++ np.s ! Nom ++ np.postap.s ! a } ;
 
 --  CompAdv  : Adv -> Comp ;            -- (be) here
-    CompAdv a = {s = \\_ => a.s} ;
+    CompAdv a = {s = \\_ => a.s ! Posit } ;
 
 --  CompCN   : CN  -> Comp ;            -- (be) a man/men
     CompCN cn = {s = table { Ag g n c => cn.preap.s ! Ag cn.g n Nom ++ cn.s ! n ! Nom ++ cn.postap.s ! Ag cn.g n Nom} };

@@ -19,7 +19,7 @@ param
 	g : Gender ; 
 	n : Number ; 
 	p : Person ;
-	adv : Adverb ;
+	adv : Str ;
 	preap : {s : Agr => Str } ;
 	postap : {s : Agr => Str } ;
 	det : Determiner 
@@ -35,13 +35,13 @@ param
       s : Degree => Agr => Str ; 
 --      comp_adv : Str ; 
       --      super_adv : Str
-      adv : Degree => Str ;
+      adv : Adverb ;
       } ;
     CommonNoun : Type = 
     {
       s : Number => Case => Str ; 
       g : Gender ;
-      adv : Adverb ;
+      adv : Str ;
       preap : {s : Agr => Str } ;
       postap : {s : Agr => Str }
 	--	massable : Bool
@@ -118,14 +118,14 @@ param
       g = g ;
       n = n ;
       p = P3;
-      adv = ss "" ;
+      adv = "" ;
       preap, postap = { s = \\_ => "" } ;
       det = { s = \\_,_ => "" ; sp = \\_,_ => "" ; n = n} ;
     } ;
   
   dummyNP : Str -> NounPhrase = \s -> regNP s s s s s s Masc Sg ;
 	  
-  emptyNP : NounPhrase = { s = \\_ => ""; g = Masc; n = Sg; p = P1 ; adv = ss "" ; preap, postap = { s = \\_ => "" } ; det = { s = \\_,_ => "" ; sp = \\_,_ => "" ; n = Sg } ;}; 
+  emptyNP : NounPhrase = { s = \\_ => ""; g = Masc; n = Sg; p = P1 ; adv = "" ; preap, postap = { s = \\_ => "" } ; det = { s = \\_,_ => "" ; sp = \\_,_ => "" ; n = Sg } ;}; 
 -- also used for adjectives and so on
 
 -- adjectives
@@ -148,7 +148,7 @@ param
 	} ;
       comp_adv = melior.p2 ;
       super_adv = optimus.p2 ;
-      adv = table { Posit => bono ; Compar => bonius ; Superl => bonissimo } ;
+      adv = { s = table { Posit => bono ; Compar => bonius ; Superl => bonissimo } };
     } ;
 
 
@@ -166,7 +166,7 @@ param
 
 
   emptyAdj : Adjective = 
-    { s = \\_,_ => "" ; comp_adv = "" ; super_adv = "" ; adv = \\_ => "" } ; 
+    { s = \\_,_ => "" ; comp_adv = "" ; super_adv = "" ; adv = { s = \\_ => "" } } ; 
 
 -- verbs
 
@@ -193,7 +193,7 @@ param
     imp : VImpForm => Str ;
     obj : Str ;
     compl : Agr => Str ; -- general complement. Agr might be ignored except for adjectives
-    adv : Adverb
+    adv : Str
     } ;
 
   ObjectVerbPhrase : Type = VerbPhrase ** {c : Preposition} ;
@@ -964,7 +964,7 @@ oper
     inf = v.inf ;
     obj = [] ;
     compl = \\a => [] ;
-    adv = ss "" 
+    adv = "" 
   } ;
 
   predV2 : Verb2 -> VPSlash = \v ->
@@ -982,7 +982,7 @@ oper
     inf = vp.inf ;
     obj = np.det.s ! np.g ! prep.c ++ np.preap.s ! (Ag np.g np.n prep.c) ++ (appPrep prep np.s) ++ np.postap.s ! (Ag np.g np.n prep.c) ++ np.det.sp ! np.g ! prep.c ++ vp.obj ;
     compl = vp.compl ;
-    adv = cc2 vp.adv np.adv
+    adv = vp.adv ++ np.adv
   } ;
 
   insertObjc: NounPhrase -> VPSlash -> VPSlash = \np,vp -> {
@@ -993,7 +993,7 @@ oper
     obj = np.det.s ! np.g ! vp.c.c ++ np.preap.s ! (Ag np.g np.n vp.c.c) ++ (appPrep vp.c np.s) ++ np.postap.s ! (Ag np.g np.n vp.c.c) ++ np.det.sp ! np.g ! vp.c.c ++ vp.obj ;
     compl = vp.compl ;
     c = vp.c ;
-    adv = cc2 vp.adv np.adv
+    adv = vp.adv ++ np.adv
     } ;
     
   insertAdj : (Agr => Str) -> VerbPhrase -> VerbPhrase = \adj,vp -> {
@@ -1013,7 +1013,7 @@ oper
     inf = vp.inf ;
     obj = vp.obj ;
     compl = vp.compl ;
-    adv = cc2 vp.adv a
+    adv = vp.adv ++ (a.s ! Posit)
     } ;
   
   -- clauses
@@ -1022,16 +1022,16 @@ oper
       s,o,v,neg : AdvPos => Str ; -- Subject, verbphrase, object and negation particle plus potential adverb
       t : C.Tense ; -- tense marker
       p : C.Pol ; -- polarity marker
-      sadv : Adverb -- sentence adverb¡
+      sadv : Str -- sentence adverb¡
     } ;
   
-  Clause = {s,o : AdvPos => Str ; v : Tense => Anteriority => VQForm => AdvPos => Str ; neg : Polarity => AdvPos => Str ; adv : Adverb } ;
+  Clause = {s,o : AdvPos => Str ; v : Tense => Anteriority => VQForm => AdvPos => Str ; neg : Polarity => AdvPos => Str ; adv : Str } ;
   QClause = {s : C.Tense => Anteriority => C.Pol => QForm => Str} ;
 
   -- The VQForm parameter defines if the ordinary verbform or the quistion form with suffix "-ne" will be used
   mkClause : NounPhrase -> VerbPhrase -> Clause = \np,vp ->
     let
-      adv  = (cc2 np.adv vp.adv).s ;
+      adv  = np.adv ++ vp.adv ;
       pres   : AdvPos -> Str = \ap -> case ap of { PreS => adv ; _ => [] } ;
       prev   : AdvPos -> Str = \ap -> case ap of { PreV => adv ; _ => [] } ;
       preo   : AdvPos -> Str = \ap -> case ap of { PreO => adv ; _ => [] } ;
@@ -1044,7 +1044,7 @@ oper
       v = \\tense,anter,vqf,ap => prev ap ++ vp.compl ! Ag np.g np.n Nom ++ inv ap ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ;
       o = \\ap => preo ap ++ vp.obj ;
       neg = \\pol,ap => preneg ap ++ negation pol ;
-      adv = lin Adv (mkAdverb [])
+      adv = ""
     } ;
   
   combineClause : Clause -> C.Tense -> Anteriority -> C.Pol -> VQForm -> Sentence = \cl,tense,anter,pol,vqf ->
@@ -1052,17 +1052,17 @@ oper
       o =  cl.o ;
       v =  cl.v ! tense.t ! anter ! vqf ;
       neg = cl.neg ! pol.p ;
-      sadv = mkAdverb [] ;
+      sadv = "" ;
       t = tense ;
       p = pol
     } ;
 
   combineSentence : Sentence -> ( SAdvPos => AdvPos => Order => Str ) = \s ->
     let
-      pres   : SAdvPos -> Str = \ap -> case ap of { SPreS =>    s.sadv.s ; _ => [] } ;
-      prev   : SAdvPos -> Str = \ap -> case ap of { SPreV =>    s.sadv.s ; _ => [] } ;
-      preo   : SAdvPos -> Str = \ap -> case ap of { SPreO =>    s.sadv.s ; _ => [] } ;
-      preneg : SAdvPos -> Str = \ap -> case ap of { SPreNeg =>  s.sadv.s ; _ => [] } 
+      pres   : SAdvPos -> Str = \ap -> case ap of { SPreS =>    s.sadv ; _ => [] } ;
+      prev   : SAdvPos -> Str = \ap -> case ap of { SPreV =>    s.sadv ; _ => [] } ;
+      preo   : SAdvPos -> Str = \ap -> case ap of { SPreO =>    s.sadv ; _ => [] } ;
+      preneg : SAdvPos -> Str = \ap -> case ap of { SPreNeg =>  s.sadv ; _ => [] } 
     in
     \\sap,ap,order  => case order of {
       SVO => s.t.s ++ s.p.s ++ pres sap ++ s.s   ! ap ++ preneg sap ++ s.neg ! ap ++ prev sap ++ s.v   ! ap ++ preo sap ++ s.o ! ap;
@@ -1150,9 +1150,12 @@ oper
   mkPostposition : Str -> Case -> Preposition = \s,c ->  {s = s ; c = c ; isPost = True } ;
 
   -- adverbs
-  Adverb : Type = SS ;
-  mkAdverb : Str -> Adverb = \adv -> ss adv ;
+  Adverb : Type = { s : Degree => Str} ;
+  mkAdverb : Str -> Adverb = \adv ->
+    { s = table { Posit => adv ; _ => nonExist } } ;
 
+  mkFullAdverb : (pos,comp,sup : Str) -> Adverb = \p,c,s ->
+    { s = table { Posit => p ; Compar => c ; Super => s } };
   -- numerals
   param
     CardOrd = NCard | NOrd ;

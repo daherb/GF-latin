@@ -18,12 +18,12 @@ concrete PhraseLat of Phrase = CatLat ** open Prelude, ResLat in {
 --  UttIAdv : IAdv -> Utt
     UttIAdv iadv = iadv ;
 --  UttNP : NP -> Utt
-    UttNP np = {s = np.adv.s ++ np.det.s  ! np.g ! Nom ++ np.preap.s ! (Ag np.g np.n Nom) ++ np.s ! Nom ++ np.postap.s ! (Ag np.g np.n Nom) ++ np.det.sp ! np.g ! Nom} ;
+    UttNP np = {s = np.adv ++ np.det.s  ! np.g ! Nom ++ np.preap.s ! (Ag np.g np.n Nom) ++ np.s ! Nom ++ np.postap.s ! (Ag np.g np.n Nom) ++ np.det.sp ! np.g ! Nom} ;
 --  UttVP : VP -> Utt
     UttVP vp = ss (vp.inf ! VInfActPres) ;
 
 --  UttAdv : Adv -> Utt
-    UttAdv adv = adv ;
+    UttAdv adv = ss (adv.s ! Posit) ;
 --  UttAP : AP -> Utt
     UttAP ap = ss (ap.s ! Ag Masc Sg Nom );
 --  UttCard : Card -> Utt

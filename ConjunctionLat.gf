@@ -1,5 +1,5 @@
 concrete ConjunctionLat of Conjunction = 
-  CatLat ** open ResLat, StructuralLat, Coordination, Prelude in {
+  CatLat ** open ResLat, StructuralLat, Coordination, Prelude, ParadigmsLat in {
 --
 --  flags optimize=all_subs ;
     --
@@ -10,7 +10,7 @@ concrete ConjunctionLat of Conjunction =
     -- ConjS conj ss = { s = \\_ => conjunctDistrX conj (ss.l ! conj.c) ; sadv = lin Adv { s = []} ; neg = ss.neg } ;
 
     -- ConjAdv  : Conj -> ListAdv -> Adv ;   -- here or there
-    ConjAdv conj ss = conjunctDistrSS conj (ss.l ! conj.c) ;
+    ConjAdv conj ss = mkAdv (conjunctDistrSS conj (ss.l ! conj.c) ).s ;
 
     -- ConjNP   : Conj -> ListNP -> NP ;     -- she or we
     ConjNP conj nps =
@@ -61,10 +61,10 @@ concrete ConjunctionLat of Conjunction =
     -- ConsS x xs = { l = \\_ => consrSS bindComma (ss (x.s ! PreS)) (xs.l ! Comma) };
 
     -- BaseAdv : Adv -> Adv -> ListAdv
-    BaseAdv x y = { l = \\c => twoSS x y} ;
+    BaseAdv x y = { l = \\c => twoSS (ss (x.s ! Posit)) (ss (y.s ! Posit)) } ;
 
     -- ConsAdv : Adv -> ListAdv -> ListAdv
-    ConsAdv x xs = { l = \\_ => consrSS bindComma x (xs.l ! Comma) } ;
+    ConsAdv x xs = { l = \\_ => consrSS bindComma (ss (x.s ! Posit)) (xs.l ! Comma) } ;
 
     -- BaseNP : NP -> NP -> ListNP ;      -- John, Mary
     BaseNP x y = {
@@ -72,7 +72,7 @@ concrete ConjunctionLat of Conjunction =
       g = Masc ; -- Just guessing (but maybe sexist bullshit)
       n = matchNumber x.n y.n ;
       p = P3 ;
-      adv = ss ( x.adv.s ++ y.adv.s ) ;
+      adv = x.adv ++ y.adv ;
       preap = lin AP { s = \\a => x.preap.s ! a ++ y.preap.s ! a } ;
       postap = lin AP { s = \\a => x.postap.s ! a ++ y.postap.s ! a } ;
       isBase = True ;
@@ -86,7 +86,7 @@ concrete ConjunctionLat of Conjunction =
       n = matchNumber x.n xs.n ;
       g = xs.g ;
       p = xs.p ;
-      adv = ss ( x.adv.s ++ xs.adv.s ) ;
+      adv = x.adv ++ xs.adv ;
       preap = lin AP { s = \\a => x.preap.s ! a ++ xs.preap.s ! a } ;
       postap = lin AP { s = \\a => x.postap.s ! a ++ xs.postap.s ! a } ;
       isBase = False
@@ -103,7 +103,7 @@ concrete ConjunctionLat of Conjunction =
   lincat
     -- [S] = { l : Coordinator => {s1,s2 : Str} } ; -- TO FIX
     [Adv] = { l: Coordinator => {s1,s2 : Str}} ;
-    [NP] = {l : Coordinator => {s1,s2 : Case => Str} ; g : Gender ; n : Number ; p : Person ; adv : Adverb ; preap : AP ; postap : AP ; isBase : Bool } ;
+    [NP] = {l : Coordinator => {s1,s2 : Case => Str} ; g : Gender ; n : Number ; p : Person ; adv : Str ; preap : AP ; postap : AP ; isBase : Bool } ;
     [AP] = {l : Coordinator => {s1,s2 : Agr => Str } } ;
 
   oper

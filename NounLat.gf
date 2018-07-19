@@ -22,7 +22,7 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
 	  g = pn.g ;
 	  n = Sg ;
 	  p = P3 ;
-	  adv = ss "" ;
+	  adv = "" ;
 	  preap, postap = { s = \\_ => "" } ;
 	  det = { s,sp = \\_,_ => "" ; n = Sg }
 	    } ;
@@ -37,7 +37,7 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
 	  Nom => p.pers.s ! PronDrop ! PronNonRefl ; -- Drop pronoun in nominative case
 	  _ => p.pers.s ! PronNonDrop ! PronNonRefl  -- but don't drop it otherwise
 	  } ! c ;
-	adv = ss "" ;
+	adv = "" ;
 	preap, postap = { s = \\_ => "" } ;
 	det = { s,sp = \\_,_ => "" ; n = p.pers.n } ;	
       } ;
@@ -56,7 +56,7 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
     --
 
 --  AdvNP   : NP -> Adv -> NP ;    -- Paris today
-    AdvNP np adv = np ** { adv = cc2 np.adv adv } ;
+    AdvNP np adv = np ** { adv = np.adv ++ (adv.s ! Posit) } ;
       -- {
       -- s = \\c => np.s ! c ;
       -- g = np.g ; n = np.n; p = np.p ;
@@ -70,7 +70,7 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
     ExtAdvNP = AdvNP ;
 
 --  RelNP   : NP -> RS  -> NP ;    -- Paris, which is here
-    RelNP np rs = np ** { adv = cc2 rs np.adv } ;
+    RelNP np rs = np ** { adv = rs.s ++ np.adv } ;
 
 --  DetNP   : Det -> NP ;  -- these five
     DetNP det = {
@@ -78,7 +78,7 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
       g = Neutr ;
       n = det.n ;
       p = P3 ;
-      adv = ss "" ;
+      adv = "" ;
       preap, postap = { s = \\_ => "" } ;
       det = { s,sp = \\_,_ => "" ; n = det.n } ;
     } ;
@@ -142,10 +142,10 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
       };
 
     UseN n = -- N -> CN
-  lin CN ( n ** {preap, postap = {s = \\_ => "" } ; adv = ss "" }) ; -- massable = n.massable } ) ; 
+  lin CN ( n ** {preap, postap = {s = \\_ => "" } ; adv = "" }) ; -- massable = n.massable } ) ; 
       
       UseN2 n2 = -- N2 -> CN
-  lin CN ( n2 ** {preap, postap = {s = \\_ => "" } ; adv = ss "" }) ; -- massable = n2.massable } ) ; 
+  lin CN ( n2 ** {preap, postap = {s = \\_ => "" } ; adv = "" }) ; -- massable = n2.massable } ) ; 
   -----b    UseN3 n = n ;
 --
 --    Use2N3 f = {

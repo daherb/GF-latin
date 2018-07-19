@@ -1,4 +1,4 @@
-concrete CatLat of Cat = CommonX ** open ResLat, ParamX, Prelude in {
+concrete CatLat of Cat = CommonX-[Adv] ** open ResLat, ParamX, Prelude in {
 
   flags optimize=all_subs ;
 
@@ -81,7 +81,7 @@ concrete CatLat of Cat = CommonX ** open ResLat, ParamX, Prelude in {
     V2V = Verb ** {c2 : Str ; isAux : Bool} ;
 
     A = Adjective ;
-
+    Adv = Adverb ;
     N = Noun ;
     N2 = Noun ** { c : Prep } ;
     N3 = Noun ** { c : Prep ; c2 : Prep } ;
@@ -90,5 +90,5 @@ concrete CatLat of Cat = CommonX ** open ResLat, ParamX, Prelude in {
 
   linref
     NP = \np -> np.preap.s ! Ag np.g np.n Nom ++ np.s ! Nom ++ np.postap.s ! Ag np.g np.n Nom ;
-    VP = \vp -> vp.adv.s ++ vp.inf !  VInfActPres ++ vp.obj ++ vp.compl ! Ag Masc Sg Nom ;
+    VP = \vp -> vp.adv ++ vp.inf !  VInfActPres ++ vp.obj ++ vp.compl ! Ag Masc Sg Nom ;
 }

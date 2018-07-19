@@ -49,5 +49,5 @@ concrete AdjectiveLat of Adjective = CatLat ** open ResLat, Prelude in {
 
 --  AdvAP   : AP -> Adv -> AP ; -- warm by nature
     AdvAP ap adv =
-      { s = \\ag => ap.s ! ag ++ adv.s } ;
+      { s = \\ag => ap.s ! ag ++ adv.s ! Posit} ;
 }
