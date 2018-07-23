@@ -94,6 +94,8 @@ oper
       = \s -> lin Adv (mkAdverb s) ;
     mkAdv : (pos,comp,super : Str) -> Adv
       = \p,c,s -> lin Adv (mkFullAdverb p c s);
+    mkAdv : (pos,comp : Str) -> Adv
+      = \p,c -> lin Adv (mkFullAdverb p c nonExist);
     };
   
   pluralN = ResLat.pluralN ;
