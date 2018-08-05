@@ -789,7 +789,170 @@ param
 	-- sup = \\form => addPrefix prefix (verb.sup ! form) ;
 	-- part = \\form,agr => addPrefix prefix (verb.part ! form ! agr) ;
       } ;
-      
+
+
+    esseAux : Verb =     -- Bayer-Lindauer 93 1
+    let
+      pres_stem = "s" ;
+      pres_ind_base = "su" ;
+      pres_conj_base = "si" ;
+      impf_ind_base = "era" ;
+      impf_conj_base = "esse" ;
+      fut_I_base = "eri" ;
+      imp_base = "es" ;
+      perf_stem = "fu" ;
+      perf_ind_base = "fu" ;
+      perf_conj_base = "fueri" ;
+      pqperf_ind_base = "fuera" ;
+      pqperf_conj_base = "fuisse" ;
+      fut_II_base = "fueri" ;
+      part_stem = "fut" ;
+      verb = mkVerb "esse" pres_stem pres_ind_base pres_conj_base impf_ind_base impf_conj_base fut_I_base
+    	imp_base perf_stem perf_ind_base perf_conj_base pqperf_ind_base pqperf_conj_base fut_II_base part_stem ;
+    in
+    {
+      act = 
+	table {
+    	  VAct VSim (VPres VInd)  n  p  => 
+	    table Number [ table Person [ "sum" ; "es" ; "est" ] ;
+    			   table Person [ "sumus" ; "estis" ; "sunt" ]
+    	    ] ! n ! p ;
+    	  a => verb.act ! a
+	};
+      pass =
+	\\_ => nonExist ; -- no passive forms 
+      inf =
+	verb.inf ;
+      imp =
+	table {
+	  VImp1 Sg => "es" ;
+	  VImp1 Pl => "este" ;
+	  VImp2 Pl P2 => "estote" ;
+	  a => verb.imp ! a
+	} ;
+      sup =
+	\\_ => nonExist ; -- no supin forms
+      ger =
+	\\_ => nonExist ; -- no gerund forms
+      geriv = 
+	\\_ => nonExist ; -- no gerundive forms
+      part = table {
+	VActFut =>
+	  verb.part ! VActFut ;
+	VActPres => 
+	  \\_ => nonExist ; -- no such participle
+	VPassPerf =>
+	  \\_ => nonExist -- no such participle
+	}
+    } ;
+
+  ferreAux : Verb =
+    let
+      pres_stem = "fer" ;
+      pres_ind_base = "fer" ;
+      pres_conj_base = "fera" ;
+      impf_ind_base = "fereba" ;
+      impf_conj_base = "ferre" ;
+      fut_I_base = "fere" ;
+      imp_base = "fer" ;
+      perf_stem = "tul" ;
+      perf_ind_base = "tul" ;
+      perf_conj_base = "tuleri" ;
+      pqperf_ind_base = "tulera" ;
+      pqperf_conj_base = "tulisse" ;
+      fut_II_base = "tuleri" ;
+      part_stem = "lat" ;
+      verb = mkVerb "ferre" pres_stem pres_ind_base pres_conj_base impf_ind_base impf_conj_base fut_I_base
+	imp_base perf_stem perf_ind_base perf_conj_base pqperf_ind_base pqperf_conj_base fut_II_base part_stem ;
+    in
+    {
+      act =
+	table {
+	  VAct VSim (VPres VInd) n p => 
+	    table Number [ table Person [ "fero" ; "fers" ; "fert" ] ;
+			   table Person [ "ferimus" ; "fertis" ; "ferunt" ] 
+	    ] ! n ! p ;
+	  a => verb.act ! a
+	} ;
+      pass = 
+	table {
+	  VPass (VPres VInd) n p => 
+	    table Number [ table Person [ "feror" ; "ferris" ; "fertur" ] ;
+			   table Person [ "ferimur" ; "ferimini" ; "feruntur" ]
+	    ] ! n ! p ;
+	  a => verb.pass ! a
+	} ;
+      inf = 
+	verb.inf ;	  
+      imp =
+	table {
+	  VImp1 n => table Number [ "fer" ; "ferte" ] ! n ;
+	  VImp2 Sg ( P2 | P3 ) => "ferto" ;
+	  VImp2 Pl P2 => "fertote" ;
+	  a => verb.imp ! a 
+	} ; 
+      sup = 
+	verb.sup ;
+      ger =
+	verb.ger ;
+      geriv =
+	verb.geriv ;
+      part = verb.part ;
+    };
+
+  posseAux : Verb =
+    let
+      pres_stem = "pos" ;
+      pres_ind_base = "pos" ;
+      pres_conj_base = "possi" ;
+      impf_ind_base = "potera" ;
+      impf_conj_base = "posse" ;
+      fut_I_base = "poteri" ;
+      imp_base = "" ;
+      perf_stem = "potu" ;
+      perf_ind_base = "potu" ;
+      perf_conj_base = "potueri" ;
+      pqperf_ind_base = "potuera" ;
+      pqperf_conj_base = "potuisse" ;
+      fut_II_base = "potueri" ;
+      part_stem = "" ;
+      verb = mkVerb "posse" pres_stem pres_ind_base pres_conj_base impf_ind_base impf_conj_base fut_I_base
+    	imp_base perf_stem perf_ind_base perf_conj_base pqperf_ind_base pqperf_conj_base fut_II_base part_stem ;
+    in
+    {
+      act =
+    	table {
+    	  VAct VSim (VPres VInd)  n  p  => 
+	    table Number [ table Person [ "possum" ; "potes" ; "potest" ] ;
+    			   table Person [ "possumus" ; "potestis" ; "possunt" ]
+    	    ] ! n ! p ;
+    	  a => verb.act ! a
+    	} ;
+      pass = 
+    	\\_ => nonExist ; -- no passive forms
+      inf = 
+	table {
+	  VInfActFut _ => nonExist ;
+	  a => verb.inf ! a
+	} ;
+      imp = 
+	\\_ => nonExist ;
+      sup = 
+	\\_ => nonExist ;
+      ger =
+	\\_ => nonExist ;
+      geriv =
+	\\_ => nonExist ;
+      part = table {
+	VActFut =>
+    	  \\_ => nonExist ; -- no such participle
+    	VActPres => 
+	  \\_ => nonExist ; -- no such participle
+    	VPassPerf =>
+    	  \\_ => nonExist -- no such participle
+	} ;
+    };
+  
 -- pronouns
 
 param
