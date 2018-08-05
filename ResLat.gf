@@ -111,6 +111,11 @@ param
   -- nounMassable : Bool -> Noun -> Noun = \m,n ->
   --   {s = n.s ; g = n.g ; massable = m } ;
 
+  prefixNoun : Str -> Noun -> Noun =
+    \p,n ->
+    { s = \\num,cas => addPrefix p (n.s ! num ! cas) ; g = n.g };
+    
+    
   regNP : (_,_,_,_,_,_ : Str) -> Gender -> Number -> NounPhrase = 
     \nom,acc,gen,dat,abl,voc,g,n ->
     {
