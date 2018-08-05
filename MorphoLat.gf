@@ -149,14 +149,14 @@ oper
 
   noun_ngg : Str -> Str -> Gender -> Noun = \verbum,verbi,g -> 
     let s : Noun = case <verbum,verbi> of {
-      <_ + "a",  _ + "ae"> => noun1 verbum ;
-      <_ + "us", _ + "i">  => noun2us verbum ;
-      <_ + "um", _ + "i">  => noun2um verbum ;
-      <_ + ( "er" | "ir" ) , _ + "i">  => noun2er verbum verbi ;
-
-      <_ + "us", _ + "us"> => noun4us verbum ;
-      <_ + "u",  _ + "us"> => noun4u verbum ;
-      <_ + "es", _ + "ei"> => noun5 verbum ;
+      <_    + "a"             , _ + "ae"> => noun1 verbum ;
+      <_    + "us"            , _ + "i" > => noun2us verbum ;
+      <_    + "um"            , _ + "i" > => noun2um verbum ;
+      <_    + ( "er" | "ir" ) , _ + "i" > => noun2er verbum verbi ;
+      <_    + "us"            , _ + "us"> => noun4us verbum ;
+      <_    + "u"             , _ + "us"> => noun4u verbum ;
+      <_    + "es"            , _ + "ei"> => noun5 verbum ;
+      <semi + "bos"           , _       > => prefixNoun semi (noun3 "bos" "bovis" Masc) ;
       _  => noun3 verbum verbi g
       }
     in  
@@ -170,6 +170,7 @@ oper
       _ + ( "er" | "ir" ) => noun2er verbum ( (Predef.tk 2 verbum) + "ri" ) ;
       _ + "u"  => noun4u verbum ;
       _ + "es" => noun5 verbum ;
+      semi + "bos" => prefixNoun semi (noun_ngg "bos" "bovis" Masc) ;
       _  => Predef.error ("3rd declinsion cannot be applied to just one noun form " ++ verbum)
       } ;
   
