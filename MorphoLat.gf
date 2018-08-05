@@ -434,6 +434,13 @@ oper
 		  Compar => first (isoscel + "oter") ;
 		  Super => first (isoscel + "otat")
 	  } ;
+	<amethystiz + "on", _ + "ousa", _ + "on"> => 
+	  table { Posit => table { Ag g Sg c => first amethystiz ! Ag g Sg c ;
+				   Ag g Pl c => third amethystiz ! Ag g Sg c
+		    } ;
+		  Compar => \\_ => nonExist ;
+		  Super => \\_ => nonExist
+	  };	    
 	_ => error ("Greek adjective " ++ bonus ++ bona ++ bonum ) -- { s = \\_,_ => "" ; adv = \\_ => ""} ;
 	} ;
       adv = mkAdverb bonus
@@ -446,6 +453,9 @@ oper
       <_ + ("us" | "er"), _ + "is"> => adj3x bonus boni ;
       <_                , _ + "is"> => adj3x bonus boni ;
       <_ + "is"         , _ + "e" > => adj3x bonus boni ;
+      <_ + "is"         , _ + "os"> => adj3x bonus boni ;
+      --      <_ + "os"         , _ + "on"> => adjgre bonus boni boni ;
+      <bon + "on"       , _ + "os"> => adjgre bonus (bon + "ousa") bonus ;
       _ => Predef.error ("adj123: not applicable to" ++ bonus ++ boni)
     } ;
 
