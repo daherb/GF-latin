@@ -751,7 +751,7 @@ param
 	  }
     in
     (useEndingTable endings n p) + passPresEnding n p ;
-    
+  
   useEndingTable : (Str*Str*Str*Str*Str*Str) -> Number -> Person -> Str = 
     \es,n,p -> case n of {
       Sg => case p of {
