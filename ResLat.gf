@@ -721,6 +721,18 @@ param
 	}
     } ;
 
+  -- at the moment only fills present tense
+  mkImpersonal : Str -> Verb = \s ->
+    {
+      act = table {
+	VAct VSim (VPres VInd)  Sg P1 => s ;
+	_ => nonExist
+	} ;
+      pass = \\_ => nonExist ;
+      imp = \\_ => nonExist ;
+      inf = \\_ => nonExist ;
+    } ;
+  
   actPresEnding : Number -> Person -> Str = 
     useEndingTable <"m", "s", "t", "mus", "tis", "nt"> ;
 
