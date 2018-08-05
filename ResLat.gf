@@ -1208,10 +1208,12 @@ oper
   Clause = {s,o : AdvPos => Str ; v : Tense => Anteriority => VQForm => AdvPos => Str ; neg : Polarity => AdvPos => Str ; adv : Str } ;
   QClause = {s : C.Tense => Anteriority => C.Pol => QForm => Str} ;
 
-  -- The VQForm parameter defines if the ordinary verbform or the quistion form with suffix "-ne" will be used
   mkClause : NounPhrase -> VerbPhrase -> Clause = \np,vp ->
     let
+      -- combines adverbs from noun phrase and verb phrase
       adv  = np.adv ++ vp.adv ;
+      -- helper functions to either place the adverb in the designated position
+      -- or an empty string instead
       pres   : AdvPos -> Str = \ap -> case ap of { PreS => adv ; _ => [] } ;
       prev   : AdvPos -> Str = \ap -> case ap of { PreV => adv ; _ => [] } ;
       preo   : AdvPos -> Str = \ap -> case ap of { PreO => adv ; _ => [] } ;
@@ -1220,9 +1222,29 @@ oper
       inv    : AdvPos -> Str = \ap -> case ap of { InV  => adv ; _ => [] }
     in
     {
-      s = \\ap => pres ap ++ np.det.s ! np.g ! Nom ++ np.preap.s ! (Ag np.g np.n Nom) ++ ins ap ++ np.s ! Nom ++ np.postap .s ! (Ag np.g np.n Nom) ++ np.det.sp ! np.g ! Nom ;
-      v = \\tense,anter,vqf,ap => prev ap ++ vp.compl ! Ag np.g np.n Nom ++ inv ap ++ vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ;
+      -- subject part of the clause:
+      -- ap is the adverb position in the clause
+      s = \\ap =>
+	pres ap ++                           -- adverbs can be placed in the beginning of the clause
+	np.det.s ! np.g ! Nom ++             -- the determiner, if any
+	np.preap.s ! (Ag np.g np.n Nom) ++   -- adjectives which come before the subject noun, agreeing with it
+	ins ap ++                            -- adverbs can be placed within the subject noun phrase
+	np.s ! Nom ++                        -- the noun of the subject noun phrase in nominative
+	np.postap .s ! (Ag np.g np.n Nom) ++ -- adjectives which come after the subject noun, agreeing with it
+	np.det.sp ! np.g ! Nom ;             -- second part of split determiners
+      -- verb part of the clause:
+      -- tense and anter(ority) for the verb tense
+      -- vqf is the VQForm parameter which defines if the ordinary verbform or the quistion form with suffix "-ne" will be used
+      -- ap is the adverb position in the clause
+      v = \\tense,anter,vqf,ap =>
+	prev ap ++                           -- adverbs can be placed in the before the verb phrase
+	vp.compl ! Ag np.g np.n Nom ++       -- verb phrase complement, e.g. predicative expression, agreeing with the subject 
+	inv ap ++                            -- adverbs can be placed within the verb phrase
+	-- verb form with conversion between different forms of tense and aspect
+	vp.s ! VAct ( anteriorityToVAnter anter ) ( tenseToVTense tense ) np.n np.p ! vqf ;
+      -- object part of the clause
       o = \\ap => preo ap ++ vp.obj ;
+      -- optional negation particle, adverbs can be placed before the negation
       neg = \\pol,ap => preneg ap ++ negation pol ;
       adv = ""
     } ;
