@@ -708,6 +708,8 @@ oper
   	_ + ( "i" | "u" ) + "o" => verb3i iacere ieci iactus ; -- Bayer-Linduaer 74 1
   	_ => verb3c iacere ieci iactus
   	} ;
+      ab + "esse" => prefixVerb ab esseAux ;
+      circum + "ferre" => prefixVerb circum ferreAux ; 
       _ => Predef.error ("verb_ippp: illegal infinitive form" ++ iacere) 
     } ;
 
@@ -721,6 +723,9 @@ oper
       _ + "ire" => let iaci = Predef.tk 2 iacere 
         in verb4 iacere ; -- (iaci + "vi") (iaci + "tus") ;
       _ + "ere" => verb2 iacere ;
+      circum + "ferre" => prefixVerb circum ferreAux ;
+      ab + "esse" => prefixVerb ab esseAux ;
+      prae + "posse" => prefixVerb prae posseAux ;
       _ => Predef.error ("verb: illegal infinitive form" ++ iacere) 
     } ;
 }
