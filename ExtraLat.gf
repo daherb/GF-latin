@@ -19,9 +19,13 @@ concrete ExtraLat of ExtraLatAbs =
 	det = { s = \\_,_ => "" ; sp = \\_,_ => "" ; n = p.pers.n } ;
       } ;
     
-    Nom_Prep = mkPrep "" Nom;
-    Gen_Prep = mkPrep "" Gen;
-    Acc_Prep = mkPrep "" Acc;
-    Dat_Prep = mkPrep "" Dat;
-    Abl_Prep = mkPrep "" Abl;
+    AdjCNPre ap cn =  -- AP -> CN -> CN
+      addAdjToCN (lin AP ap) (lin CN cn) Post ;
+    
+    Nom_Prep = mkPrep "" Nom ;
+    Gen_Prep = mkPrep "" Gen ;
+    Acc_Prep = mkPrep "" Acc ;
+    Dat_Prep = mkPrep "" Dat ;
+    Abl_Prep = mkPrep "" Abl ;
+    inAbl_Prep = mkPrep "in" Abl ;
 } 
