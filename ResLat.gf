@@ -506,6 +506,7 @@ param
 		  Neutr )
 	      < \\_ => "" , "" >
 	      < \\_ => "" , "" >
+	      "" "" ""
 	  ).s!Posit ;
 	VPassPerf => 
 	  ( mkAdjective
