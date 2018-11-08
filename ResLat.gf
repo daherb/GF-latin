@@ -193,7 +193,7 @@ param
   oper
   VerbPhrase : Type = {
     s : VActForm => VQForm => Str ;
-    --    part : VPartForm =>Agr => Str ;
+    part : VPartForm =>Agr => Str ;
     inf : VInfForm => Str ;
     imp : VImpForm => Str ;
     obj : Str ;
@@ -208,10 +208,10 @@ param
     pass  : VPassForm => Str ;
     inf   : VInfForm => Str ;
     imp   : VImpForm => Str ;
---    ger   : VGerund => Str ;
---    geriv : Agr => Str ; 
---    sup   : VSupine => Str ;
---    part  : VPartForm =>Agr => Str ;
+    ger   : VGerund => Str ;
+    geriv : Agr => Str ; 
+    sup   : VSupine => Str ;
+    part  : VPartForm =>Agr => Str ;
     } ;
 
   Verb2 : Type = Verb ** { c : Preposition };
@@ -256,10 +256,10 @@ param
       --      inf = \\a => vp.obj ++ vp.inf ! a ;
       inf = vp.inf ;
       imp = vp.imp ;
-      -- ger = \\_ => nonExist ;
-      -- geriv = \\_ => nonExist ;
-      -- sup = \\_ => nonExist ;
-      -- part = \\_,_ => nonExist ;
+      ger = \\_ => nonExist ;
+      geriv = \\_ => nonExist ;
+      sup = \\_ => nonExist ;
+      part = \\_,_ => nonExist ;
     } ;
 
   mkVerb : 
@@ -427,25 +427,26 @@ param
 	    pres_stem + fill.p1 + "ndo" 
 	} ;
       geriv = 
-	( mkAdjective
-	    ( mkNoun ( pres_stem + fill.p1 + "ndus" ) ( pres_stem + fill.p1 + "ndum" ) ( pres_stem + fill.p1 + "ndi" ) 
-		( pres_stem + fill.p1 + "ndo" ) ( pres_stem + fill.p1 + "ndo" ) ( pres_stem + fill.p1 + "nde" ) 
-		( pres_stem + fill.p1 + "ndi" ) ( pres_stem + fill.p1 + "ndos" ) ( pres_stem + fill.p1 + "ndorum" ) 
-		( pres_stem + fill.p1 + "ndis" ) 
-		Masc )
-	    ( mkNoun ( pres_stem + fill.p1 + "nda" ) ( pres_stem + fill.p1 + "ndam" ) ( pres_stem + fill.p1 + "ndae" ) 
-		( pres_stem + fill.p1 + "ndae" ) ( pres_stem + fill.p1 + "nda" ) ( pres_stem + fill.p1 + "nda" ) 
-		( pres_stem + fill.p1 + "ndae" ) ( pres_stem + fill.p1 + "ndas" ) (pres_stem + fill.p1 +"ndarum" ) 
-		( pres_stem + fill.p1 + "ndis" ) 
-		Fem )
-	    ( mkNoun ( pres_stem + fill.p1 + "ndum" ) ( pres_stem + fill.p1 + "ndum" ) ( pres_stem + fill.p1 + "ndi" ) 
-		( pres_stem + fill.p1 + "ndo" ) ( pres_stem + fill.p1 + "ndo" ) ( pres_stem + fill.p1 + "ndum" ) 
-		( pres_stem + fill.p1 + "nda" ) ( pres_stem + fill.p1 + "nda" ) ( pres_stem + fill.p1 + "ndorum" ) 
-		( pres_stem + fill.p1 + "ndis" ) 
-		Neutr )
-	    < \\_ => "" , "" >
-	    < \\_ => "" , "" >
-	).s!Posit ;
+      	( mkAdjective
+      	    ( mkNoun ( pres_stem + fill.p1 + "ndus" ) ( pres_stem + fill.p1 + "ndum" ) ( pres_stem + fill.p1 + "ndi" ) 
+      		( pres_stem + fill.p1 + "ndo" ) ( pres_stem + fill.p1 + "ndo" ) ( pres_stem + fill.p1 + "nde" ) 
+      		( pres_stem + fill.p1 + "ndi" ) ( pres_stem + fill.p1 + "ndos" ) ( pres_stem + fill.p1 + "ndorum" ) 
+      		( pres_stem + fill.p1 + "ndis" ) 
+      		Masc )
+      	    ( mkNoun ( pres_stem + fill.p1 + "nda" ) ( pres_stem + fill.p1 + "ndam" ) ( pres_stem + fill.p1 + "ndae" ) 
+      		( pres_stem + fill.p1 + "ndae" ) ( pres_stem + fill.p1 + "nda" ) ( pres_stem + fill.p1 + "nda" ) 
+      		( pres_stem + fill.p1 + "ndae" ) ( pres_stem + fill.p1 + "ndas" ) (pres_stem + fill.p1 +"ndarum" ) 
+      		( pres_stem + fill.p1 + "ndis" ) 
+      		Fem )
+      	    ( mkNoun ( pres_stem + fill.p1 + "ndum" ) ( pres_stem + fill.p1 + "ndum" ) ( pres_stem + fill.p1 + "ndi" ) 
+      		( pres_stem + fill.p1 + "ndo" ) ( pres_stem + fill.p1 + "ndo" ) ( pres_stem + fill.p1 + "ndum" ) 
+      		( pres_stem + fill.p1 + "nda" ) ( pres_stem + fill.p1 + "nda" ) ( pres_stem + fill.p1 + "ndorum" ) 
+      		( pres_stem + fill.p1 + "ndis" ) 
+      		Neutr )
+      	    < \\_ => "" , "" > -- Comparative
+      	    < \\_ => "" , "" > -- Superlative
+	    "" "" "" -- Adverb part
+      	).s!Posit ;
       sup = 
 	table {
 	  VSupAcc => -- Supin
@@ -502,6 +503,7 @@ param
 		  Neutr ) 
 	      < \\_ => "" , "" >
 	      < \\_ => "" , "" >
+	      "" "" ""
 	  ).s!Posit
 	}
     } ;
@@ -656,6 +658,7 @@ param
 		      Neutr )
 	    < \\_ => "" , "" >
 	    < \\_ => "" , "" >
+	    "" "" ""
 	).s!Posit ;
       sup = 
 	table {
@@ -697,6 +700,7 @@ param
 		  Neutr )
 	      < \\_ => "" , "" >
 	      < \\_ => "" , "" >
+	      "" "" ""
 	  ).s!Posit ;
 	VPassPerf =>
 	  ( mkAdjective
@@ -717,6 +721,7 @@ param
 		  Neutr ) 
 	      < \\_ => "" , "" >
 	      < \\_ => "" , "" >
+	      "" "" ""
 	  ).s!Posit
 	}
     } ;
@@ -731,6 +736,10 @@ param
       pass = \\_ => nonExist ;
       imp = \\_ => nonExist ;
       inf = \\_ => nonExist ;
+      ger = \\_ => nonExist ;
+      geriv = \\_ => nonExist ;
+      part = \\_,_ => nonExist ;
+      sup = \\_ => nonExist ;
     } ;
   
   actPresEnding : Number -> Person -> Str = 
@@ -790,7 +799,7 @@ param
 
     prefixVerb2 : Str -> Verb2 -> Verb2 =
       \prefix,verb ->
-      let v = { act = verb.act ; pass = verb.pass ; inf = verb.inf ; imp = verb.imp ; } -- ger = verb.ger ; geriv = verb.geriv ; sup = verb.sup ; part = verb.part }
+      let v = { act = verb.act ; pass = verb.pass ; inf = verb.inf ; imp = verb.imp ; ger = verb.ger ; geriv = verb.geriv ; sup = verb.sup ; part = verb.part }
       in
       (prefixVerb prefix v) ** { c = verb.c };
     
@@ -801,10 +810,10 @@ param
 	pass = \\form => addPrefix prefix (verb.pass ! form) ;
 	inf = \\form => addPrefix prefix (verb.inf ! form) ;
 	imp = \\form => addPrefix prefix (verb.imp ! form) ;
-	-- ger = \\form => addPrefix prefix (verb.ger ! form) ;
-	-- geriv = \\agr => addPrefix prefix (verb.geriv ! agr) ;
-	-- sup = \\form => addPrefix prefix (verb.sup ! form) ;
-	-- part = \\form,agr => addPrefix prefix (verb.part ! form ! agr) ;
+	ger = \\form => addPrefix prefix (verb.ger ! form) ;
+	geriv = \\agr => addPrefix prefix (verb.geriv ! agr) ;
+	sup = \\form => addPrefix prefix (verb.sup ! form) ;
+	part = \\form,agr => addPrefix prefix (verb.part ! form ! agr) ;
       } ;
 
 
@@ -1139,7 +1148,7 @@ oper
 
   predV : Verb -> VerbPhrase = \v -> {
     s = \\a,q => v.act ! a ++ case q of { VQTrue => Prelude.BIND ++ "ne"; VQFalse => "" };
-    --    part = v.part;
+    part = v.part;
     imp = v.imp ;
     inf = v.inf ;
     obj = [] ;
@@ -1157,7 +1166,7 @@ oper
 
   insertObj : NounPhrase -> Preposition -> VerbPhrase -> VerbPhrase = \np,prep,vp -> {
     s = vp.s ;
-    --    part = vp.part ;
+    part = vp.part ;
     imp = vp.imp ;
     inf = vp.inf ;
     obj = np.det.s ! np.g ! prep.c ++ np.preap.s ! (Ag np.g np.n prep.c) ++ (appPrep prep np.s) ++ np.postap.s ! (Ag np.g np.n prep.c) ++ np.det.sp ! np.g ! prep.c ++ vp.obj ;
@@ -1167,7 +1176,7 @@ oper
 
   insertObjc: NounPhrase -> VPSlash -> VPSlash = \np,vp -> {
     s = vp.s ;
-    --    part = vp.part ;
+    part = vp.part ;
     imp = vp.imp ;
     inf = vp.inf ;
     obj = np.det.s ! np.g ! vp.c.c ++ np.preap.s ! (Ag np.g np.n vp.c.c) ++ (appPrep vp.c np.s) ++ np.postap.s ! (Ag np.g np.n vp.c.c) ++ np.det.sp ! np.g ! vp.c.c ++ vp.obj ;
@@ -1178,7 +1187,7 @@ oper
     
   insertAdj : (Agr => Str) -> VerbPhrase -> VerbPhrase = \adj,vp -> {
     s = vp.s ;
---    part = vp.part ;
+    part = vp.part ;
     imp = vp.imp ;
     inf = vp.inf ;
     obj = vp.obj ;
@@ -1187,8 +1196,8 @@ oper
   } ;
 
   insertAdv : Adverb -> VerbPhrase -> VerbPhrase = \a,vp -> {
-     s = vp.s ;
---    part = vp.part ;
+    s = vp.s ;
+    part = vp.part ;
     imp = vp.imp ;
     inf = vp.inf ;
     obj = vp.obj ;
