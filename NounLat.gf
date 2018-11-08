@@ -167,23 +167,10 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
 --      c2 = f.c3
 --      } ;
 
-  param
-    AdjPos = Pre | Post ;
   lin
+    -- by default add adjective after the noun, otherwise use AdjCNPre
     AdjCN ap cn =  -- AP -> CN -> CN
-      let pos = variants { Post ; Pre }
-      in
-      {
-	-- s = \\n,c => preOrPost ap.isPre (ap.s ! cn.g ! n ! c) (cn.s ! n ! c) ;
-	-- s = \\n,c => ( cn.s ! n ! c ) ++ ( ap.s ! AdjPhr cn.g n c) ; -- always add adjectives after noun?
-	s = cn.s ;
-	postap = case pos of { Pre => cn.postap ; Post => { s = \\a => ap.s ! a ++ cn.postap.s ! a } } ;
-	preap = case pos of { Pre => { s = \\a => ap.s ! a ++ cn.preap.s ! a } ; Post => cn.preap } ;
-	-- variants { postap = ConsAP postap ap ; preap = ConsAP preap ap } ; -- Nice if that would work
-	g = cn.g ;
-	adv = cn.adv 
---	massable = cn.massable
-      } ;
+      addAdjToCN (lin AP ap) (lin CN cn) Post ;
 
 --    RelCN cn rs = {
 --      s = \\n,c => cn.s ! n ! c ++ rs.s ! agrgP3 n cn.g ;

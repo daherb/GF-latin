@@ -7,7 +7,10 @@ abstract ExtraLatAbs =
     useS : S -> CS ;
     -- do not drop pronouns
     UsePronNonDrop : Pron -> NP ;
-    
+
+    -- add adjective before the noun
+    AdjCNPre : AP -> CN -> CN ;
+      
     -- Some empty prepositions to enforce cases
     Nom_Prep : Prep ;
     Gen_Prep : Prep ;
