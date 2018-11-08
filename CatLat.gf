@@ -60,7 +60,7 @@ concrete CatLat of Cat = CommonX-[Adv] ** open ResLat, ParamX, Prelude in {
 --
 ---- Numeral
 --
-    Numeral = ResLat.Numer ;
+    Numeral = ResLat.Numeral ;
     Digits  = {s : Str ; unit : Unit} ;
 --
 ---- Structural
@@ -79,6 +79,7 @@ concrete CatLat of Cat = CommonX-[Adv] ** open ResLat, ParamX, Prelude in {
 
     A = Adjective ;
     Adv = Adverb ;
+    
     N = Noun ;
     N2 = Noun ** { c : Prep } ;
     N3 = Noun ** { c : Prep ; c2 : Prep } ;

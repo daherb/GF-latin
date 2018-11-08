@@ -190,5 +190,4 @@ concrete NounLat of Noun = CatLat ** open ResLat, Prelude, ConjunctionLat in {
 	postap = cn.postap ;
 	adv = cn.adv
       } ; -- massable = cn.massable } ;
---
 }
