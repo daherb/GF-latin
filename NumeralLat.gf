@@ -13,7 +13,7 @@ concrete NumeralLat of Numeral = CatLat ** open ResLat,ParadigmsLat in {
     n4 = lin Numeral ( mkNum "quattuor"  "quartus" ) ;
     n5 = lin Numeral ( mkNum "quinque"  "quintus" ) ;
     n6 = lin Numeral ( mkNum "sex" "sextus" ) ;
-    n7 = lin Numeral ( mkNum "septem" "sptimus" ) ;
+    n7 = lin Numeral ( mkNum "septem" "septimus" ) ;
     n8 = lin Numeral ( mkNum "octo" "ocatvus" ) ;
     n9 = lin Numeral ( mkNum "novem" "nonus" ) ;
 
