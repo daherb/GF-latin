@@ -84,12 +84,9 @@ param
   oper
     addAdjToCN : AdjectivePhrase -> CommonNoun -> AdjPos -> CommonNoun = \ap,cn,pos ->
       {
-	-- s = \\n,c => preOrPost ap.isPre (ap.s ! cn.g ! n ! c) (cn.s ! n ! c) ;
-	-- s = \\n,c => ( cn.s ! n ! c ) ++ ( ap.s ! AdjPhr cn.g n c) ; -- always add adjectives after noun?
 	s = cn.s ;
 	postap = case pos of { Pre => cn.postap ; Post => { s = \\a => ap.s ! a ++ cn.postap.s ! a } } ;
 	preap = case pos of { Pre => { s = \\a => ap.s ! a ++ cn.preap.s ! a } ; Post => cn.preap } ;
-	-- variants { postap = ConsAP postap ap ; preap = ConsAP preap ap } ; -- Nice if that would work
 	g = cn.g ;
 	adv = cn.adv 
 --	massable = cn.massable

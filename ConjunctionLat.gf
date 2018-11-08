@@ -18,7 +18,7 @@ concrete ConjunctionLat of Conjunction =
 	s = case conj.c of {
 	  And => case nps.isBase of {
             False => (conjunctDistrTable Case conj (nps.l ! And)).s ;
-            True => \\c => variants { (nps.l ! And).s1 ! c ++ (nps.l ! And).s2 ! c ++ BIND ++ "que" ; conj.s1 ++ (nps.l ! And).s1 ! c ++ conj.s2 ++ (nps.l ! And).s2 ! c }
+            True => \\c => conj.s1 ++ (nps.l ! And).s1 ! c ++ conj.s2 ++ (nps.l ! And).s2 ! c
 	    } ;
 	  c => (conjunctDistrTable Case conj (nps.l ! And)).s
 	  } ;
